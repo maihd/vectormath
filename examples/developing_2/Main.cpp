@@ -1,0 +1,105 @@
+#include "Native/Window.h"
+#include "Native/Thread.h"
+#include "Renderer/Renderer.h"
+#include "Game/Game.h"
+
+#include <float.h>
+#include <stdio.h>
+
+#define RUN_UNIT_TESTS
+#define UNIT_TESTS_MAIN RunAllUnitTests
+#include "../unit_tests/test_framework.h"
+
+int main(const int argc, const char* argv[])
+{
+    int runTestsStatus = RunAllUnitTests(argc, argv);
+    if (runTestsStatus != 0)
+    {
+        return runTestsStatus;
+    }
+
+    WindowDesc window;
+    window.title = "VectorMath Examples + ECS + SpriteBatch + JobSystem";
+    window.width = 1280;
+    window.height = 720;
+    window.flags = WindowFlags_Default;
+    Window_Open(&window);
+    Renderer_Setup(&window, RendererType_OpenGL);
+
+    int spriteCols = 11;
+    int spriteRows = 1;
+    SpriteSheet spriteBatch;
+    Renderer_LoadSpriteSheet(&spriteBatch, "../../assets/main_characters/frog_idle.png", spriteCols, spriteRows);
+
+    int spriteIndex = 0;
+    float spriteTimer = 0.0f;
+    float spriteInterval = 1.6f / spriteBatch.spriteCount;
+
+    int objectCount = 10000;
+    Game_Setup(&spriteBatch, objectCount);
+
+    float   deltaTime           = 0.0f;
+    int64_t timerFrequency      = Thread_GetCpuFrequency();
+    int64_t timerTicks          = Thread_GetCpuTicks();
+    int64_t timerInterval       = timerFrequency / 60;
+    double  invTimerFrequency   = 1.0 / (double)timerFrequency;
+    while (Window_PollEvents())
+    {
+        //Game_Update(0.0f, deltaTime);
+
+        spriteTimer += deltaTime;
+        if (spriteTimer >= spriteInterval)
+        {
+            spriteTimer -= spriteInterval;
+            spriteIndex  = (spriteIndex + 1) % spriteBatch.spriteCount;
+        }
+
+        Renderer_Clear();
+
+        //Renderer_DrawSprite(nullptr, vec2((float)window.width * 0.5f, (float)window.height * 0.5f), 0.0f, vec2(100.0f), vec3(0.5f, 0.5f, 1.0f));
+        
+        //Game_Render();
+
+        Renderer_DrawSprite(&spriteBatch.sprites[spriteIndex], vec2_new((float)window.width * 0.5f, (float)window.height * 0.5f), 0.0f, vec2_new1(1.0f), vec3_new1(1.0f));
+
+        char fpsText[1024];
+        snprintf(fpsText, sizeof(fpsText), "FPS: %.3f", deltaTime > FLT_EPSILON ? 1.0f / deltaTime : 0.0f);
+
+        char objectCountText[1024];
+        snprintf(objectCountText, sizeof(objectCountText), "Object count: %d", objectCount);
+        
+        vec2 fpsTextSize = Renderer_TextSize(fpsText) * vec2_new(2.0f, 2.0f);
+
+        Renderer_DrawQuad(
+            vec2_new(0.0f, (float)window.height), 
+            vec2_new(fpsTextSize.x + 10.0f, (float)window.height - 1.5f * fpsTextSize.y - 10.0f), 
+            vec3_new1(0.0f));
+        Renderer_DrawText(fpsText, vec2_new(5.0f, (float)window.height - 5.0f), vec3_new(0.25f, 0.5f, 1.0f));
+        Renderer_DrawText(objectCountText, vec2_new(5.0f, (float)window.height - 45.0f), vec3_new(0.25f, 0.5f, 1.0f));
+
+        Renderer_Present();
+
+        // Update timers
+        int64_t currentTicks = Thread_GetCpuTicks();
+        int64_t elapsedTicks = currentTicks - timerTicks;
+
+        #if defined(SLEEPY_MAIN_LOOP)
+            if (elapsedTicks < timerInterval)
+            {
+                double sleepSeconds = (double)(timerInterval - elapsedTicks) * invTimerFrequency;
+                Thread_MicroSleep((int64_t)(sleepSeconds * 1000 * 1000));
+
+                elapsedTicks = timerInterval;
+            }
+        #endif
+
+        deltaTime = (float)((double)elapsedTicks * invTimerFrequency);
+        timerTicks = timerTicks + elapsedTicks;
+    }
+
+    Game_Shutdown();
+    
+    Renderer_Shutdown(&window, RendererType_OpenGL);
+    Window_Close(&window);
+    return 0;
+}
