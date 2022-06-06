@@ -9,7 +9,7 @@ DEFINE_UNIT_TEST("Test vec2 assigment")
 
 DEFINE_UNIT_TEST("Test vec2 operator neg")
 {
-    const vec2 a = vec2_new(1.0f, 2.0f, 3.0f);
+    const vec2 a = vec2_new(1.0f, 2.0f);
     const vec2 b = -a;
     TEST(a.x == -b.x && a.y == -b.y);
 }
