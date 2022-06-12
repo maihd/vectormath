@@ -23,4 +23,12 @@ DEFINE_UNIT_TEST("Test sign()")
     const int c = sign(-1);
     const int d = -1;
     TEST(c == d);
+
+    const float e = signf(1.0f);
+    const float f = 1.0f;
+    TEST(e == f);
+
+    const float g = signf(-1.0f);
+    const float h = -1.0f;
+    TEST(g == h);
 }
