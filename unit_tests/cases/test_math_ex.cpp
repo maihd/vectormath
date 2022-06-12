@@ -13,3 +13,14 @@ DEFINE_UNIT_TEST("Test degrees()")
     const float b = 180.0f;
     TEST(a == b);
 }
+
+DEFINE_UNIT_TEST("Test sign()")
+{
+    const int a = sign(1);
+    const int b = 1;
+    TEST(a == b);
+
+    const int c = sign(-1);
+    const int d = -1;
+    TEST(c == d);
+}
