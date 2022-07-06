@@ -10,8 +10,6 @@
 #include "Native/Window.h"
 #include "Renderer/Renderer.h"
 
-#include "Container/Array.h"
-
 #include "flecs/flecs.h"
 
 static flecs::world					gWorld;
