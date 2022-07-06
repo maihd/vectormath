@@ -11,77 +11,33 @@
 #include "Renderer/Renderer.h"
 
 #include "Container/Array.h"
-#include "Runtime/JobSystem.h"
 
-struct MoveJobParams
+#include "flecs/flecs.h"
+
+static flecs::world					gWorld;
+
+static WorldBoundsComponent			gWorldBounds;
+
+static void Game_MoveEntity(PositionComponent& positionComponent, MoveComponent& moveComponent)
 {
-    PositionComponent*          positionComponents;
-    MoveComponent*              moveComponents;
-    int                         entityCount;
-    float                       deltaTime;
-};
+	float deltaTime = gWorld.delta_time();
+	WorldBoundsComponent bounds = gWorldBounds;
 
-struct RenderJobParams
-{
-    const PositionComponent*    positionComponents;
-    const SpriteComponent*      spriteComponents;
-    SpriteBatch*                spriteBatch;
-    int                         entityCount;
-};
+	vec2 velocity = moveComponent.velocity;
+	vec2 position = positionComponent.position + velocity * deltaTime;
 
-WorldBoundsComponent            gWorldBounds;
+	if (position.x < bounds.xMin) { velocity.x = -velocity.x; position.x = bounds.xMin; }
+	if (position.x > bounds.xMax) { velocity.x = -velocity.x; position.x = bounds.xMax; }
+	if (position.y < bounds.yMin) { velocity.y = -velocity.y; position.y = bounds.yMin; }
+	if (position.y > bounds.yMax) { velocity.y = -velocity.y; position.y = bounds.yMax; }
 
-int                             gEntityCount;
-MoveComponent*                  gMoveComponents;
-SpriteComponent*                gSpriteComponents;
-PositionComponent*              gPositionComponents;
-
-SpriteBatch                     gSpriteBatchs[JOB_SYSTEM_MAX_WORKERS];
-JobSystem                       gJobSystem;
-
-static void Game_MoveEntities(PositionComponent* positionComponents, MoveComponent* moveComponents, int entityCount, float deltaTime)
-{
-    WorldBoundsComponent bounds = gWorldBounds;
-    for (int i = 0; i < entityCount; i++)
-    {
-        PositionComponent* positionComponent = positionComponents + i;
-        MoveComponent* moveComponent = moveComponents + i;
-
-        vec2 velocity = moveComponent->velocity;
-        vec2 position = positionComponent->position + velocity * deltaTime;
-
-        if (position.x < bounds.xMin) { velocity.x = -velocity.x; position.x = bounds.xMin; }
-        if (position.x > bounds.xMax) { velocity.x = -velocity.x; position.x = bounds.xMax; }
-        if (position.y < bounds.yMin) { velocity.y = -velocity.y; position.y = bounds.yMin; }
-        if (position.y > bounds.yMax) { velocity.y = -velocity.y; position.y = bounds.yMax; }
-
-        positionComponent->position = position;
-        moveComponent->velocity = velocity;
-    }
+	positionComponent.position = position;
+	moveComponent.velocity = velocity;
 }
 
-static void Game_DrawEntities(SpriteBatch* spriteBatch, const PositionComponent* positionComponents, const SpriteComponent* spriteComponents, int entitiesCount)
+static void Game_DrawEntity(const PositionComponent& position, const SpriteComponent& sprite)
 {
-    SpriteBatch_Begin(spriteBatch);
-    for (int i = 0, n = entitiesCount; i < n; i++)
-    {
-        const PositionComponent* positionComponent = positionComponents + i;
-        const SpriteComponent* spriteComponent = spriteComponents + i;
-        SpriteBatch_DrawSprite(spriteBatch, spriteComponent->sprite, positionComponent->position, 0.0f, spriteComponent->scale, spriteComponent->color);
-    }
-    SpriteBatch_End(spriteBatch);
-}
-
-static void Game_RunMoveJob(void* params)
-{
-    MoveJobParams* moveParams = (MoveJobParams*)params;
-    Game_MoveEntities(moveParams->positionComponents, moveParams->moveComponents, moveParams->entityCount, moveParams->deltaTime);
-}
-
-static void Game_RunRenderJob(void* params)
-{
-    RenderJobParams* renderParams = (RenderJobParams*)params;
-    Game_DrawEntities(renderParams->spriteBatch, renderParams->positionComponents, renderParams->spriteComponents, renderParams->entityCount);
+	Renderer_DrawSprite(sprite.spriteBatch, sprite.spriteIndex, position.position, 0.0f, sprite.scale, sprite.color);
 }
 
 float Random()
@@ -101,9 +57,16 @@ float RandomFloat(float min, float max)
     return (max - min) * range + min;
 }
 
-void Game_Setup(const struct SpriteSheet* spriteSheet, int objectCount)
+void Game_Setup(struct SpriteBatch* spriteBatch, int entityCount)
 {
-    srand(time(nullptr));
+	srand((unsigned int)time(nullptr));
+
+	gWorld.add<PositionComponent>();
+	gWorld.add<SpriteComponent>();
+	gWorld.add<MoveComponent>();
+
+	gWorld.system<PositionComponent, MoveComponent>()
+		.each(Game_MoveEntity);
 
     const float worldWidth = Window_GetWidth();
     const float worldHeight = Window_GetHeight();
@@ -112,85 +75,32 @@ void Game_Setup(const struct SpriteSheet* spriteSheet, int objectCount)
     gWorldBounds.yMin = 0;
     gWorldBounds.yMax = worldHeight;
 
-    gEntityCount = objectCount;
-    gMoveComponents = (MoveComponent*)_aligned_malloc(gEntityCount * sizeof(MoveComponent), alignof(MoveComponent));
-    gSpriteComponents = (SpriteComponent*)_aligned_malloc(gEntityCount * sizeof(SpriteComponent), alignof(SpriteComponent));
-    gPositionComponents = (PositionComponent*)_aligned_malloc(gEntityCount * sizeof(PositionComponent), alignof(PositionComponent));
-    
-    JobSystem_Create(&gJobSystem, 0);
-    
-    for (int i = 0, n = gJobSystem.workerCount; i < n; i++)
+    for (int i = 0; i < entityCount; i++)
     {
-        int spriteBatchCapacity = objectCount / n + (i == n - 1) * (gEntityCount % n);
-        SpriteBatch_Create(&gSpriteBatchs[i], spriteSheet, spriteBatchCapacity);
-    }
+		gWorld.entity().set([=](PositionComponent& position, SpriteComponent& sprite, MoveComponent& move){
+			position.position = vec2_new(Random() * worldWidth, Random() * worldHeight);
 
-    for (int i = 0; i < objectCount; i++)
-    {
-        PositionComponent* position = &gPositionComponents[i];
-		position->position = vec2{ Random() * worldWidth, Random() * worldHeight };
+			sprite.scale = vec2_new(1.0f, 1.0f);
+			sprite.color = vec3_new(1.0f, 1.0f, 1.0f);
+			sprite.spriteIndex = (uint32_t)rand() % spriteBatch->spritesCount;
+			sprite.spriteBatch = spriteBatch;
 
-        SpriteComponent* sprite = &gSpriteComponents[i];
-		sprite->scale = vec2{ 1.0f, 1.0f };
-		sprite->color = vec3{ 1.0f, 1.0f, 1.0f };
-        sprite->sprite = &spriteSheet->sprites[(uint32_t)rand() % spriteSheet->spritesCount];
-
-        MoveComponent* move = &gMoveComponents[i];
-        move->position = position;
-		move->velocity = vec2{ RandomFloat(-worldWidth * 0.5f, worldWidth * 0.5f), RandomFloat(-worldHeight * 0.5f, worldHeight * 0.5f) };
+			move.velocity = vec2_new(RandomFloat(-worldWidth * 0.5f, worldWidth * 0.5f), RandomFloat(-worldHeight * 0.5f, worldHeight * 0.5f));
+		});
     }
 }
 
 void Game_Shutdown()
 {
-    _aligned_free(gMoveComponents);
-    _aligned_free(gSpriteComponents);
-    _aligned_free(gPositionComponents);
-
-    gEntityCount = 0;
-    gMoveComponents = nullptr;
-    gSpriteComponents = nullptr;
-    gPositionComponents = nullptr;
-
-    for (int i = 0, n = gJobSystem.workerCount; i < n; i++)
-    {
-        SpriteBatch_Destroy(&gSpriteBatchs[i]);
-    }
-
-    JobSystem_Destroy(&gJobSystem);
 }
 
 void Game_Update(float time, float deltaTime)
 {
-    MoveJobParams params[JOB_SYSTEM_MAX_WORKERS];
-    for (int i = 0, n = gJobSystem.workerCount; i < n; i++)
-    {
-        int entityCountPerJob = gEntityCount / n;
-        int startEntityIndex = entityCountPerJob * i;
-        int entitiesNeedToHandle = entityCountPerJob + (i == n - 1) * (gEntityCount % n);
-        params[i] = { gPositionComponents + startEntityIndex, gMoveComponents + startEntityIndex, entitiesNeedToHandle, deltaTime };
-        JobSystem_QueueJob(&gJobSystem, Game_RunMoveJob, &params[i]);
-    }
-    
-    JobSystem_WaitIdle(&gJobSystem);
+	gWorld.progress(deltaTime);
 }
 
 void Game_Render()
 {
-    RenderJobParams params[JOB_SYSTEM_MAX_WORKERS];
-    for (int i = 0, n = gJobSystem.workerCount; i < n; i++)
-    {
-        int entityCountPerJob = gEntityCount / n;
-        int startEntityIndex = entityCountPerJob * i;
-        int entitiesNeedToHandle = entityCountPerJob + (i == n - 1) * (gEntityCount % n);
-        params[i] = { gPositionComponents + startEntityIndex, gSpriteComponents + startEntityIndex, &gSpriteBatchs[i], entitiesNeedToHandle };
-        JobSystem_QueueJob(&gJobSystem, Game_RunRenderJob, &params[i]);
-    }
-
-    JobSystem_WaitIdle(&gJobSystem);
-
-    for (int i = 0, n = gJobSystem.workerCount; i < n; i++)
-    {
-        SpriteBatch_Present(&gSpriteBatchs[i]);
-    }
+	auto query = gWorld.query_builder<const PositionComponent, const SpriteComponent>().build();
+	query.each(Game_DrawEntity);
 }

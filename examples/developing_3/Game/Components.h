@@ -11,14 +11,13 @@ struct SpriteComponent
 {
     vec3                    color;
     vec2                    scale;
-
-    int                     spriteIndex;
-    struct SpriteBatch*     spriteBatch;
+    const struct Sprite*    sprite;
 };
 
 struct MoveComponent
 {
     vec2                    velocity;
+    PositionComponent*      position;
 };
 
 struct WorldBoundsComponent

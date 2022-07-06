@@ -89,17 +89,17 @@ void Game_Setup(struct SpriteBatch* spriteBatch, int entityCount)
     for (int i = 0; i < entityCount; i++)
     {
         PositionComponent* position = &gPositionComponents[i];
-        position->position = vec2(Random() * worldWidth, Random() * worldHeight);
+        position->position = vec2_new(Random() * worldWidth, Random() * worldHeight);
 
         SpriteComponent* sprite = &gSpriteComponents[i];
-        sprite->scale = vec2(1.0f, 1.0f);
-        sprite->color = vec3(1.0f, 1.0f, 1.0f);
+        sprite->scale = vec2_new(1.0f, 1.0f);
+        sprite->color = vec3_new(1.0f, 1.0f, 1.0f);
         sprite->spriteIndex = (uint32_t)rand() % spriteBatch->spritesCount;
         sprite->spriteBatch = spriteBatch;
 
         MoveComponent* move = &gMoveComponents[i];
         move->position = position;
-        move->velocity = vec2(RandomFloat(-worldWidth * 0.5f, worldWidth * 0.5f), RandomFloat(-worldHeight * 0.5f, worldHeight * 0.5f));
+        move->velocity = vec2_new(RandomFloat(-worldWidth * 0.5f, worldWidth * 0.5f), RandomFloat(-worldHeight * 0.5f, worldHeight * 0.5f));
     }
 }
 

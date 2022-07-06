@@ -63,7 +63,8 @@ __forceinline float degrees(float radians)
 /// Compute the sign of 'x'
 __forceinline int sign(int x)
 {
-    return x >> 31;
+    const int result = (x >> 31) | (!!x);
+	return result;
 }
 
 /// Get the smaller value

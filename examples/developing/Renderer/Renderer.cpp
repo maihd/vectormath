@@ -15,9 +15,8 @@
 static WindowDesc*  gMainWindow;
 static void*        gGLContext;
 
-static uint32_t     gProgramDrawText;
 static uint32_t     gProgramDrawSprite;
-static uint32_t     gProgramSpriteBatch;
+static uint32_t     gProgramDrawText;
 
 static uint32_t     gVao;
 static uint32_t     gVbo;
@@ -47,6 +46,7 @@ constexpr const char* fshader_src =
         "FragColor = texture(Image, UV) * vec4(Color, 1.0);"
     "}";
 
+
 constexpr const char* vshader_draw_text_src =
     "#version 330 core\n"
     "layout (location = 0) in vec2 vertex;"
@@ -64,31 +64,6 @@ constexpr const char* fshader_draw_text_src =
     "uniform sampler2D Image;"
     "void main() {"
         "FragColor = vec4(Color, 1.0);"
-    "}";
-
-constexpr const char* vshader_sprite_batch_src =
-    "#version 330 core\n"
-    "layout (location = 0) in vec2 vertex;"
-    "layout (location = 1) in vec2 uv;"
-    "layout (location = 2) in vec3 color;"
-    "out vec2 UV;"
-    "out vec3 Color;"
-    "uniform mat4 Projection;"
-    "void main() {"
-        "UV = uv;"
-        "Color = color;"
-        "gl_Position = Projection * vec4(vertex, 0, 1.0);"
-    "}";
-
-constexpr const char* fshader_sprite_batch_src =
-    "#version 330 core\n"
-    "in vec2 UV;"
-    "in vec3 Color;"
-    "out vec4 FragColor;"
-    "uniform sampler2D Image;"
-    "void main() {"
-        //"FragColor = vec4(Color, 1.0);"
-        "FragColor = texture(Image, UV) * vec4(Color, 1.0);"
     "}";
 
 static uint32_t Renderer_CreateShader(uint32_t type, const char* src)
@@ -174,9 +149,8 @@ int Renderer_Setup(struct WindowDesc* window)
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     
     // Create default objects
-    gProgramDrawText = Renderer_CreateProgram(vshader_draw_text_src, fshader_draw_text_src);
     gProgramDrawSprite = Renderer_CreateProgram(vshader_src, fshader_src);
-    gProgramSpriteBatch = Renderer_CreateProgram(vshader_sprite_batch_src, fshader_sprite_batch_src);
+    gProgramDrawText = Renderer_CreateProgram(vshader_draw_text_src, fshader_draw_text_src);
 
     glGenVertexArrays(1, &gVao);
     glGenBuffers(1, &gVbo);
@@ -235,10 +209,10 @@ void Renderer_Present()
     SwapBuffers((HDC)gMainWindow->device);
 }
 
-void Renderer_LoadSpriteSheet(SpriteSheet* spriteSheet, const char* file, int spriteCount)
+void Renderer_LoadSpritesHorizontal(SpriteBatch* spriteBatch, const char* file, int spriteCount)
 {
-    glGenTextures(1, &spriteSheet->textureId);
-    glBindTexture(GL_TEXTURE_2D, spriteSheet->textureId);
+    glGenTextures(1, &spriteBatch->textureId);
+    glBindTexture(GL_TEXTURE_2D, spriteBatch->textureId);
 
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
@@ -249,8 +223,8 @@ void Renderer_LoadSpriteSheet(SpriteSheet* spriteSheet, const char* file, int sp
     const void* pixels = stbi_load(file, &width, &height, &channels, 0);
     glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, channels == 4 ? GL_RGBA : GL_RGB, GL_UINT8, pixels);
 
-    spriteSheet->sprites = (Sprite*)malloc(spriteCount * sizeof(Sprite));
-    spriteSheet->spritesCount = spriteCount;
+    spriteBatch->sprites = (SpriteMesh*)malloc(spriteCount * sizeof(SpriteMesh));
+    spriteBatch->spritesCount = spriteCount;
 
     const float spriteWidth = (float)width / (float)spriteCount;
     const float spriteHeight = (float)height;
@@ -259,28 +233,24 @@ void Renderer_LoadSpriteSheet(SpriteSheet* spriteSheet, const char* file, int sp
 
     for (int i = 0; i < spriteCount; i++)
     {
-        Sprite* sprite = &spriteSheet->sprites[i];
-        sprite->textureId = spriteSheet->textureId;
-        sprite->width = spriteWidth;
-        sprite->height = spriteHeight;
+        SpriteMesh* spriteMesh = &spriteBatch->sprites[i];
+        spriteMesh->width = spriteWidth;
+        spriteMesh->height = spriteHeight;
 
-        glGenVertexArrays(1, &sprite->vertexArrayId);
-        glGenBuffers(1, &sprite->vertexBufferId);
+        glGenVertexArrays(1, &spriteMesh->vao);
+        glGenBuffers(1, &spriteMesh->vbo);
 
-        glBindVertexArray(sprite->vertexArrayId);
-        glBindBuffer(GL_ARRAY_BUFFER, sprite->vertexBufferId);
+        glBindVertexArray(spriteMesh->vao);
+        glBindBuffer(GL_ARRAY_BUFFER, spriteMesh->vbo);
 
         glEnableVertexAttribArray(0);
         glVertexAttribPointer(0, 4, GL_FLOAT, false, 4 * sizeof(float), 0);
 
-		const vec2 pos0 = vec2{ -0.5f, -0.5f };
-		const vec2 pos1 = vec2{ 0.5f,  0.5f };
+        const vec2 pos0 = vec2_new(-0.5f, -0.5f);
+        const vec2 pos1 = vec2_new( 0.5f,  0.5f);
 
-		const vec2 uv0 = vec2{ (float)i * invSpriteCount, 1.0f };
-		const vec2 uv1 = vec2{ (float)(i + 1) * invSpriteCount, 0.0f };
-
-        sprite->uv0 = uv0;
-        sprite->uv1 = uv1;
+        const vec2 uv0 = vec2_new((float)i * invSpriteCount, 1.0f);
+        const vec2 uv1 = vec2_new((float)(i + 1) * invSpriteCount, 0.0f);
 
         const float vertices[] = {
             // pos              // tex
@@ -292,50 +262,33 @@ void Renderer_LoadSpriteSheet(SpriteSheet* spriteSheet, const char* file, int sp
             pos1.x, pos0.y,     uv1.x, uv0.y,
             pos1.x, pos1.y,     uv1.x, uv1.y,
         };
-        glBindBuffer(GL_ARRAY_BUFFER, sprite->vertexBufferId);
+        glBindBuffer(GL_ARRAY_BUFFER, spriteMesh->vbo);
         glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
     }
 }
 
-void Renderer_UnloadSpriteSheet(SpriteSheet* spriteSheet)
+void Renderer_DrawSprite(const SpriteBatch* spriteBatch, int index, const vec2& position, float rotation, const vec2& scale, const vec3& color)
 {
-    for (int i = 0, n = spriteSheet->spritesCount; i < n; i++)
-    {
-        Sprite sprite = spriteSheet->sprites[i];
-        glDeleteBuffers(1, &sprite.vertexBufferId);
-        glDeleteVertexArrays(1, &sprite.vertexArrayId);
-    }
+    const SpriteMesh* spriteMesh = &spriteBatch->sprites[index];
 
-    glDeleteTextures(1, &spriteSheet->textureId);
-
-    free(spriteSheet->sprites);
-
-    spriteSheet->textureId = 0;
-
-    spriteSheet->sprites = nullptr;
-    spriteSheet->spritesCount = 0;
-}
-
-void Renderer_DrawSprite(const Sprite* sprite, const vec2& position, float rotation, const vec2& scale, const vec3& color)
-{
-    glBindVertexArray(sprite->vertexArrayId);
+    glBindVertexArray(spriteMesh->vao);
 
     glUseProgram(gProgramDrawSprite);
 
-	const mat4 model = mat4_mul(mat4_mul(mat4_translation_vec2(position), mat4_rotation_z(rotation)), mat4_scalation_vec2(scale * vec2{ sprite->width, sprite->height }));
+    const mat4 model = mat4_mul(mat4_mul(mat4_translation_vec2(position), mat4_rotation_z(rotation)), mat4_scalation_vec2(scale * vec2_new(spriteMesh->width, spriteMesh->height)));
     glUniformMatrix4fv(glGetUniformLocation(gProgramDrawSprite, "Model"), 1, false, (const float*)&model);
     glUniformMatrix4fv(glGetUniformLocation(gProgramDrawSprite, "Projection"), 1, false, (const float*)&gProjection);
     glUniform3f(glGetUniformLocation(gProgramDrawSprite, "Color"), color.x, color.y, color.z);
 
     glActiveTexture(GL_TEXTURE0);
-    glBindTexture(GL_TEXTURE_2D, sprite->textureId);
+    glBindTexture(GL_TEXTURE_2D, spriteBatch->textureId);
 
     glDrawArrays(GL_TRIANGLES, 0, 6);
 }
 
 vec2 Renderer_TextSize(const char* text)
 {
-	return vec2{ stb_easy_font_width((char*)text) * 3.0f, stb_easy_font_height((char*)text) * 3.0f };
+    return vec2_new(stb_easy_font_width((char*)text), stb_easy_font_height((char*)text)) * 3.0f;
 }
 
 void Renderer_DrawText(const char* text, const vec2& position, const vec3& color)
@@ -368,8 +321,8 @@ void Renderer_DrawText(const char* text, const vec2& position, const vec3& color
 
     glUseProgram(gProgramDrawText);
 
-	const vec2 drawPosition = position - vec2{ 0.0f, 3.0f * stb_easy_font_height((char*)text) };
-	const mat4 model = mat4_mul(mat4_translation_vec2(drawPosition), mat4_scalation_vec2(vec2{ 3.0f, -3.0f }));
+    const vec2 drawPosition = position - vec2_new(0.0f, 3.0f * stb_easy_font_height((char*)text));
+    const mat4 model = mat4_mul(mat4_translation_vec2(drawPosition), mat4_scalation_vec2(vec2_new(3.0f, -3.0f)));
     glUniformMatrix4fv(glGetUniformLocation(gProgramDrawText, "Model"), 1, false, (const float*)&model);
     glUniformMatrix4fv(glGetUniformLocation(gProgramDrawText, "Projection"), 1, false, (const float*)&gProjection);
     glUniform3f(glGetUniformLocation(gProgramDrawText, "Color"), color.x, color.y, color.z);
@@ -382,8 +335,8 @@ void Renderer_DrawQuad(const vec2& start, const vec2& end, const vec3& color)
     const vec2 pos0 = start;
     const vec2 pos1 = end;
     
-    const vec2 uv0 = vec2{0.0f};
-    const vec2 uv1 = vec2{0.0f};
+    const vec2 uv0 = vec2_new1(0.0f);
+    const vec2 uv1 = vec2_new1(0.0f);
 
     const float vertices[] = {
         // pos              // tex
@@ -410,145 +363,3 @@ void Renderer_DrawQuad(const vec2& start, const vec2& end, const vec3& color)
     glDrawArrays(GL_TRIANGLES, 0, 6);
 }
 
-void SpriteBatch_Create(SpriteBatch* spriteBatch, const SpriteSheet* sheet, int capacity)
-{
-    assert(spriteBatch != nullptr);
-
-    spriteBatch->textureId = sheet->textureId;
-
-    glGenBuffers(3, &spriteBatch->verticesBufferId);
-    glGenVertexArrays(1, &spriteBatch->vertexArrayId);
-
-    glBindVertexArray(spriteBatch->vertexArrayId);
-
-    glBindBuffer(GL_ARRAY_BUFFER, spriteBatch->verticesBufferId);
-
-    glEnableVertexAttribArray(0);
-    glVertexAttribPointer(0, 2, GL_FLOAT, false, sizeof(vec2), nullptr);
-
-    glBindBuffer(GL_ARRAY_BUFFER, spriteBatch->uvsBufferId);
-
-    glEnableVertexAttribArray(1);
-    glVertexAttribPointer(1, 2, GL_FLOAT, false, sizeof(vec2), nullptr);
-
-    glBindBuffer(GL_ARRAY_BUFFER, spriteBatch->colorsBufferId);
-
-    glEnableVertexAttribArray(2);
-    glVertexAttribPointer(2, 3, GL_FLOAT, true, sizeof(vec3), nullptr);
-
-    spriteBatch->count = 0;
-    spriteBatch->capacity = capacity;
-
-    int vertexCapacity = capacity * 6;
-
-    spriteBatch->vertices = (vec2*)_aligned_malloc(vertexCapacity * sizeof(vec2), alignof(vec2));
-    spriteBatch->uvs = (vec2*)_aligned_malloc(vertexCapacity * sizeof(vec2), alignof(vec2));
-    spriteBatch->colors = (vec3*)_aligned_malloc(vertexCapacity * sizeof(vec3), alignof(vec3));
-}
-
-void SpriteBatch_Destroy(SpriteBatch* spriteBatch)
-{
-    assert(spriteBatch->flags == SpriteBatchFlags_Idle);
-
-    spriteBatch->flags = SpriteBatchFlags_Idle;
-
-    glDeleteBuffers(3, &spriteBatch->verticesBufferId);
-    glDeleteVertexArrays(1, &spriteBatch->vertexArrayId);
-
-    _aligned_free(spriteBatch->vertices);
-    _aligned_free(spriteBatch->uvs);
-    _aligned_free(spriteBatch->colors);
-
-    spriteBatch->vertices = nullptr;
-    spriteBatch->uvs = nullptr;
-    spriteBatch->colors = nullptr;
-
-    spriteBatch->count = 0;
-    spriteBatch->capacity = 0;
-
-    spriteBatch->textureId = 0;
-    spriteBatch->vertexArrayId = 0;
-
-    spriteBatch->verticesBufferId = 0;
-    spriteBatch->uvsBufferId = 0;
-    spriteBatch->colorsBufferId = 0;
-}
-
-void SpriteBatch_Begin(SpriteBatch* spriteBatch)
-{
-    assert(spriteBatch->flags == SpriteBatchFlags_Idle);
-
-    spriteBatch->count = 0;
-    spriteBatch->flags = SpriteBatchFlags_Batching;
-}
-
-void SpriteBatch_End(SpriteBatch* spriteBatch)
-{
-    assert(spriteBatch->flags == SpriteBatchFlags_Batching);
-
-    spriteBatch->flags = SpriteBatchFlags_Idle;
-}
-
-void SpriteBatch_Present(SpriteBatch* spriteBatch)
-{
-    assert(spriteBatch->flags == SpriteBatchFlags_Idle);
-
-    glBindVertexArray(spriteBatch->vertexArrayId);
-
-    int vertexCount = spriteBatch->count * 6;
-
-    glBindBuffer(GL_ARRAY_BUFFER, spriteBatch->verticesBufferId);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(vec2) * vertexCount, spriteBatch->vertices, GL_DYNAMIC_DRAW);
-
-    glBindBuffer(GL_ARRAY_BUFFER, spriteBatch->uvsBufferId);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(vec2) * vertexCount, spriteBatch->uvs, GL_DYNAMIC_DRAW);
-
-    glBindBuffer(GL_ARRAY_BUFFER, spriteBatch->colorsBufferId);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(vec3) * vertexCount, spriteBatch->colors, GL_DYNAMIC_DRAW);
-
-    glUseProgram(gProgramSpriteBatch);
-    glUniformMatrix4fv(glGetUniformLocation(gProgramSpriteBatch, "Projection"), 1, false, (const float*)&gProjection);
-
-    glDrawArrays(GL_TRIANGLES, 0, vertexCount);
-}
-
-void SpriteBatch_DrawSprite(SpriteBatch* spriteBatch, const Sprite* sprite, const vec2& position, float rotation, const vec2& scale, const vec3& color)
-{
-    assert(spriteBatch->count < spriteBatch->capacity);
-
-	const mat4 model = mat4_mul(mat4_mul(mat4_translation_vec2(position), mat4_rotation_z(rotation)), mat4_scalation_vec2(scale * vec2{ sprite->width, sprite->height }));
-
-	const vec2 pos0 = vec2_from_vec3(mat4_mul_vec3(model, vec3{ -0.5f, -0.5f }));
-	const vec2 pos1 = vec2_from_vec3(mat4_mul_vec3(model, vec3{ 0.5f, 0.5f }));
-
-    const vec2 uv0 = sprite->uv0;
-    const vec2 uv1 = sprite->uv1;
-
-    int vertexIndex = 6 * spriteBatch->count;
-
-    spriteBatch->vertices[vertexIndex + 0] = vec2{pos0.x, pos0.y};
-    spriteBatch->vertices[vertexIndex + 1] = vec2{pos1.x, pos1.y};
-    spriteBatch->vertices[vertexIndex + 2] = vec2{pos0.x, pos1.y};
-
-    spriteBatch->vertices[vertexIndex + 3] = vec2{pos0.x, pos0.y};
-    spriteBatch->vertices[vertexIndex + 4] = vec2{pos1.x, pos0.y};
-    spriteBatch->vertices[vertexIndex + 5] = vec2{pos1.x, pos1.y};
-
-    spriteBatch->uvs[vertexIndex + 0] = vec2{uv0.x, uv0.y};
-    spriteBatch->uvs[vertexIndex + 1] = vec2{uv1.x, uv1.y};
-    spriteBatch->uvs[vertexIndex + 2] = vec2{uv0.x, uv1.y};
-
-    spriteBatch->uvs[vertexIndex + 3] = vec2{uv0.x, uv0.y};
-    spriteBatch->uvs[vertexIndex + 4] = vec2{uv1.x, uv0.y};
-    spriteBatch->uvs[vertexIndex + 5] = vec2{uv1.x, uv1.y};
-
-    spriteBatch->colors[vertexIndex + 0] = color;
-    spriteBatch->colors[vertexIndex + 1] = color;
-    spriteBatch->colors[vertexIndex + 2] = color;
-
-    spriteBatch->colors[vertexIndex + 3] = color;
-    spriteBatch->colors[vertexIndex + 4] = color;
-    spriteBatch->colors[vertexIndex + 5] = color;
-
-    spriteBatch->count++;
-}

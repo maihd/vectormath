@@ -1735,7 +1735,6 @@ __forceinline mat4 mat4_mul1(mat4 a, float b)
 
 __forceinline mat4 mat4_transpose(mat4 m)
 {
-    mat4 result;
     return mat4_new_f16(
         m.m00, m.m10, m.m20, m.m30,
         m.m01, m.m11, m.m21, m.m31,

@@ -19,7 +19,7 @@ int main(const int argc, const char* argv[])
     }
 
     WindowDesc window;
-    window.title = "VectorMath Examples";
+    window.title = "VectorMath Examples + ECS + SpriteBatch + JobSystem";
     window.width = 1280;
     window.height = 720;
     window.flags = WindowFlags_Default;
@@ -27,10 +27,10 @@ int main(const int argc, const char* argv[])
     Renderer_Setup(&window);
 
     int spriteCount = 8;
-    SpriteBatch spriteBatch;
-    Renderer_LoadSpritesHorizontal(&spriteBatch, "../../assets/sprites.png", spriteCount);
+    SpriteSheet spriteBatch;
+    Renderer_LoadSpriteSheet(&spriteBatch, "../../assets/sprites.png", spriteCount);
 
-    int objectCount = 10000;
+    int objectCount = 100000;
     Game_Setup(&spriteBatch, objectCount);
 
     float   deltaTime           = 0.0f;
@@ -54,14 +54,14 @@ int main(const int argc, const char* argv[])
         char objectCountText[1024];
         snprintf(objectCountText, sizeof(objectCountText), "Object count: %d", objectCount);
         
-        vec2 fpsTextSize = Renderer_TextSize(fpsText) * vec2_new(2.0f, 2.0f);
+		vec2 fpsTextSize = Renderer_TextSize(fpsText) * vec2 { 2.0f, 2.0f };
 
         Renderer_DrawQuad(
-            vec2_new(0.0f, (float)window.height), 
-            vec2_new(fpsTextSize.x + 10.0f, (float)window.height - 1.5f * fpsTextSize.y - 10.0f), 
-            vec3_new1(0.0f));
-        Renderer_DrawText(fpsText, vec2_new(5.0f, (float)window.height - 5.0f), vec3_new(0.25f, 0.5f, 1.0f));
-        Renderer_DrawText(objectCountText, vec2_new(5.0f, (float)window.height - 45.0f), vec3_new(0.25f, 0.5f, 1.0f));
+			vec2{ 0.0f, (float)window.height },
+			vec2{ fpsTextSize.x + 10.0f, (float)window.height - 1.5f * fpsTextSize.y - 10.0f },
+			vec3{0.0f});
+		Renderer_DrawText(fpsText, vec2{ 5.0f, (float)window.height - 5.0f }, vec3{ 0.25f, 0.5f, 1.0f });
+		Renderer_DrawText(objectCountText, vec2{ 5.0f, (float)window.height - 45.0f }, vec3{ 0.25f, 0.5f, 1.0f });
 
         Renderer_Present();
 

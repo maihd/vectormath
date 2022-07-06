@@ -29,9 +29,9 @@ DEFINE_UNIT_TEST("Test signf()")
 {
     const float e = signf(1.0f);
     const float f = 1.0f;
-    TEST(e == f);
+    TEST(isclosef(e, f));
 
     const float g = signf(-1.0f);
     const float h = -1.0f;
-    TEST(g == h);
+    TEST(isclosef(g, h));
 }

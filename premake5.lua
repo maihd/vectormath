@@ -103,6 +103,7 @@ do
         "examples/developing/Renderer",
         "examples/developing/Runtime",
         "examples/developing/Game",
+        "examples/developing/flecs",
     }
 
     filter "platforms:x32"
