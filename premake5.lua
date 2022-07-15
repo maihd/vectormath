@@ -74,6 +74,7 @@ do
     
     includedirs {
         path.join(ROOT_DIR),
+        path.join(ROOT_DIR, "examples/common"),
         path.join(ROOT_DIR, "examples/developing"),
         path.join(ROOT_DIR, "examples/3rd_party"),
 
