@@ -351,12 +351,13 @@ GLLoadError glLoadFunctions()
     #undef LOAD_GL_FUNC
     #undef LOAD_GL_FUNC2
 
-#if defined(_WIN32)
-    wglDeleteContext(context);
-    wglMakeCurrent(hdc, NULL);
-    ReleaseDC(hwnd, hdc);
-    DestroyWindow(hwnd);
-#endif
+	// Release unused context
+	#if defined(_WIN32)
+		wglDeleteContext(context);
+		wglMakeCurrent(hdc, NULL);
+		ReleaseDC(hwnd, hdc);
+		DestroyWindow(hwnd);
+	#endif
 
     // All success
     return GLLoadError_None;

@@ -82,8 +82,7 @@ do
     }
 
     filedirs {
-        "unit_tests/cases",
-        "examples/3rd_party/glad"
+        "unit_tests/cases"
     }
 
     files {
@@ -98,13 +97,15 @@ do
     }
 
     filedirs {
+        "examples/3rd_party/flecs",
+
+        "examples/common/Native",
+        "examples/common/Container",
+        "examples/common/Renderer",
+        "examples/common/Runtime",
+
         "examples/developing",
-        "examples/developing/Native",
-        "examples/developing/Container",
-        "examples/developing/Renderer",
-        "examples/developing/Runtime",
         "examples/developing/Game",
-        "examples/developing/flecs",
     }
 
     filter "platforms:x32"
