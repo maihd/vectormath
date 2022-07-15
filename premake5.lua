@@ -75,14 +75,15 @@ do
     includedirs {
         path.join(ROOT_DIR),
         path.join(ROOT_DIR, "examples/developing"),
-        path.join(ROOT_DIR, "3rd_party"),
+        path.join(ROOT_DIR, "examples/3rd_party"),
 
         -- HARD CODE, CHANGE IN YOUR SYSTEM
         path.join(ENV.VULKAN_DIR, "Include")
     }
 
     filedirs {
-        "unit_tests/cases"
+        "unit_tests/cases",
+        "examples/3rd_party/glad"
     }
 
     files {

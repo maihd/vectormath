@@ -9,8 +9,8 @@
 #include <Windows.h>
 
 #define STB_IMAGE_IMPLEMENTATION
-#include <3rd_party/stb/stb_image.h>
-#include <3rd_party/stb/stb_easy_font.h>
+#include <stb/stb_image.h>
+#include <stb/stb_easy_font.h>
 
 static WindowDesc*  gMainWindow;
 static void*        gGLContext;

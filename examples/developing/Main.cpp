@@ -8,7 +8,7 @@
 
 #define RUN_UNIT_TESTS
 #define UNIT_TESTS_MAIN RunAllUnitTests
-#include "../unit_tests/test_framework.h"
+#include "../../unit_tests/test_framework.h"
 
 int main(const int argc, const char* argv[])
 {
@@ -24,11 +24,17 @@ int main(const int argc, const char* argv[])
     window.height = 720;
     window.flags = WindowFlags_Default;
     Window_Open(&window);
-    Renderer_Setup(&window);
+    
+	if (Renderer_Setup(&window) != 0)
+	{
+		Window_MessageBox(window.title, "Initialize Renderer failed!");
+		Window_Close(&window);
+		return -1;
+	}
 
     int spriteCount = 8;
     SpriteBatch spriteBatch;
-    Renderer_LoadSpritesHorizontal(&spriteBatch, "../../assets/sprites.png", spriteCount);
+    Renderer_LoadSpritesHorizontal(&spriteBatch, "../../examples/assets/sprites.png", spriteCount);
 
     int objectCount = 10000;
     Game_Setup(&spriteBatch, objectCount);

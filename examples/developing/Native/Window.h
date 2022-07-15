@@ -94,6 +94,8 @@ bool                Window_HasMouseFocus(void);
 
 const WindowDesc*   Window_GetMainWindow(void);
 
+void				Window_MessageBox(const char* title, const char* message);
+
 #ifdef __cplusplus
 }
 #endif

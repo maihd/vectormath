@@ -610,3 +610,8 @@ const WindowDesc* Window_GetMainWindow(void)
 {
     return gMainWindow;
 }
+
+void Window_MessageBox(const char* title, const char* message)
+{
+	MessageBoxA((HWND)gMainWindow->handle, message, title, MB_OK);
+}

@@ -216,6 +216,7 @@ typedef enum GLLoadError
     GLLoadError_None,
     GLLoadError_LoadDriverFailed,
     GLLoadError_FunctionNotFound,
+	GLLoadError_FunctionLoaderNotFound,
 } GLLoadError;
 
 GLLoadError glLoadFunctions();

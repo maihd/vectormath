@@ -125,6 +125,33 @@ enum
 
 GLLoadError glLoadFunctions()
 {
+	// Macros for load GL functions
+	#define LOAD_GL_FUNC(NAME)										\
+		do {														\
+			void* address = GL_GET_PROC_ADDRESS(#NAME);				\
+			if (address == NULL										\
+			|| (address == (void*)0x1)								\
+			|| (address == (void*)0x2)								\
+			|| (address == (void*)0x3)								\
+			|| (address == (void*)-1))								\
+			{														\
+				address = GET_PROC_ADDRESS(#NAME);					\
+				if (address == NULL)								\
+				{													\
+					return GLLoadError_FunctionNotFound;			\
+				}													\
+			}														\
+			NAME = address;											\
+		} while (0)
+
+	#if defined(_WIN32)
+	#	define GET_PROC_ADDRESS(NAME)		GetProcAddress(_OPENGL_MODULE, NAME)
+	#	define GL_GET_PROC_ADDRESS(NAME)	wglGetProcAddress(NAME)
+	#else
+	#	define GET_PROC_ADDRESS(NAME)		NULL
+	#	define GL_GET_PROC_ADDRESS(NAME)	glXGetProcAddress(NAME)
+	#endif
+
     // Define GET_PROC_ADDRESS for crossplatform
     #if defined(_WIN32)
         HMODULE _OPENGL_MODULE = LoadLibraryA("OpenGL32.dll");
@@ -132,26 +159,20 @@ GLLoadError glLoadFunctions()
         {
             return GLLoadError_LoadDriverFailed;
         }
+
+		void* (GL_APICALL*wglGetProcAddress)(const char* name) = GetProcAddress(_OPENGL_MODULE, "wglGetProcAddress");
+		if (wglGetProcAddress == NULL)
+		{
+			return GLLoadError_FunctionLoaderNotFound;
+		}
         
         #define WGL_FUNC(NAME, RETURN_TYPE, ...)                        \
             RETURN_TYPE (GL_APICALL*NAME)(##__VA_ARGS__);               \
-            do {                                                        \
-                void* address = GetProcAddress(_OPENGL_MODULE, #NAME);  \
-                if (address == NULL)                                    \
-                {                                                       \
-                    return GLLoadError_FunctionNotFound;                \
-                }                                                       \
-                NAME = address;                                         \
-            } while (0)
+			LOAD_GL_FUNC(NAME)
 
-        WGL_FUNC(wglCreateContext, void*, HDC device);
-        WGL_FUNC(wglDeleteContext, BOOL, void* context);
-        WGL_FUNC(wglMakeCurrent, BOOL, HDC device, void* context);
-        WGL_FUNC(wglGetProcAddress, void*, const char* name);
-
-        #define GET_PROC_ADDRESS(NAME) wglGetProcAddress(NAME)
-    #else
-        #define GET_PROC_ADDRESS(NAME) glXGetProcAddress(NAME)
+		WGL_FUNC(wglCreateContext, void*, HDC device);
+		WGL_FUNC(wglDeleteContext, BOOL, void* context);
+		WGL_FUNC(wglMakeCurrent, BOOL, HDC device, void* context);
     #endif
 
     // Create dummy context to load functions
@@ -237,14 +258,22 @@ GLLoadError glLoadFunctions()
     #endif
 
     /// Load function that have same name with address name in driver
-    #define LOAD_GL_FUNC(NAME)                                      \
-        do {                                                        \
-            void* address = GetProcAddress(_OPENGL_MODULE, #NAME);  \
-            if (address == NULL)                                    \
-            {                                                       \
-                return GLLoadError_FunctionNotFound;                \
-            }                                                       \
-            NAME = address;                                         \
+    #define LOAD_GL_FUNC(NAME)											\
+        do {															\
+            void* address = GL_GET_PROC_ADDRESS(#NAME);					\
+			if (address == NULL											\
+			|| (address == (void*)0x1)									\
+			|| (address == (void*)0x2)									\
+			|| (address == (void*)0x3)									\
+			|| (address == (void*)-1))									\
+            {															\
+				address = GET_PROC_ADDRESS(#NAME);						\
+				if (address == NULL)									\
+				{														\
+					return GLLoadError_FunctionNotFound;				\
+				}														\
+            }															\
+            NAME = address;												\
         } while (0)
 
     // Load each functions from OpenGL32.dll with GetProcAddress
@@ -265,15 +294,6 @@ GLLoadError glLoadFunctions()
     LOAD_GL_FUNC(glTexImage2D);
 
     /// Load function that have same name with address name in driver
-    #define LOAD_GL_FUNC(NAME, ...)                                 \
-        do {                                                        \
-            void* address = GET_PROC_ADDRESS(#NAME);                \
-            if (address == NULL)                                    \
-            {                                                       \
-                return GLLoadError_FunctionNotFound;                \
-            }                                                       \
-            NAME = address;                                         \
-        } while (0)
 
     LOAD_GL_FUNC(glBlendEquation);
 
@@ -326,6 +346,8 @@ GLLoadError glLoadFunctions()
 
     // undef all, no use in other functions
     #undef GET_PROC_ADDRESS
+	#undef GL_GET_PROC_ADDRESS
+
     #undef LOAD_GL_FUNC
     #undef LOAD_GL_FUNC2
 
