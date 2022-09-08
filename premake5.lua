@@ -77,28 +77,18 @@ do
         path.join(ROOT_DIR, "examples/common"),
         path.join(ROOT_DIR, "examples/developing"),
         path.join(ROOT_DIR, "examples/3rd_party"),
-
-        -- HARD CODE, CHANGE IN YOUR SYSTEM
-        path.join(ENV.VULKAN_DIR, "Include")
     }
 
     filedirs {
         "unit_tests/cases"
     }
 
+    -- Import vectormath premake5 module
+    local vectormath = require("premake5.vectormath")
+    vectormath.includedirs(ROOT_DIR)
+
     files {
         --path.join(ROOT_DIR, "unit_tests/test_run_all.cpp"),
-        path.join(ROOT_DIR, "include/sse_to_neon.h"),
-        path.join(ROOT_DIR, "include/stdmath_extensions.h"),
-
-        path.join(ROOT_DIR, "include/vectormath_types.h"),
-        path.join(ROOT_DIR, "include/vectormath_types.natvis"),
-
-        path.join(ROOT_DIR, "include/vectormath_scalar.h"),
-        path.join(ROOT_DIR, "include/vectormath_simd.h"),
-        path.join(ROOT_DIR, "include/vectormath_operators.h"),
-
-        path.join(ROOT_DIR, "include/vectormath.h"),
 
         path.join(ROOT_DIR, "unit_tests/test_framework.h"),
     }
@@ -115,18 +105,24 @@ do
         "examples/developing/Game",
     }
 
-    filter "platforms:x32"
-    do
-        libdirs {
-            path.join(ENV.VULKAN_DIR, "Lib32")
+    if (_OPTIONS["vulkan"]) then
+        includedirs {
+            path.join(ENV.VULKAN_DIR, "Include")
         }
-    end
 
-    filter "platforms:x64"
-    do
-        libdirs {
-            path.join(ENV.VULKAN_DIR, "Lib")
-        }
+        filter "platforms:x32"
+        do
+            libdirs {
+                path.join(ENV.VULKAN_DIR, "Lib32")
+            }
+        end
+
+        filter "platforms:x64"
+        do
+            libdirs {
+                path.join(ENV.VULKAN_DIR, "Lib")
+            }
+        end
     end
 
     filter {}
