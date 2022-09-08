@@ -21,6 +21,11 @@ struct MoveComponent
     vec2                    velocity;
 };
 
+struct FadeComponent
+{
+	float					alpha;
+};
+
 struct WorldBoundsComponent
 {
     float                   xMin;

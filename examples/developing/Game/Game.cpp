@@ -33,6 +33,10 @@ static void Game_MoveEntity(PositionComponent& positionComponent, MoveComponent&
 	moveComponent.velocity = velocity;
 }
 
+static void Game_FadeEntity(SpriteComponent& sprite, FadeComponent& fade)
+{
+}
+
 static void Game_DrawEntity(const PositionComponent& position, const SpriteComponent& sprite)
 {
 	Renderer_DrawSprite(sprite.spriteBatch, sprite.spriteIndex, position.position, 0.0f, sprite.scale, sprite.color);
@@ -66,6 +70,9 @@ void Game_Setup(struct SpriteBatch* spriteBatch, int entityCount)
 	gWorld.system<PositionComponent, MoveComponent>()
 		.each(Game_MoveEntity);
 
+	gWorld.system<SpriteComponent, FadeComponent>()
+		.each(Game_FadeEntity);
+
     const float worldWidth = Window_GetWidth();
     const float worldHeight = Window_GetHeight();
     gWorldBounds.xMin = 0;
@@ -75,7 +82,7 @@ void Game_Setup(struct SpriteBatch* spriteBatch, int entityCount)
 
     for (int i = 0; i < entityCount; i++)
     {
-		gWorld.entity().set([=](PositionComponent& position, SpriteComponent& sprite, MoveComponent& move){
+		gWorld.entity().set([=](PositionComponent& position, SpriteComponent& sprite, MoveComponent& move, FadeComponent& fade){
 			position.position = vec2_new(Random() * worldWidth, Random() * worldHeight);
 
 			sprite.scale = vec2_new(1.0f, 1.0f);
@@ -84,6 +91,7 @@ void Game_Setup(struct SpriteBatch* spriteBatch, int entityCount)
 			sprite.spriteBatch = spriteBatch;
 
 			move.velocity = vec2_new(RandomFloat(-worldWidth * 0.5f, worldWidth * 0.5f), RandomFloat(-worldHeight * 0.5f, worldHeight * 0.5f));
+			fade.alpha = Random();
 		});
     }
 }
