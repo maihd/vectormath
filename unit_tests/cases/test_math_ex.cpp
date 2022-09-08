@@ -27,11 +27,11 @@ DEFINE_UNIT_TEST("Test sign()")
 
 DEFINE_UNIT_TEST("Test signf()")
 {
-    const float e = signf(1.0f);
-    const float f = 1.0f;
-    TEST(isclosef(e, f));
+    const int e = signf(1.0f);
+    const int f = 1;
+    TEST(e == f);
 
-    const float g = signf(-1.0f);
-    const float h = -1.0f;
-    TEST(isclosef(g, h));
+    const int g = signf(-1.0f);
+    const int h = -1;
+    TEST(g == h);
 }
