@@ -5,12 +5,12 @@
 
 // Make sure m128 is enable
 #if !VECTORMATH_SIMD_ENABLE
-#error The VectorMath support for simd is not enable, please use VectorMathScalars.h instead
+#error The vector_math support for simd is not enable, please use vector_math_scalar.h instead
 #endif
 
-// Should not use both scalar & m128 versions of VectorMath together
-//#if (defined(__has_include) && __has_include("VectorMathScalars.h"))
-//#error VectorMathScalars.h has been include, please remove that from your source if you attempt to use VectorMathSimd.h
+// Should not use both scalar & m128 versions of vector_math together
+//#if (defined(__has_include) && __has_include("vector_math_scalar.h"))
+//#error vector_math_scalar.h has been include, please remove that from your source if you attempt to use vector_math_simd.h
 //#endif
 
 // -------------------------------------------------------------

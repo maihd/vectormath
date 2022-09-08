@@ -3,9 +3,9 @@
 #include "stdmath_extensions.h"
 #include "vector_types.h"
 
-// Should not use both scalar & m128 versions of VectorMath together
-//#if (defined(__has_include) && __has_include("VectorMathSimd.h"))
-//#error VectorMathSimd.h has been include, please remove this from your source if you attempt to use scalar version of VectorMathSimd.h
+// Should not use both scalar & m128 versions of vector_math together
+//#if (defined(__has_include) && __has_include("vector_math_simd.h"))
+//#error vector_math_simd.h has been include, please remove this from your source if you attempt to use scalar version of vector_math_simd.h
 //#endif
 
 // -------------------------------------------------------------
