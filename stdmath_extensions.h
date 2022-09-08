@@ -173,3 +173,5 @@ __forceinline bool isclosef(float a, float b)
 {
     return fabsf(a - b) <= FLT_EPSILON;
 }
+
+//! LEAVE AN EMPTY LINE HERE, REQUIRE BY GCC/G++

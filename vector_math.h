@@ -10,3 +10,7 @@
 #else
 #   include "vector_math_scalar.h"
 #endif
+
+#include "vector_math_operators.h"
+
+//! LEAVE AN EMPTY LINE HERE, REQUIRE BY GCC/G++

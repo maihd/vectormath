@@ -2,6 +2,11 @@
 
 #include <stdint.h>
 
+// Helper for extensions
+#ifndef VECTORMATH_TYPES_DEFINED
+#define VECTORMATH_TYPES_DEFINED
+#endif
+
 // -------------------------------------------------------------
 // Data structure alignment
 // -------------------------------------------------------------
@@ -264,3 +269,5 @@ typedef union VECTORMATH_ALIGNAS(mat4, 16)
         float                   m30, m31, m32, m33;
     };
 } mat4;
+
+//! LEAVE AN EMPTY LINE HERE, REQUIRE BY GCC/G++

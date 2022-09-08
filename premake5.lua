@@ -97,7 +97,8 @@ do
         path.join(ROOT_DIR, "vector_math.h"),
         path.join(ROOT_DIR, "vector_math_scalar.h"),
         path.join(ROOT_DIR, "vector_math_simd.h"),
-        
+        path.join(ROOT_DIR, "vector_math_operators.h"),
+
         path.join(ROOT_DIR, "unit_tests/test_framework.h"),
     }
 

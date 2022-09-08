@@ -1740,3 +1740,5 @@ __forceinline __m128i foo ## _dynamic(__m128i _v, int bits) { \
 CONST_TO_DYNAMIC32(_mm_slli_epi32);
 CONST_TO_DYNAMIC32(_mm_srai_epi32);
 CONST_TO_DYNAMIC32(_mm_srli_epi32);
+
+//! LEAVE AN EMPTY LINE HERE, REQUIRE BY GCC/G++
