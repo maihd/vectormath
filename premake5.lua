@@ -88,12 +88,16 @@ do
 
     files {
         --path.join(ROOT_DIR, "unit_tests/test_run_all.cpp"),
-        path.join(ROOT_DIR, "VectorMath.h"),
-        path.join(ROOT_DIR, "VectorMathScalar.h"),
-        path.join(ROOT_DIR, "VectorMathSimd.h"),
-        path.join(ROOT_DIR, "VectorMath.h"),
-        path.join(ROOT_DIR, "VectorTypes.h"),
-        path.join(ROOT_DIR, "VectorTypes.natvis"),
+        path.join(ROOT_DIR, "sse_to_neon.h"),
+        path.join(ROOT_DIR, "stdmath_extensions.h"),
+
+        path.join(ROOT_DIR, "vector_types.h"),
+        path.join(ROOT_DIR, "vector_types.natvis"),
+
+        path.join(ROOT_DIR, "vector_math.h"),
+        path.join(ROOT_DIR, "vector_math_scalar.h"),
+        path.join(ROOT_DIR, "vector_math_simd.h"),
+        
         path.join(ROOT_DIR, "unit_tests/test_framework.h"),
     }
 
