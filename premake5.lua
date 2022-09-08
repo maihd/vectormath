@@ -91,13 +91,14 @@ do
         path.join(ROOT_DIR, "include/sse_to_neon.h"),
         path.join(ROOT_DIR, "include/stdmath_extensions.h"),
 
-        path.join(ROOT_DIR, "include/vector_types.h"),
-        path.join(ROOT_DIR, "include/vector_types.natvis"),
+        path.join(ROOT_DIR, "include/vectormath_types.h"),
+        path.join(ROOT_DIR, "include/vectormath_types.natvis"),
 
-        path.join(ROOT_DIR, "include/vector_math.h"),
-        path.join(ROOT_DIR, "include/vector_math_scalar.h"),
-        path.join(ROOT_DIR, "include/vector_math_simd.h"),
-        path.join(ROOT_DIR, "include/vector_math_operators.h"),
+        path.join(ROOT_DIR, "include/vectormath_scalar.h"),
+        path.join(ROOT_DIR, "include/vectormath_simd.h"),
+        path.join(ROOT_DIR, "include/vectormath_operators.h"),
+
+        path.join(ROOT_DIR, "include/vectormath.h"),
 
         path.join(ROOT_DIR, "unit_tests/test_framework.h"),
     }

@@ -17,7 +17,7 @@ Function implementation
 -----------------------
 - Avoid branching!
 - Donot add more SIMD implementation module, instead add a wrapper, like sse_to_neon.h do!
-- Support both C and C++, and function overloading in C++.
+- Support both C and C++. But avoid C++ function overloading.
 - Only add basic operator overloading (+,-,*,/), with SIMD meaning.
 - Prefer fast with simple implementation over fastest with complex.
 - The special cases will have their docs to describe the design decision of each implementations.

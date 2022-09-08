@@ -1,7 +1,7 @@
 #pragma once
 
 #include "stdmath_extensions.h"
-#include "vector_types.h"
+#include "vectormath_types.h"
 
 // Should not use both scalar & m128 versions of vector_math together
 //#if (defined(__has_include) && __has_include("vector_math_simd.h"))
