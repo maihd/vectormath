@@ -87,7 +87,7 @@ __forceinline vec4 vec4_new1(float s)
 
 /// Create a new vector 3D, with components' values load from an scalars array
 /// @note: this functions is not pointer-safe 
-__forceinline vec3 vec3_load(const float[] ptr)
+__forceinline vec3 vec3_load(const float ptr[])
 {
     vec3 result = { ptr[0], ptr[1], ptr[2] };
     return result;
@@ -95,7 +95,7 @@ __forceinline vec3 vec3_load(const float[] ptr)
 
 /// Create a new vector 4D, with components' values load from an scalars array
 /// @note: this functions is not pointer-safe
-__forceinline vec4 vec4_load(const float[] ptr)
+__forceinline vec4 vec4_load(const float ptr[])
 {
     vec4 result = { ptr[0], ptr[1], ptr[2], ptr[3] };
     return result;
@@ -129,7 +129,7 @@ __forceinline mat4 mat4_new_f16(
 
 /// Create a new vector 4D, with components' values load from an scalars array
 /// @note: this functions is not pointer-safe
-__forceinline mat4 mat4_load(const float[] ptr)
+__forceinline mat4 mat4_load(const float ptr[])
 {
     mat4 result;
     result.row0 = vec4_load(ptr + 0);
