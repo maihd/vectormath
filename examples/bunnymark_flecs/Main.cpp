@@ -5,6 +5,7 @@
 
 #include <float.h>
 #include <stdio.h>
+#include <vectormath.h>
 
 int main(const int argc, const char* argv[])
 {

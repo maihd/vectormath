@@ -4,6 +4,7 @@
 
 #include <assert.h>
 #include <stdlib.h>
+#include <vectormath.h>
 
 #define WIN32_LEAN_AND_MEAN
 #include <Windows.h>
@@ -65,6 +66,10 @@ constexpr const char* fshader_draw_text_src =
     "void main() {"
         "FragColor = vec4(Color, 1.0);"
     "}";
+
+#ifdef __cplusplus
+extern "C" {
+#endif
 
 static uint32_t Renderer_CreateShader(uint32_t type, const char* src)
 {
@@ -190,7 +195,7 @@ void Renderer_Shutdown(struct WindowDesc* window)
     }
 }
 
-void Renderer_Clear()
+void Renderer_Clear(void)
 {
     assert(gMainWindow != nullptr && gGLContext != nullptr);
     
@@ -201,7 +206,7 @@ void Renderer_Clear()
     glClear(GL_COLOR_BUFFER_BIT);
 }
 
-void Renderer_Present()
+void Renderer_Present(void)
 {
     assert(gMainWindow != nullptr && gGLContext != nullptr);
 
@@ -267,7 +272,7 @@ void Renderer_LoadSpritesHorizontal(SpriteBatch* spriteBatch, const char* file, 
     }
 }
 
-void Renderer_DrawSprite(const SpriteBatch* spriteBatch, int index, const vec2& position, float rotation, const vec2& scale, const vec3& color)
+void Renderer_DrawSprite(const SpriteBatch* spriteBatch, int index, vec2 position, float rotation, vec2 scale, vec3 color)
 {
     const SpriteMesh* spriteMesh = &spriteBatch->sprites[index];
 
@@ -291,7 +296,7 @@ vec2 Renderer_TextSize(const char* text)
     return vec2_new(stb_easy_font_width((char*)text), stb_easy_font_height((char*)text)) * 3.0f;
 }
 
-void Renderer_DrawText(const char* text, const vec2& position, const vec3& color)
+void Renderer_DrawText(const char* text, vec2 position, vec3 color)
 {
     static float    vertices[4 * 10 * 1024]; // ~2000 chars
     static uint16_t indices[(sizeof(vertices) / sizeof(vertices[0])) / 4 * 6];
@@ -330,7 +335,7 @@ void Renderer_DrawText(const char* text, const vec2& position, const vec3& color
     glDrawElements(GL_TRIANGLES, indexCount, GL_UINT16, NULL);
 }
 
-void Renderer_DrawQuad(const vec2& start, const vec2& end, const vec3& color)
+void Renderer_DrawQuad(vec2 start, vec2 end, vec3 color)
 {
     const vec2 pos0 = start;
     const vec2 pos1 = end;
@@ -363,3 +368,6 @@ void Renderer_DrawQuad(const vec2& start, const vec2& end, const vec3& color)
     glDrawArrays(GL_TRIANGLES, 0, 6);
 }
 
+#ifdef __cplusplus
+}
+#endif
