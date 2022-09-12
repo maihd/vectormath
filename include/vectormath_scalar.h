@@ -17,23 +17,27 @@
 // Constructors
 // -------------------------------------------------------------
 
+/// Create a new vector 2D
 __forceinline vec2 vec2_new(float x, float y)
 {
     vec2 result = { x, y };
     return result;
 }
 
+/// Create a new vector 2D with 2 components have same value
 __forceinline vec2 vec2_new1(float s)
 {
     vec2 result = { s, s };
     return result;
 }
 
+/// Create a new vector 2D from a vector 3D
 __forceinline vec2 vec2_from_vec3(vec3 v)
 {
     return v.xy;
 }
 
+/// Create a new vector 3D
 __forceinline vec3 vec3_new(float x, float y, float z)
 {
     vec3 result;
@@ -41,6 +45,7 @@ __forceinline vec3 vec3_new(float x, float y, float z)
     return result;
 }
 
+/// Create a new vector 3D with 3 components have same value
 __forceinline vec3 vec3_new1(float s)
 {
     vec3 result;
@@ -48,6 +53,7 @@ __forceinline vec3 vec3_new1(float s)
     return result;
 }
 
+/// Create a new vector 3D from a vector 2D
 __forceinline vec3 vec3_from_vec2(vec2 v)
 {
     vec3 result;
@@ -55,6 +61,7 @@ __forceinline vec3 vec3_from_vec2(vec2 v)
     return result;
 }
 
+/// Create a new vector 3D from a vector 4D
 __forceinline vec3 vec3_from_vec4(vec4 v)
 {
     vec3 result;
@@ -62,6 +69,7 @@ __forceinline vec3 vec3_from_vec4(vec4 v)
     return result;
 }
 
+/// Create a new vector 4D
 __forceinline vec4 vec4_new(float x, float y, float z, float w)
 {
     vec4 result;
@@ -69,6 +77,7 @@ __forceinline vec4 vec4_new(float x, float y, float z, float w)
     return result;
 }
 
+/// Create a new vector 4D with 4 components have same value
 __forceinline vec4 vec4_new1(float s)
 {
     vec4 result;
@@ -76,18 +85,23 @@ __forceinline vec4 vec4_new1(float s)
     return result;
 }
 
-__forceinline vec3 vec3_load(const float* ptr)
+/// Create a new vector 3D, with components' values load from an scalars array
+/// @note: this functions is not pointer-safe 
+__forceinline vec3 vec3_load(const float[] ptr)
 {
     vec3 result = { ptr[0], ptr[1], ptr[2] };
     return result;
 }
 
+/// Create a new vector 4D, with components' values load from an scalars array
+/// @note: this functions is not pointer-safe
 __forceinline vec4 vec4_load(const float* ptr)
 {
     vec4 result = { ptr[0], ptr[1], ptr[2], ptr[3] };
     return result;
 }
 
+// Create a new matrix 4x4
 __forceinline mat4 mat4_new(vec4 row0, vec4 row1, vec4 row2, vec4 row3)
 {
     mat4 result;
@@ -98,6 +112,7 @@ __forceinline mat4 mat4_new(vec4 row0, vec4 row1, vec4 row2, vec4 row3)
     return result;
 }
 
+// Create a new matrix 4x4, specify the components with 16 scalars
 __forceinline mat4 mat4_new_f16(
     float m00, float m01, float m02, float m03,
     float m10, float m11, float m12, float m13,
@@ -112,6 +127,8 @@ __forceinline mat4 mat4_new_f16(
     return result;
 }
 
+/// Create a new vector 4D, with components' values load from an scalars array
+/// @note: this functions is not pointer-safe
 __forceinline mat4 mat4_load(const float* ptr)
 {
     mat4 result;
