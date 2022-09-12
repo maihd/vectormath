@@ -9,7 +9,7 @@
 int main(const int argc, const char* argv[])
 {
     WindowDesc window;
-    window.title = "VectorMath Examples";
+    window.title = "VectorMath Example - Bunnymark + Flecs";
     window.width = 1280;
     window.height = 720;
     window.flags = WindowFlags_Default;
