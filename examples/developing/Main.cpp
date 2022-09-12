@@ -6,18 +6,8 @@
 #include <float.h>
 #include <stdio.h>
 
-#define RUN_UNIT_TESTS
-#define UNIT_TESTS_MAIN RunAllUnitTests
-#include "../../unit_tests/test_framework.h"
-
 int main(const int argc, const char* argv[])
 {
-    int runTestsStatus = RunAllUnitTests(argc, argv);
-    if (runTestsStatus != 0)
-    {
-        return runTestsStatus;
-    }
-
     WindowDesc window;
     window.title = "VectorMath Examples";
     window.width = 1280;

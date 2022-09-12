@@ -2,6 +2,19 @@ local ROOT_DIR = path.getabsolute(".")
 local BUILD_DIR = path.join(ROOT_DIR, "projects")
 
 local ENV = require("premake5.env")
+local PROJECT_PREFIX = "vectormath"
+
+local function vectormathproject(name)
+    if (type(name) == "string") then
+        project(PROJECT_PREFIX .. "_" .. name)
+    else
+        project(PROJECT_PREFIX)
+    end
+
+    -- Import vectormath premake5 module
+    local vectormath = require("premake5.vectormath")
+    vectormath.includedirs(ROOT_DIR)
+end
 
 local function filedirs(dirs)
     if type(dirs) == "string" then
@@ -18,7 +31,7 @@ local function filedirs(dirs)
     end
 end
 
-workspace("vectormath_" .. _ACTION)
+workspace(PROJECT_PREFIX .. "_" .. _ACTION)
 do
     language "C++"
     location (path.join(BUILD_DIR, _ACTION))
@@ -45,7 +58,7 @@ do
     rtti "On"
     exceptionhandling "Off"
 
-    startproject("vectormath_" .. _ACTION .. ".unit_tests")
+    startproject (PROJECT_PREFIX .. "_" .. "unit_tests")
 
     filter { "configurations:Debug" }
     do
@@ -60,16 +73,28 @@ do
     filter {}
 end
 
-project("vectormath_" .. _ACTION)
+vectormathproject("unit_tests")
+do
+    kind "ConsoleApp"
+    
+    filedirs {
+        "unit_tests/cases"
+    }
+
+    files {
+        path.join(ROOT_DIR, "unit_tests/test_framework.h"),
+        path.join(ROOT_DIR, "unit_tests/test_run_all.cpp"),
+    }
+
+    filter {}
+end
+
+vectormathproject()
 do
     kind "ConsoleApp"
 
     defines {
         "GLEW_STATIC",
-    }
-
-    links {
-        --"vulkan-1"
     }
     
     includedirs {
@@ -77,20 +102,6 @@ do
         path.join(ROOT_DIR, "examples/common"),
         path.join(ROOT_DIR, "examples/developing"),
         path.join(ROOT_DIR, "examples/3rd_party"),
-    }
-
-    filedirs {
-        "unit_tests/cases"
-    }
-
-    -- Import vectormath premake5 module
-    local vectormath = require("premake5.vectormath")
-    vectormath.includedirs(ROOT_DIR)
-
-    files {
-        --path.join(ROOT_DIR, "unit_tests/test_run_all.cpp"),
-
-        path.join(ROOT_DIR, "unit_tests/test_framework.h"),
     }
 
     filedirs {
@@ -106,6 +117,10 @@ do
     }
 
     if (_OPTIONS["vulkan"]) then
+        links {
+            --"vulkan-1"
+        }
+    
         includedirs {
             path.join(ENV.VULKAN_DIR, "Include")
         }
