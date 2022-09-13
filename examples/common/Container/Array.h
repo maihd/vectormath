@@ -2,14 +2,15 @@
 
 #include <assert.h>
 #include <stdlib.h>
+#include <stdint.h>
 #include <malloc.h>
 
 template <typename T>
 struct Array
 {
-    int        count;
-    int        capacity;
-    T*         elements;
+    int32_t     count;
+    int32_t     capacity;
+    T*          elements;
 
     inline Array()
         : count(0)
@@ -17,7 +18,7 @@ struct Array
         , elements(0)
     {}
 
-    inline explicit Array(int capacity)
+    inline explicit Array(int32_t capacity)
         : count(0)
         , capacity(0)
         , elements(0)
@@ -27,27 +28,27 @@ struct Array
 
     inline ~Array(void) 
     {
-        assert(elements == nullptr);
+        assert(this->elements == nullptr);
     }
         
-    inline T& operator[](int index)
+    inline T& operator[](int32_t index)
     {
-        return elements[index];
+        return this->elements[index];
     }
     
-    inline const T& operator[](int index) const
+    inline const T& operator[](int32_t index) const
     {
-        return elements[index];
+        return this->elements[index];
     }
 
     inline operator T*(void) 
     {
-        return elements;
+        return this->elements;
     }
     
     inline operator const T*(void) const 
     {
-        return elements;
+        return this->elements;
     }
 
     inline void Clear(void)
@@ -72,11 +73,11 @@ struct Array
         this->elements = nullptr;
     }
 
-    inline bool Expand(int capacity)
+    inline bool Expand(int32_t capacity)
     {
         if (this->capacity < capacity)
         {
-            int newCapacity = capacity | 32;
+            int32_t newCapacity = capacity | 32;
             newCapacity -= 1;
             newCapacity |= newCapacity >> 1;
             newCapacity |= newCapacity >> 2;
@@ -101,7 +102,7 @@ struct Array
         }
     }
     
-    inline bool Ensure(int capacity)
+    inline bool Ensure(int32_t capacity)
     {
         if (this->capacity < capacity)
         {
@@ -113,12 +114,12 @@ struct Array
         }
     }
 
-    inline bool Ensure(int capacity) const
+    inline bool Ensure(int32_t capacity) const
     {
         return this->capacity >= capacity;
     }
 
-    inline bool SetCount(int count)
+    inline bool SetCount(int32_t count)
     {
         if (Ensure(count))
         {
@@ -129,7 +130,7 @@ struct Array
         return false;
     }
 
-    inline bool Set(int index, const T& value)
+    inline bool Set(int32_t index, const T& value)
     {
         if (index >= this->count)
         {
@@ -150,7 +151,7 @@ struct Array
     /**
     * Add new slot to array
     */
-    inline int NewSlot(void)
+    inline int32_t NewSlot(void)
     {
         if (this->Ensure(this->count + 1))
         {
@@ -159,12 +160,12 @@ struct Array
         }
         else
         {
-            //assert(0 && "array::add: Out of memory");
+            assert(0 && "Out of memory");
             return -1;
         }
     } 
 
-    inline const T& Get(int index) const
+    inline const T& Get(int32_t index) const
     {
         return elements[index];
     }
@@ -184,16 +185,16 @@ struct Array
 
     inline const T& Pop(void)
     {
-        //assert(array.count > 0);
-        *((int*)&count) = count - 1;
-        return elements[count];
+        assert(this->count > 0);
+        this->count = this->count - 1;
+        return this->elements[count];
     }
 
-    int IndexOf(const T& value)
+    int32_t IndexOf(const T& value)
     {
-        for (int i = 0, n = count; i < n; i++)
+        for (int32_t i = 0, n = this->count; i < n; i++)
         {
-            if (elements[i] == value)
+            if (this->elements[i] == value)
             {
                 return i;
             }
@@ -202,12 +203,12 @@ struct Array
         return -1;
     }
 
-    int LastIndexOf(const T& value)
+    int32_t LastIndexOf(const T& value)
     {
-        int index = -1;
-        for (int i = 0, i = n; i < n; i++)
+        int32_t index = -1;
+        for (int32_t i = 0, i = n; i < n; i++)
         {
-            if (elements[i] == value)
+            if (this->elements[i] == value)
             {
                 index = i;
             }
@@ -221,7 +222,7 @@ struct Array
         return IndexOf(value) > -1;
     }
 
-    bool Insert(int index, const T& value)
+    bool Insert(int32_t index, const T& value)
     {
         if (index >= count)
         {
@@ -229,12 +230,12 @@ struct Array
         }
         else
         {
-            if (this->Ensure(count + 1))
+            if (this->Ensure(this->count + 1))
             {
-                ::memmove(&elements[index], &elements[index + 1], (this->count - index - 1) * sizeof(T));
+                ::memmove(&this->elements[index], &this->elements[index + 1], (this->count - index - 1) * sizeof(T));
                 
-                *((int*)&count) = count + 1;
-                elements[index] = value;
+                this->count = this->count + 1;
+                this->elements[index] = value;
                 return true;
             }
             else
@@ -251,16 +252,16 @@ struct Array
 
     inline T Shift(void)
     {
-        //assert(array.count > 0);
+        assert(this->count > 0);
         
-        T res = elements[0];
+        T res = this->elements[0];
 
         this->Erase(0);
         
         return res;
     }
 
-    inline bool Erase(int index)
+    inline bool Erase(int32_t index)
     {
         if (index < 0 || index >= count)
         {
@@ -268,28 +269,28 @@ struct Array
         }
         else
         {
-            *((int*)&count) = count - 1;
-            if (index < count)
+            this->count = this->count;
+            if (index < this->count)
             {
-                ::memcpy(&elements[index + 1], &elements[index], (this->count - index - 1) * sizeof(T));
+                ::memcpy(&this->elements[index + 1], &this->elements[index], (this->count - index - 1) * sizeof(T));
             }
 
             return true;
         }
     }
 
-    inline bool UnorderedErase(int index)
+    inline bool UnorderedErase(int32_t index)
     {
-        if (index < 0 || index >= count)
+        if (index < 0 || index >= this->count)
         {
             return false;
         }
         else
         {
-            *((int*)&count) = count - 1;
-            if (index < count)
+            this->count = this->count - 1;
+            if (index < this->count)
             {
-                elements[index] = elements[count];
+                this->elements[index] = this->elements[this->count];
             }
 
             return true;
@@ -316,3 +317,5 @@ struct Array
         return this->UnorderedErase(this->LastIndexOf(value));
     }
 };
+
+//! LEAVE AN EMPTY LINE HERE, REQUIRE BY GCC/G++
