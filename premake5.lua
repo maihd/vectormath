@@ -14,6 +14,7 @@ local function vectormathproject(name)
     -- Import vectormath premake5 module
     local vectormath = require("premake5.vectormath")
     vectormath.includedirs(ROOT_DIR)
+    vectormath.files(ROOT_DIR)
 end
 
 local function filedirs(dirs)
