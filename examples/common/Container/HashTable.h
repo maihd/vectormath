@@ -7,17 +7,17 @@
 template <typename T>
 struct HashTable
 {
-    int         count;
-    int         capacity;
+    int32_t     count;
+    int32_t     capacity;
                 
-    int*        hashs;
-    int         hashCount;
+    int32_t*    hashs;
+    int32_t     hashCount;
                 
-    int*        nexts;
+    int32_t*    nexts;
     uint32_t*   keys;
     T*          values;
 
-    inline HashTable(int hashCount = 64)
+    inline HashTable(int32_t hashCount = 64)
         : count(0)
         , capacity(0)
         , hashs(nullptr)
@@ -30,10 +30,10 @@ struct HashTable
 
     inline ~HashTable()
     {
-        assert(hashs    == nullptr);
-        assert(nexts    == nullptr);
-        assert(keys     == nullptr);
-        assert(values   == nullptr);
+        assert(this->hashs    == nullptr);
+        assert(this->nexts    == nullptr);
+        assert(this->keys     == nullptr);
+        assert(this->values   == nullptr);
     }
 
     // Clear the this
@@ -59,8 +59,8 @@ struct HashTable
     // Clean memory usage
     inline void CleanUp(void)
     {
-        free(nexts);
-        free(hashs);
+        free(this->nexts);
+        free(this->hashs);
 
         this->count     = 0;
         this->capacity  = 0;
@@ -74,16 +74,16 @@ struct HashTable
     }
 
     // Find index of entry with key
-    int IndexOf(uint32_t key, int* outHash = nullptr, int* outPrev = nullptr) const
+    int32_t IndexOf(uint32_t key, int32_t* outHash = nullptr, int32_t* outPrev = nullptr) const
     {
         if (!this->hashs)
         {
             return -1;
         }
 
-        int hash = (int)(key % (uint32_t)this->hashCount);
-        int curr = this->hashs[hash];
-        int prev = -1;
+        int32_t hash = (int32_t)(key % (uint32_t)this->hashCount);
+        int32_t curr = this->hashs[hash];
+        int32_t prev = -1;
 
         while (curr > -1)
         {
@@ -110,21 +110,21 @@ struct HashTable
     // Get value of entry with key
     const T& GetValue(uint32_t key) const
     {
-        int curr = IndexOf(key);
+        int32_t curr = IndexOf(key);
         return values[curr];
     }
 
     // Get value of entry with key
     const T& GetValue(uint32_t key, const T& defaultValue) const
     {
-        int curr = IndexOf(key);
+        int32_t curr = IndexOf(key);
         return (curr > -1) ? values[curr] : defaultValue;
     }
 
     // Get value of entry with key. If entry exists return true, false otherwise.
     bool TryGetValue(uint32_t key, T* outValue) const
     {
-        int curr = IndexOf(key);
+        int32_t curr = IndexOf(key);
         if (curr > -1)
         {
             *outValue = values[curr];
@@ -140,33 +140,33 @@ struct HashTable
     // Return true if success, false otherwise.
     bool GetValueOrNewSlot(uint32_t key, T** value)
     {
-        int hash, prev;
-        int curr = this->IndexOf(key, &hash, &prev);
+        int32_t hash, prev;
+        int32_t curr = this->IndexOf(key, &hash, &prev);
 
         if (curr < 0)
         {
             if (!this->hashs)
             {
-                this->hashs = (int*)malloc(sizeof(int) * hashCount);
+                this->hashs = (int32_t*)malloc(sizeof(int32_t) * hashCount);
                 assert(this->hashs && "Out of memory");
                 
-                for (int i = 0; i < hashCount; i++)
+                for (int32_t i = 0; i < hashCount; i++)
                 {
                     this->hashs[i] = -1;
                 }
 
                 // Re-calculate hash
                 prev = -1;
-                hash = (int)(key % (uint32_t)this->hashCount);
+                hash = (int32_t)(key % (uint32_t)this->hashCount);
             }
 
             if (this->count + 1 > this->capacity)
             {
-                const int oldCapacity = this->capacity;
-                const int newCapactiy = oldCapacity > 0 ? oldCapacity * 2 : 32;
+                const int32_t oldCapacity = this->capacity;
+                const int32_t newCapactiy = oldCapacity > 0 ? oldCapacity * 2 : 32;
 
-                void* newNexts  = malloc(newCapactiy * (sizeof(int) + sizeof(uint32_t) + sizeof(T)));
-                void* newKeys   = (char*)newNexts + newCapactiy * sizeof(int);
+                void* newNexts  = malloc(newCapactiy * (sizeof(int32_t) + sizeof(uint32_t) + sizeof(T)));
+                void* newKeys   = (char*)newNexts + newCapactiy * sizeof(int32_t);
                 void* newValues = (char*)newKeys + newCapactiy * sizeof(uint32_t);
 
                 if (!newNexts)
@@ -175,14 +175,14 @@ struct HashTable
                 }
                 else
                 {
-                    ::memcpy(newNexts, this->nexts, oldCapacity * sizeof(int));
+                    ::memcpy(newNexts, this->nexts, oldCapacity * sizeof(int32_t));
                     ::memcpy(newKeys, this->keys, oldCapacity * sizeof(uint32_t));
                     ::memcpy(newValues, this->values, oldCapacity * sizeof(T));
 
                     ::free(this->nexts);
                 
                     this->capacity = newCapactiy;
-                    this->nexts    = (int*)newNexts;
+                    this->nexts    = (int32_t*)newNexts;
                     this->keys     = (uint32_t*)newKeys;
                     this->values   = (T*)newValues;
                 }
@@ -236,14 +236,14 @@ struct HashTable
     // Remove an entry that has given key
     bool Remove(uint32_t key)
     {
-        int prev;
-        int hash;
-        int curr = this->IndexOf(key, &hash, &prev);
+        int32_t prev;
+        int32_t hash;
+        int32_t curr = this->IndexOf(key, &hash, &prev);
         return this->Erase(curr, hash, prev);
     }
     
     // Remove the entry at given index
-    bool Erase(int index)
+    bool Erase(int32_t index)
     {
         if (index > -1 && index < this->count)
         {
@@ -256,7 +256,7 @@ struct HashTable
     }
 
     // Remove the entry at given index, hash entry, and previous entry
-    bool Erase(int curr, int hash, int prev)
+    bool Erase(int32_t curr, int32_t hash, int32_t prev)
     {
         if (curr > -1)
         {
@@ -271,7 +271,7 @@ struct HashTable
 
             if (curr < this->count - 1)
             {
-                int last = this->count - 1;
+                int32_t last = this->count - 1;
                 this->nexts[curr]  = this->nexts[last];
                 this->keys[curr]   = this->keys[last];
                 this->values[curr] = this->values[last];
@@ -296,3 +296,5 @@ struct HashTable
         }
     }
 };
+
+//! LEAVE AN EMPTY LINE HERE, REQUIRE BY GCC/G++
