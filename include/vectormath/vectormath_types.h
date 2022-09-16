@@ -1,5 +1,7 @@
 #pragma once
 
+// Vector components types should be fixed-size
+// We use standard fixed-size types for compat
 #include <stdint.h>
 
 // Helper for extensions
@@ -100,6 +102,7 @@
 
 /// vec2
 /// 2D floating-point vector
+/// Components are 32 bit fixed-size
 typedef struct vec2
 {
     float                       x;
@@ -108,6 +111,7 @@ typedef struct vec2
 
 /// vec3
 /// 3D floating-point vector
+/// Components are 32 bit fixed-size
 typedef union VECTORMATH_ALIGNAS(vec3, 16)
 {
     struct
@@ -122,6 +126,7 @@ typedef union VECTORMATH_ALIGNAS(vec3, 16)
 
 /// vec4
 /// 4D floating-point vector
+/// Components are 32 bit fixed-size
 typedef union VECTORMATH_ALIGNAS(vec4, 16)
 {
     struct
@@ -152,6 +157,7 @@ typedef union VECTORMATH_ALIGNAS(vec4, 16)
 
 /// ivec2
 /// 2D integer vector
+/// Components are 32 bit fixed-size
 typedef struct ivec2
 {
     int32_t                     x, y;
@@ -159,6 +165,7 @@ typedef struct ivec2
 
 /// ivec3
 /// 3D integer vector
+/// Components are 32 bit fixed-size
 typedef union VECTORMATH_ALIGNAS(ivec3, 16)
 {
     struct
@@ -171,6 +178,7 @@ typedef union VECTORMATH_ALIGNAS(ivec3, 16)
 
 /// ivec4
 /// 4D integer vector
+/// Components are 32 bit fixed-size
 typedef union VECTORMATH_ALIGNAS(ivec4, 16)
 {
     struct
@@ -183,6 +191,7 @@ typedef union VECTORMATH_ALIGNAS(ivec4, 16)
 
 /// ivec2
 /// 2D integer vector
+/// Components are 32 bit fixed-size
 typedef struct uvec2
 {
     uint32_t                    x, y;
@@ -190,6 +199,7 @@ typedef struct uvec2
 
 /// ivec3
 /// 3D integer vector
+/// Components are 32 bit fixed-size
 typedef union VECTORMATH_ALIGNAS(uvec3, 16)
 {
     struct
@@ -202,6 +212,7 @@ typedef union VECTORMATH_ALIGNAS(uvec3, 16)
 
 /// ivec4
 /// 4D integer vector
+/// Components are 32 bit fixed-size
 typedef union VECTORMATH_ALIGNAS(uvec4, 16)
 {
     struct
@@ -214,6 +225,7 @@ typedef union VECTORMATH_ALIGNAS(uvec4, 16)
 
 /// mat2
 /// 2x2 floating-point matrix
+/// Components are 32 bit fixed-size
 typedef union VECTORMATH_ALIGNAS(mat2, 16)
 {
     struct
@@ -232,6 +244,7 @@ typedef union VECTORMATH_ALIGNAS(mat2, 16)
 
 /// mat3
 /// 3x3 floating-point matrix
+/// Components are 32 bit fixed-size
 typedef union VECTORMATH_ALIGNAS(mat3, 16)
 {
     struct
@@ -251,6 +264,7 @@ typedef union VECTORMATH_ALIGNAS(mat3, 16)
 
 /// mat4
 /// 4x4 floating-point matrix
+/// Components are 32 bit fixed-size
 typedef union VECTORMATH_ALIGNAS(mat4, 16)
 {
     struct
