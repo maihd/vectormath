@@ -17,10 +17,12 @@
 // Compiler settings
 // -------------------------------------------------------------
 
-#if defined(__GNUC__)
-#   define __vectorcall  /* NO VECTORCALL SUPPORTED */
-#elif !defined(_MSC_VER)
-#   define __vectorcall  /* NO VECTORCALL SUPPORTED */
+#if !defined(_MSC_VER) && !defined(__vectorcall)
+#   if defined(__GNUC__)
+#       define __vectorcall  /* NO VECTORCALL SUPPORTED */
+#   else
+#       define __vectorcall  /* NO VECTORCALL SUPPORTED */
+#   endif
 #endif
 
 #if !defined(_MSC_VER) && !defined(__forceinline)
