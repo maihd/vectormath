@@ -1,6 +1,6 @@
 #pragma once
 
-#include <VectorTypes.h>
+#include <vectormath/vectormath_types.h>
 
 struct PositionComponent
 {

@@ -1,5 +1,5 @@
 #include "Native/Window.h"
-#include "Native/Thread.h"
+#include <Threading/ThreadFunctions.h>
 #include "Renderer/Renderer.h"
 #include "Game/Game.h"
 
@@ -31,8 +31,8 @@ int main(const int argc, const char* argv[])
     Game_Setup(&spriteBatch, objectCount);
 
     float   deltaTime           = 0.0f;
-    int64_t timerFrequency      = Thread_GetCpuFrequency();
-    int64_t timerTicks          = Thread_GetCpuTicks();
+    int64_t timerFrequency      = Threading_GetCpuFrequency();
+    int64_t timerTicks          = Threading_GetCpuTicks();
     int64_t timerInterval       = timerFrequency / 60;
     double  invTimerFrequency   = 1.0 / (double)timerFrequency;
     while (Window_PollEvents())
@@ -63,7 +63,7 @@ int main(const int argc, const char* argv[])
         Renderer_Present();
 
         // Update timers
-        int64_t currentTicks = Thread_GetCpuTicks();
+        int64_t currentTicks = Threading_GetCpuTicks();
         int64_t elapsedTicks = currentTicks - timerTicks;
         
         #if defined(SLEEPY_MAIN_LOOP)

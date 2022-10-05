@@ -1,0 +1,4 @@
+
+[submodule "examples/3rd_party/mailib"]
+	path = examples/3rd_party/mailib
+	url = https://github.com/maihd/mailib

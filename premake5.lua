@@ -4,6 +4,9 @@ local BUILD_DIR = path.join(ROOT_DIR, "projects")
 local ENV = require("premake5.env")
 local PROJECT_PREFIX = "vectormath"
 
+local MAILIB_PATH = path.join(ROOT_DIR, "examples/3rd_party/mailib")
+local MaiLib = dofile(path.join(MAILIB_PATH, "premake5.mailib.lua"))
+
 local function vectormathproject(name)
     if (type(name) == "string") then
         project(PROJECT_PREFIX .. "_" .. name)
@@ -47,23 +50,8 @@ do
 
     platforms { "x32", "x64" }
 
-    flags {
-        "NoPCH",
-        "NoRuntimeChecks",
-        "ShadowedVariables",
-        "LinkTimeOptimization",
-
-        --"FatalWarnings",
-        --"FatalLinkWarnings",
-        --"FatalCompileWarnings",
-    }
-
-    cppdialect "C++11"
-    staticruntime "On"
-    omitframepointer "On"
-
-    rtti "On"
-    exceptionhandling "Off"
+    -- Cflags
+    MaiLib.cflags()
 
     startproject (PROJECT_PREFIX .. "_" .. "unit_tests")
 
@@ -118,7 +106,6 @@ local function vectormathexample(name)
         kind "ConsoleApp"
         
         includedirs {
-            path.join(ROOT_DIR),
             path.join(ROOT_DIR, "examples/common"),
             path.join(ROOT_DIR, "examples", name),
             path.join(ROOT_DIR, "examples/3rd_party"),
@@ -128,9 +115,7 @@ local function vectormathexample(name)
             "examples/3rd_party/flecs",
 
             "examples/common/Native",
-            "examples/common/Container",
             "examples/common/Renderer",
-            "examples/common/Runtime",
 
             path.join("examples", name),
             path.join("examples", name, "Game"),
@@ -164,6 +149,13 @@ local function vectormathexample(name)
                 "GLEW_STATIC",
             }
         end
+
+        filter {}
+
+        -- Import mailib
+        MaiLib.files(MAILIB_PATH)
+        MaiLib.links(MAILIB_PATH)
+        MaiLib.includedirs(MAILIB_PATH)
 
         filter {}
     end

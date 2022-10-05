@@ -293,7 +293,7 @@ void Renderer_DrawSprite(const SpriteBatch* spriteBatch, int index, vec2 positio
 
 vec2 Renderer_TextSize(const char* text)
 {
-    return vec2_new(stb_easy_font_width((char*)text), stb_easy_font_height((char*)text)) * 3.0f;
+    return vec2_new((float)stb_easy_font_width((char*)text), (float)stb_easy_font_height((char*)text)) * 3.0f;
 }
 
 void Renderer_DrawText(const char* text, vec2 position, vec3 color)

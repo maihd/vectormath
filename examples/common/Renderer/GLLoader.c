@@ -126,7 +126,7 @@ enum
 GLLoadError glLoadFunctions()
 {
 	// Macros for load GL functions
-	#define LOAD_GL_FUNC(NAME)										\
+	#define LOAD_GL_FUNC(NAME, ...)									\
 		do {														\
 			void* address = GL_GET_PROC_ADDRESS(#NAME);				\
 			if (address == NULL										\
@@ -160,7 +160,8 @@ GLLoadError glLoadFunctions()
             return GLLoadError_LoadDriverFailed;
         }
 
-		void* (GL_APICALL*wglGetProcAddress)(const char* name) = GetProcAddress(_OPENGL_MODULE, "wglGetProcAddress");
+		typedef void* (GL_APICALL*wglGetProcAddressFn)(const char* name);
+		wglGetProcAddressFn wglGetProcAddress = (wglGetProcAddressFn)GetProcAddress(_OPENGL_MODULE, "wglGetProcAddress");
 		if (wglGetProcAddress == NULL)
 		{
 			return GLLoadError_FunctionLoaderNotFound;
@@ -258,7 +259,7 @@ GLLoadError glLoadFunctions()
     #endif
 
     /// Load function that have same name with address name in driver
-    #define LOAD_GL_FUNC(NAME)											\
+    #define LOAD_GL_FUNC(NAME, ...)										\
         do {															\
             void* address = GL_GET_PROC_ADDRESS(#NAME);					\
 			if (address == NULL											\
@@ -443,7 +444,8 @@ void glDeleteContext(void* context)
     HMODULE module = LoadLibraryA("OpenGL32.dll");
     if (module != NULL)
     {
-        BOOL (GL_APICALL*wglDeleteContext)(void* context) = GetProcAddress(module, "wglDeleteContext");
+		typedef BOOL (GL_APICALL*wglDeleteContextFn)(void* context);
+		wglDeleteContextFn wglDeleteContext = (wglDeleteContextFn)GetProcAddress(module, "wglDeleteContext");
         if (wglDeleteContext != NULL)
         {
             wglDeleteContext(context);
@@ -456,7 +458,8 @@ void glMakeContextCurrent(struct WindowDesc* window, void* context)
     HMODULE module = LoadLibraryA("OpenGL32.dll");
     if (module != NULL)
     {
-        BOOL (GL_APICALL*wglMakeCurrent)(HDC device, void* context) = GetProcAddress(module, "wglMakeCurrent");
+		typedef BOOL (GL_APICALL*wglMakeCurrentFn)(HDC device, void* context);
+		wglMakeCurrentFn wglMakeCurrent = (wglMakeCurrentFn)GetProcAddress(module, "wglMakeCurrent");
         if (wglMakeCurrent != NULL)
         {
             wglMakeCurrent((HDC)window->device, context);
