@@ -8,15 +8,13 @@
 #error The vector_math support for simd is not enable, please use vector_math_scalar.h instead
 #endif
 
-// Helper for extensions
-#ifndef VECTORMATH_FUNCTIONS_DEFINED
-#define VECTORMATH_FUNCTIONS_DEFINED
+// Should not use both scalar & m128 versions of vector_math together
+#if defined(VECTORMATH_FUNCTIONS_DEFINED)
+#error vector_math_scalar.h has been include, please remove that from your source if you attempt to use vector_math_simd.h
 #endif
 
-// Should not use both scalar & m128 versions of vector_math together
-//#if (defined(__has_include) && __has_include("vector_math_scalar.h"))
-//#error vector_math_scalar.h has been include, please remove that from your source if you attempt to use vector_math_simd.h
-//#endif
+// Helper for extensions
+#define VECTORMATH_FUNCTIONS_DEFINED
 
 // -------------------------------------------------------------
 // Helper constants

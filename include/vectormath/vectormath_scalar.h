@@ -4,14 +4,12 @@
 #include "vectormath_types.h"
 
 // Should not use both scalar & m128 versions of vector_math together
-//#if (defined(__has_include) && __has_include("vector_math_simd.h"))
-//#error vector_math_simd.h has been include, please remove this from your source if you attempt to use scalar version of vector_math_simd.h
-//#endif
+#if defined(VECTORMATH_FUNCTIONS_DEFINED)
+#error vector_math_simd.h has been include, please remove this from your source if you attempt to use scalar version of vector_math_simd.h
+#endif
 
 // Helper for extensions
-#ifndef VECTORMATH_FUNCTIONS_DEFINED
 #define VECTORMATH_FUNCTIONS_DEFINED
-#endif
 
 // -------------------------------------------------------------
 // Constructors
