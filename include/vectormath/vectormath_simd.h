@@ -421,6 +421,25 @@ __forceinline mat4 mat4_load(const float ptr[])
 }
 
 // -------------------------------------------------------------
+// Swizzle functions
+// -------------------------------------------------------------
+
+__forceinline vec2 vec2_xx(vec2 v)
+{
+	return vec2_new(v.x, v.x);
+}
+
+__forceinline vec2 vec2_yy(vec2 v)
+{
+	return vec2_new(v.y, v.y);
+}
+
+__forceinline vec2 vec2_yx(vec2 v)
+{
+	return vec2_new(v.y, v.x);
+}
+
+// -------------------------------------------------------------
 // Operators-like functions
 // -------------------------------------------------------------
 
