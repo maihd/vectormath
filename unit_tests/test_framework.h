@@ -61,12 +61,14 @@ extern "C" __declspec(dllimport) int __stdcall IsDebuggerPresent(void);
 		UnitTest::TestFailed(__FILE__, __LINE__);								\
         if (IsDebuggerPresent()) __debugbreak();								\
 		UnitTest::HandleExitAfterFailed();										\
+		return;																	\
     } while (false)
 #else
 #define TEST_FAILED()															\
     do {                                                                        \
 		UnitTest::TestFailed(__FILE__, __LINE__);								\
 		UnitTest::HandleExitAfterFailed();										\
+		return;																	\
     } while (false)
 #endif
 
