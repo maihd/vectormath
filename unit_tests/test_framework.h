@@ -10,6 +10,13 @@
 // Unit tests API
 // ------------------------------------------------------------------------------------------
 
+enum UnitTestStatus
+{
+    UnitTestStatus_Untested,
+    UnitTestStatus_Succeed,
+    UnitTestStatus_Failed  
+};
+
 struct UnitTest;
 typedef void UnitTestFunc(UnitTest* __unitTest);
 
@@ -22,6 +29,8 @@ struct UnitTest
 
     UnitTest*       const   next;
 	UnitTest*				failedNext;
+
+    UnitTestStatus          status;
 
                             UnitTest(const char* name, UnitTestFunc* func, const char* file, const int line);
     void                    TestFailed(const char* func, const int line);
@@ -60,6 +69,7 @@ extern "C" __declspec(dllimport) int __stdcall IsDebuggerPresent(void);
 
 #define TEST(condition)                                                         \
     do {                                                                        \
+        __unitTest->status = UnitTestStatus_Succeed;                            \
         if (!(condition))                                                       \
         {                                                                       \
             TEST_FAILED();                                                      \
@@ -68,6 +78,7 @@ extern "C" __declspec(dllimport) int __stdcall IsDebuggerPresent(void);
 
 #define TEST_EQUAL(actual, expected)                                            \
     do {                                                                        \
+        __unitTest->status = UnitTestStatus_Succeed;                            \
         if ((actual) != (expected))                                             \
         {                                                                       \
             TEST_FAILED();                                                      \
@@ -76,6 +87,7 @@ extern "C" __declspec(dllimport) int __stdcall IsDebuggerPresent(void);
 
 #define TEST_NOT_EQUAL(actual, expected)                                        \
     do {                                                                        \
+        __unitTest->status = UnitTestStatus_Succeed;                            \
         if ((actual) == (expected))                                             \
         {                                                                       \
             TEST_FAILED();                                                      \
@@ -89,6 +101,7 @@ extern "C" __declspec(dllimport) int __stdcall IsDebuggerPresent(void);
 #ifdef RUN_UNIT_TESTS
 #include <stdio.h>
 #include <stdlib.h>
+#include <assert.h>
 
 #if defined(_WIN32)
 #include <Windows.h>
@@ -155,6 +168,8 @@ UnitTest::UnitTest(const char* name, UnitTestFunc* func, const char* file, int l
     , file(file)
     , line(line)
     , next(gUnitTests)
+    , failedNext(nullptr)
+    , status(UnitTestStatus_Untested)
 {
     gUnitTests = this;
     gUnitTestsCount++;
@@ -207,14 +222,13 @@ void UnitTest::TestFailed(const char* file, const int line)
 
 void UnitTest::HandleExitAfterFailed()
 {
+    this->status = UnitTestStatus_Failed;
+    this->failedNext = gFailedUnitTests;
+    gFailedUnitTests = this;
+    
 	if (!IS_DEFINED(CONTINUE_UNIT_TEST_ON_FAIL))
 	{
 		exit(gUnitTestsExitCode);
-	}
-	else
-	{
-		this->failedNext = gFailedUnitTests;
-		gFailedUnitTests = this;
 	}
 }
 
@@ -230,22 +244,54 @@ int main(const int argc, const char* argv[])
     }
 
 	printf(
-		PRINTF_STRING_BLUE("%s") " Start running " PRINTF_STRING_GREEN("%d") " unit tests...\n\n",
+		PRINTF_STRING_BLUE("%s") " Start running " PRINTF_STRING_BLUE("%d") " unit tests...\n",
 		gUnitTestsLogHeader, gUnitTestsCount
 	);
+
+	int untestedCount = 0;
+	int succeedCount = 0;
+	int failedCount = 0;
 
     gUnitTestsRunCount = 0;
     for (UnitTest* unitTest = gUnitTests; unitTest != nullptr; unitTest = unitTest->next)
     {
+		gUnitTestsRunCount++;
+
 		printf(
-			PRINTF_STRING_BLUE("%s") " Running new unit test\n" 
-			"  Name: " PRINTF_STRING_YELLOW("\"%s\"") "\n"
-			"  Defined at " PRINTF_STRING_YELLOW("%s:%d") "\n",
-			gUnitTestsLogHeader, unitTest->name, unitTest->file, unitTest->line
+			PRINTF_STRING_BLUE("%s")" Running new unit test (%d/" PRINTF_STRING_BLUE("%d") ")\n"
+			"  Name: " PRINTF_STRING_YELLOW("%s") "\n"
+			"  Location: " PRINTF_STRING_YELLOW("%s:%d") "\n",
+			gUnitTestsLogHeader, gUnitTestsRunCount, gUnitTestsCount, unitTest->name, unitTest->file, unitTest->line
 		);
 
         unitTest->func(unitTest);
-        gUnitTestsRunCount++;
+
+        const char* statusName;
+        switch (unitTest->status)
+        {
+            case UnitTestStatus_Untested:
+				untestedCount++;
+                statusName = PRINTF_STRING_YELLOW("Untested");
+                break;
+
+            case UnitTestStatus_Succeed:
+				succeedCount++;
+                statusName = PRINTF_STRING_GREEN("Succeed");
+                break;
+
+            case UnitTestStatus_Failed:
+				failedCount++;
+                statusName = PRINTF_STRING_RED("Failed");
+                break;
+            
+            default:
+                assert(false && "Internal fatal error!");
+                break;
+        }
+
+        printf(
+            "  Status: %s\n\n", statusName
+        );
     }
 
     if (gUnitTestsRunCount != gUnitTestsCount)
@@ -254,7 +300,7 @@ int main(const int argc, const char* argv[])
 			PRINTF_STRING_BLUE("%s")
 			" "
             PRINTF_STRING_RED("FAILURE")
-            ": Run " PRINTF_STRING_GREEN("%d") " out of " PRINTF_STRING_GREEN("%d") " unit tests!!!\n",
+            ": Run " PRINTF_STRING_GREEN("%d") " out of " PRINTF_STRING_BLUE("%d") " unit tests!!!\n",
             gUnitTestsLogHeader, gUnitTestsRunCount, gUnitTestsCount
         );
     }
@@ -264,10 +310,20 @@ int main(const int argc, const char* argv[])
 			PRINTF_STRING_BLUE("%s")
 			" "
             PRINTF_STRING_GREEN("SUCCESS")
-            ": Run all " PRINTF_STRING_GREEN("%d") " unit tests successfully!!!\n",
+            ": Run all " PRINTF_STRING_BLUE("%d") " unit tests successfully!!!\n"
+			,
             gUnitTestsLogHeader, gUnitTestsRunCount
         );
     }
+
+	// Display stats
+	printf(
+		"  - Untested: " PRINTF_STRING_YELLOW("%d") " unit tests.\n"
+		"  - Succeed: " PRINTF_STRING_GREEN("%d") " unit tests.\n"
+		"  - Failed: " PRINTF_STRING_RED("%d") " unit tests.\n"
+		,
+		untestedCount, succeedCount, failedCount
+	);
     
     return gUnitTestsExitCode;
 }
