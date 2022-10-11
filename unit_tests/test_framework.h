@@ -111,10 +111,12 @@ extern "C" __declspec(dllimport) int __stdcall IsDebuggerPresent(void);
 #pragma comment(lib, "User32.lib")
 #endif
 
+static UnitTest*    gUnitTests          = nullptr;
 static UnitTest*    gCurrentUnitTest	= nullptr;
 
-static UnitTest*    gUnitTests          = nullptr;
 static UnitTest*    gFailedUnitTests    = nullptr;
+static const char*	gFailedUnitTestFile = "";
+static int			gFailedUnitTestLine = 0;
 
 static int          gUnitTestsCount     = 0;
 static int          gUnitTestsRunCount  = 0;
@@ -182,38 +184,52 @@ UnitTest::UnitTest(const char* name, UnitTestFunc* func, const char* file, int l
 
 void UnitTest::TestFailed(const char* file, const int line)
 {
-    char message[4096];
-    printf(
-		PRINTF_STRING_BLUE("%s")
-		" "
-        PRINTF_STRING_RED("Failed")
-		"unit test %s:%d:%s\nAt %s:%d\n", 
-        gUnitTestsLogHeader,
-        gCurrentUnitTest->file, gCurrentUnitTest->line, gCurrentUnitTest->name,
-        file, line
-    );
-    
-    if (!IS_DEFINED(CONTINUE_UNIT_TEST_ON_FAIL))
+    if (!IS_DEFINED(CONTINUE_UNIT_TEST_ON_FAIL) || IS_DEFINED(_MSC_VER))
     {
+		char message[4096];
+		if (!IS_DEFINED(_WIN32))
+		{
+			snprintf(message, sizeof(message),
+				PRINTF_STRING_BLUE("%s")
+				" "
+				PRINTF_STRING_RED("Failed")
+				" to run unit test %s:%d:%s\nAt %s:%d\n",
+				gUnitTestsLogHeader,
+				gCurrentUnitTest->file, gCurrentUnitTest->line, gCurrentUnitTest->name,
+				file, line
+			);
+		}
+		else
+		{
+			snprintf(message, sizeof(message),
+				"Failed to run unit test \"%s\"\nAt %s:%d",
+				gCurrentUnitTest->name,
+				file, line
+			);
+		}
+
+		char notifyTitle[1024];
+		snprintf(notifyTitle, sizeof(notifyTitle), "%s Unit Testing", gUnitTestsLogHeader);
+
         char notifyMessage[4096];
-        snprintf(notifyMessage, sizeof(notifyMessage), "%s\nPress OK to exit!!!", (const char*)message);
+        snprintf(notifyMessage, sizeof(notifyMessage), "%s\n\nPress OK to exit!!!", (const char*)message);
 
         bool gotoSource = false;
         #if defined(_MSC_VER) && !defined(NDEBUG)
         if (IsDebuggerPresent())
         {
             gotoSource = false;
-            snprintf(notifyMessage, sizeof(notifyMessage), "%s\nPress OK to start debug!!!", (const char*)message);
+            snprintf(notifyMessage, sizeof(notifyMessage), "%s\n\nPress OK to start debug!!!", (const char*)message);
         }
         else
         {
             gotoSource = true;
-            snprintf(notifyMessage, sizeof(notifyMessage), "%s\nPress OK to open source file!!!", (const char*)message);
+            snprintf(notifyMessage, sizeof(notifyMessage), "%s\n\nPress OK to open source file!!!", (const char*)message);
         }
         #endif
 
         gUnitTestsExitCode = -1;
-        NotifyProgammer("vectormath's UnitTests", notifyMessage);
+        NotifyProgammer(notifyTitle, notifyMessage);
         
         if (gotoSource)
         {
@@ -306,6 +322,10 @@ int main(const int argc, const char* argv[])
         printf(
             "  Status: %s\n\n", statusName
         );
+
+		if (unitTest->status == UnitTestStatus_Failed)
+		{
+		}
 
 		// No current unit test running
 		gCurrentUnitTest = nullptr;
