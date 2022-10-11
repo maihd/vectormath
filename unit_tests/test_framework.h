@@ -240,7 +240,7 @@ int main(const int argc, const char* argv[])
 		printf(
 			PRINTF_STRING_BLUE("%s") " Running new unit test\n" 
 			"  Name: " PRINTF_STRING_YELLOW("\"%s\"") "\n"
-			"  Defined at " PRINTF_STRING_YELLOW("%s:%d") "\n\n",
+			"  Defined at " PRINTF_STRING_YELLOW("%s:%d") "\n",
 			gUnitTestsLogHeader, unitTest->name, unitTest->file, unitTest->line
 		);
 

@@ -46,3 +46,25 @@ DEFINE_UNIT_TEST("Test vec2 operator/")
     TEST(c.x == 1.0f / 3.0f && c.y == 0.5f);
 }
 
+DEFINE_UNIT_TEST("vec2_xx(vec2)")
+{
+	const vec2 a = vec2_new(1.0f, 2.0f);
+	const vec2 b = vec2_xx(a);
+	TEST(a.x == b.x && a.x == b.y);
+}
+
+DEFINE_UNIT_TEST("vec2_yy(vec2)")
+{
+	const vec2 a = vec2_new(1.0f, 2.0f);
+	const vec2 b = vec2_yy(a);
+	TEST(a.y == b.x && a.y == b.y);
+}
+
+DEFINE_UNIT_TEST("vec2_yz(vec2)")
+{
+	const vec2 a = vec2_new(1.0f, 2.0f);
+	const vec2 b = vec2_yx(a);
+	TEST(a.x == b.y && a.y == b.x);
+}
+
+//! LEAVE AN EMPTY LINE HERE, REQUIRE BY GCC/G++
