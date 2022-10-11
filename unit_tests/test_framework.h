@@ -18,7 +18,7 @@ enum UnitTestStatus
 };
 
 struct UnitTest;
-typedef void UnitTestFunc(UnitTest* __unitTest);
+typedef void UnitTestFunc();
 
 struct UnitTest
 {
@@ -33,8 +33,11 @@ struct UnitTest
     UnitTestStatus          status;
 
                             UnitTest(const char* name, UnitTestFunc* func, const char* file, const int line);
-    void                    TestFailed(const char* func, const int line);
-	void					HandleExitAfterFailed();
+
+    static void             TestFailed(const char* func, const int line);
+
+	static void				HandleHaveBeenTesting();
+	static void				HandleExitAfterFailed();
 };
 
 #ifndef CONCAT
@@ -47,29 +50,29 @@ struct UnitTest
 #endif
 
 #define DEFINE_UNIT_TEST(name)                                                          \
-    static void SYMBOL(UnitTestFunc)(UnitTest* __unitTest);                             \
+    static void SYMBOL(UnitTestFunc)();													\
     static UnitTest SYMBOL(UNIT_TEST)(name, SYMBOL(UnitTestFunc), __FILE__, __LINE__);  \
-    static void SYMBOL(UnitTestFunc)(UnitTest* __unitTest)
+    static void SYMBOL(UnitTestFunc)()
 
 #if defined(_MSC_VER) && !defined(NDEBUG)
 extern "C" __declspec(dllimport) int __stdcall IsDebuggerPresent(void);
 #define TEST_FAILED()															\
     do {                                                                        \
-		__unitTest->TestFailed(__FILE__, __LINE__);								\
+		UnitTest::TestFailed(__FILE__, __LINE__);								\
         if (IsDebuggerPresent()) __debugbreak();								\
-		__unitTest->HandleExitAfterFailed();									\
+		UnitTest::HandleExitAfterFailed();										\
     } while (false)
 #else
 #define TEST_FAILED()															\
     do {                                                                        \
-		__unitTest->TestFailed(__FILE__, __LINE__);								\
-		__unitTest->HandleExitAfterFailed();									\
+		UnitTest::TestFailed(__FILE__, __LINE__);								\
+		UnitTest::HandleExitAfterFailed();										\
     } while (false)
 #endif
 
 #define TEST(condition)                                                         \
     do {                                                                        \
-        __unitTest->status = UnitTestStatus_Succeed;                            \
+        UnitTest::HandleHaveBeenTesting();										\
         if (!(condition))                                                       \
         {                                                                       \
             TEST_FAILED();                                                      \
@@ -78,7 +81,7 @@ extern "C" __declspec(dllimport) int __stdcall IsDebuggerPresent(void);
 
 #define TEST_EQUAL(actual, expected)                                            \
     do {                                                                        \
-        __unitTest->status = UnitTestStatus_Succeed;                            \
+        UnitTest::HandleHaveBeenTesting();										\
         if ((actual) != (expected))                                             \
         {                                                                       \
             TEST_FAILED();                                                      \
@@ -87,7 +90,7 @@ extern "C" __declspec(dllimport) int __stdcall IsDebuggerPresent(void);
 
 #define TEST_NOT_EQUAL(actual, expected)                                        \
     do {                                                                        \
-        __unitTest->status = UnitTestStatus_Succeed;                            \
+        UnitTest::HandleHaveBeenTesting();										\
         if ((actual) == (expected))                                             \
         {                                                                       \
             TEST_FAILED();                                                      \
@@ -107,6 +110,8 @@ extern "C" __declspec(dllimport) int __stdcall IsDebuggerPresent(void);
 #include <Windows.h>
 #pragma comment(lib, "User32.lib")
 #endif
+
+static UnitTest*    gCurrentUnitTest	= nullptr;
 
 static UnitTest*    gUnitTests          = nullptr;
 static UnitTest*    gFailedUnitTests    = nullptr;
@@ -184,7 +189,7 @@ void UnitTest::TestFailed(const char* file, const int line)
         PRINTF_STRING_RED("Failed")
 		"unit test %s:%d:%s\nAt %s:%d\n", 
         gUnitTestsLogHeader,
-        this->file, this->line, this->name,
+        gCurrentUnitTest->file, gCurrentUnitTest->line, gCurrentUnitTest->name,
         file, line
     );
     
@@ -220,11 +225,16 @@ void UnitTest::TestFailed(const char* file, const int line)
     }
 }
 
+void UnitTest::HandleHaveBeenTesting()
+{
+	gCurrentUnitTest->status = UnitTestStatus_Succeed;
+}
+
 void UnitTest::HandleExitAfterFailed()
 {
-    this->status = UnitTestStatus_Failed;
-    this->failedNext = gFailedUnitTests;
-    gFailedUnitTests = this;
+	gCurrentUnitTest->status = UnitTestStatus_Failed;
+	gCurrentUnitTest->failedNext = gFailedUnitTests;
+    gFailedUnitTests = gCurrentUnitTest;
     
 	if (!IS_DEFINED(CONTINUE_UNIT_TEST_ON_FAIL))
 	{
@@ -255,8 +265,11 @@ int main(const int argc, const char* argv[])
     gUnitTestsRunCount = 0;
     for (UnitTest* unitTest = gUnitTests; unitTest != nullptr; unitTest = unitTest->next)
     {
+		// Setup before run a unit test
+		gCurrentUnitTest = unitTest;
 		gUnitTestsRunCount++;
 
+		// Run unit test
 		printf(
 			PRINTF_STRING_BLUE("%s")" Running new unit test (%d/" PRINTF_STRING_BLUE("%d") ")\n"
 			"  Name: " PRINTF_STRING_YELLOW("%s") "\n"
@@ -264,8 +277,9 @@ int main(const int argc, const char* argv[])
 			gUnitTestsLogHeader, gUnitTestsRunCount, gUnitTestsCount, unitTest->name, unitTest->file, unitTest->line
 		);
 
-        unitTest->func(unitTest);
+        unitTest->func();
 
+		// Update unit status
         const char* statusName;
         switch (unitTest->status)
         {
@@ -292,8 +306,12 @@ int main(const int argc, const char* argv[])
         printf(
             "  Status: %s\n\n", statusName
         );
+
+		// No current unit test running
+		gCurrentUnitTest = nullptr;
     }
 
+	// Prompt complete information
     if (gUnitTestsRunCount != gUnitTestsCount)
     {
         printf(
