@@ -10,17 +10,22 @@
 // Unit tests API
 // ------------------------------------------------------------------------------------------
 
-typedef void UnitTestFunc();
+struct UnitTest;
+typedef void UnitTestFunc(UnitTest* __unitTest);
 
 struct UnitTest
 {
-    const char*    const    name;
-    UnitTestFunc*  const    func;
-    UnitTest*      const    next;
+    const char*     const   name;
+    UnitTestFunc*   const   func;
+    const char*     const   file;
+    int             const   line;
 
-                            UnitTest(const char* name, UnitTestFunc* func);
+    UnitTest*       const   next;
+	UnitTest*				failedNext;
 
-    static int              TestFailed(const char* func, const int line);
+                            UnitTest(const char* name, UnitTestFunc* func, const char* file, const int line);
+    void                    TestFailed(const char* func, const int line);
+	void					HandleExitAfterFailed();
 };
 
 #ifndef CONCAT
@@ -32,25 +37,25 @@ struct UnitTest
 #define SYMBOL(PREFIX)      CONCAT(PREFIX, __LINE__)
 #endif
 
-#define DEFINE_UNIT_TEST(name)                                      \
-    static void SYMBOL(UnitTestFunc)();                             \
-    static UnitTest SYMBOL(UNIT_TEST)(name, SYMBOL(UnitTestFunc));  \
-    static void SYMBOL(UnitTestFunc)()
+#define DEFINE_UNIT_TEST(name)                                                          \
+    static void SYMBOL(UnitTestFunc)(UnitTest* __unitTest);                             \
+    static UnitTest SYMBOL(UNIT_TEST)(name, SYMBOL(UnitTestFunc), __FILE__, __LINE__);  \
+    static void SYMBOL(UnitTestFunc)(UnitTest* __unitTest)
 
 #if defined(_MSC_VER) && !defined(NDEBUG)
 extern "C" __declspec(dllimport) int __stdcall IsDebuggerPresent(void);
-#define TEST_FAILED()                                                               \
-    do {                                                                            \
-        const int exitCode = UnitTest::TestFailed(__FILE__, __LINE__);              \
-        if (IsDebuggerPresent()) __debugbreak();                                    \
-        exit(exitCode);                                                             \
-    } while (0)
+#define TEST_FAILED()															\
+    do {                                                                        \
+		__unitTest->TestFailed(__FILE__, __LINE__);								\
+        if (IsDebuggerPresent()) __debugbreak();								\
+		__unitTest->HandleExitAfterFailed();									\
+    } while (false)
 #else
-#define TEST_FAILED()                                                               \
-    do {                                                                            \
-        const int exitCode = UnitTest::TestFailed(__FILE__, __LINE__);              \
-        exit(exitCode);                                                             \
-    } while (0)
+#define TEST_FAILED()															\
+    do {                                                                        \
+		__unitTest->TestFailed(__FILE__, __LINE__);								\
+		__unitTest->HandleExitAfterFailed();									\
+    } while (false)
 #endif
 
 #define TEST(condition)                                                         \
@@ -91,12 +96,15 @@ extern "C" __declspec(dllimport) int __stdcall IsDebuggerPresent(void);
 #endif
 
 static UnitTest*    gUnitTests          = nullptr;
+static UnitTest*    gFailedUnitTests    = nullptr;
+
 static int          gUnitTestsCount     = 0;
 static int          gUnitTestsRunCount  = 0;
 static int          gUnitTestsExitCode  = 0;
 static const char*  gUnitTestsLogHeader = "[vectormath]";
 
-// `defined` operator on expression, the implementation is hard to understand
+/// `defined` operator on expression
+/// @note: The implementation is hard to understand
 #define IS_DEFINED(macro)               IS_DEFINED_1(#macro, macro)
 #define IS_DEFINED_1(name, value)       IS_DEFINED_2(name, sizeof(name), #value, sizeof(#value))
 constexpr bool IS_DEFINED_2(const char* name, const int nameLength, const char* value, const int valueLength)
@@ -117,36 +125,53 @@ constexpr bool IS_DEFINED_2(const char* name, const int nameLength, const char* 
     return false;
 }
 
-#define __EMPTYDEFINE
+#define __EMPTY_MACRO
 
 // Test IS_DEFINED
 static_assert(IS_DEFINED(__cplusplus), "IS_DEFINED is wrong!");
-static_assert(IS_DEFINED(__EMPTYDEFINE), "IS_DEFINED is wrong!");
-static_assert(!IS_DEFINED(__NODEFINEMACRO), "IS_DEFINED is wrong!");
+static_assert(IS_DEFINED(__EMPTY_MACRO), "IS_DEFINED is wrong!");
+static_assert(!IS_DEFINED(__UNDEFINED_MACRO), "IS_DEFINED is wrong!");
 
 #ifndef UNIT_TEST_GOTO_FILE_COMMAND
 #define UNIT_TEST_GOTO_FILE_COMMAND     "code --goto %s:%d"
 #endif
 
+#define PRINTF_COLOR_RED		"\033[0;31m"
+#define PRINTF_COLOR_BLUE		"\033[0;34m"
+#define PRINTF_COLOR_BLACK		"\033[0m"
+#define PRINTF_COLOR_GREEN		"\033[0;32m"
+#define PRINTF_COLOR_YELLOW		"\033[0;33m"
+
+#define PRINTF_STRING_RED(string) PRINTF_COLOR_RED string PRINTF_COLOR_BLACK
+#define PRINTF_STRING_BLUE(string) PRINTF_COLOR_BLUE string PRINTF_COLOR_BLACK
+#define PRINTF_STRING_GREEN(string) PRINTF_COLOR_GREEN string PRINTF_COLOR_BLACK
+#define PRINTF_STRING_YELLOW(string) PRINTF_COLOR_YELLOW string PRINTF_COLOR_BLACK
+
 static void NotifyProgammer(const char* title, const char* message);
 
-UnitTest::UnitTest(const char* name, UnitTestFunc* func)
+UnitTest::UnitTest(const char* name, UnitTestFunc* func, const char* file, int line)
     : name(name)
     , func(func)
+    , file(file)
+    , line(line)
     , next(gUnitTests)
 {
     gUnitTests = this;
     gUnitTestsCount++;
 }
 
-int UnitTest::TestFailed(const char* file, const int line)
+void UnitTest::TestFailed(const char* file, const int line)
 {
     char message[4096];
-    snprintf(message, sizeof(message), 
-        "Failed after run %d unit tests!!!\nAt %s:%d\n", gUnitTestsRunCount, file, line
+    printf(
+		PRINTF_STRING_BLUE("%s")
+		" "
+        PRINTF_STRING_RED("Failed")
+		"unit test %s:%d:%s\nAt %s:%d\n", 
+        gUnitTestsLogHeader,
+        this->file, this->line, this->name,
+        file, line
     );
-
-    printf("%s %s", gUnitTestsLogHeader, message);
     
     if (!IS_DEFINED(CONTINUE_UNIT_TEST_ON_FAIL))
     {
@@ -168,7 +193,7 @@ int UnitTest::TestFailed(const char* file, const int line)
         #endif
 
         gUnitTestsExitCode = -1;
-        NotifyProgammer("HLSLMath's UnitTests", notifyMessage);
+        NotifyProgammer("vectormath's UnitTests", notifyMessage);
         
         if (gotoSource)
         {
@@ -178,8 +203,19 @@ int UnitTest::TestFailed(const char* file, const int line)
             system(command);
         }
     }
+}
 
-    return gUnitTestsExitCode;
+void UnitTest::HandleExitAfterFailed()
+{
+	if (!IS_DEFINED(CONTINUE_UNIT_TEST_ON_FAIL))
+	{
+		exit(gUnitTestsExitCode);
+	}
+	else
+	{
+		this->failedNext = gFailedUnitTests;
+		gFailedUnitTests = this;
+	}
 }
 
 #if defined(UNIT_TESTS_MAIN)
@@ -193,14 +229,46 @@ int main(const int argc, const char* argv[])
         gUnitTestsLogHeader = argv[1];
     }
 
+	printf(
+		PRINTF_STRING_BLUE("%s") " Start running " PRINTF_STRING_GREEN("%d") " unit tests...\n\n",
+		gUnitTestsLogHeader, gUnitTestsCount
+	);
+
     gUnitTestsRunCount = 0;
     for (UnitTest* unitTest = gUnitTests; unitTest != nullptr; unitTest = unitTest->next)
     {
-        unitTest->func();
+		printf(
+			PRINTF_STRING_BLUE("%s") " Running new unit test\n" 
+			"  Name: " PRINTF_STRING_YELLOW("\"%s\"") "\n"
+			"  Defined at " PRINTF_STRING_YELLOW("%s:%d") "\n\n",
+			gUnitTestsLogHeader, unitTest->name, unitTest->file, unitTest->line
+		);
+
+        unitTest->func(unitTest);
         gUnitTestsRunCount++;
     }
 
-    printf("%s Run all %d unit tests successfully!!!\n", gUnitTestsLogHeader, gUnitTestsRunCount);
+    if (gUnitTestsRunCount != gUnitTestsCount)
+    {
+        printf(
+			PRINTF_STRING_BLUE("%s")
+			" "
+            PRINTF_STRING_RED("FAILURE")
+            ": Run " PRINTF_STRING_GREEN("%d") " out of " PRINTF_STRING_GREEN("%d") " unit tests!!!\n",
+            gUnitTestsLogHeader, gUnitTestsRunCount, gUnitTestsCount
+        );
+    }
+    else
+    {
+        printf(
+			PRINTF_STRING_BLUE("%s")
+			" "
+            PRINTF_STRING_GREEN("SUCCESS")
+            ": Run all " PRINTF_STRING_GREEN("%d") " unit tests successfully!!!\n",
+            gUnitTestsLogHeader, gUnitTestsRunCount
+        );
+    }
+    
     return gUnitTestsExitCode;
 }
 
@@ -215,3 +283,5 @@ void NotifyProgammer(const char* title, const char* message)
     #endif
 }
 #endif
+
+//! LEAVE AN EMPTY LINE HERE, REQUIRE BY GCC/G++
