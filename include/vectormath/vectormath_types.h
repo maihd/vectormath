@@ -102,7 +102,8 @@
 
 /// vec2
 /// 2D floating-point vector
-/// Components are 32 bit fixed-size
+/// Components are 32 bit fixed-size floating-point number
+/// Struct Layout: [float x][float y]
 typedef struct vec2
 {
     float                       x;
@@ -111,14 +112,23 @@ typedef struct vec2
 
 /// vec3
 /// 3D floating-point vector
-/// Components are 32 bit fixed-size
+/// Components are 32 bit fixed-size floating-point number
+/// Struct Layout: [float x][float y][float z][float __unused]
 typedef union VECTORMATH_ALIGNAS(vec3, 16)
 {
     struct
     {
         float                   x;
-        float                   y;
-        float                   z;
+		
+		union
+		{
+			struct
+			{
+				float           y;
+				float           z;
+			};
+			vec2				yz;
+		};
     };
     vec2                        xy;
     __m128                      m128;
@@ -126,14 +136,23 @@ typedef union VECTORMATH_ALIGNAS(vec3, 16)
 
 /// vec4
 /// 4D floating-point vector
-/// Components are 32 bit fixed-size
+/// Components are 32 bit fixed-size floating-point number
+/// Struct Layout: [float x][float y][float z][float w]
 typedef union VECTORMATH_ALIGNAS(vec4, 16)
 {
     struct
     {
         float                   x;
-        float                   y;
-        float                   z;
+
+		union
+		{
+			struct
+			{
+				float           y;
+				float           z;
+			};
+			vec2				yz;
+		};
 
         union
         {
@@ -157,7 +176,8 @@ typedef union VECTORMATH_ALIGNAS(vec4, 16)
 
 /// ivec2
 /// 2D integer vector
-/// Components are 32 bit fixed-size
+/// Components are 32 bit fixed-size signed integer
+/// Struct Layout: [int32_t x][int32_t y]
 typedef struct ivec2
 {
     int32_t                     x, y;
@@ -165,7 +185,8 @@ typedef struct ivec2
 
 /// ivec3
 /// 3D integer vector
-/// Components are 32 bit fixed-size
+/// Components are 32 bit fixed-size signed integer
+/// Struct Layout: [int32_t x][int32_t y][int32_t z][int32_t __unused]
 typedef union VECTORMATH_ALIGNAS(ivec3, 16)
 {
     struct
@@ -178,7 +199,8 @@ typedef union VECTORMATH_ALIGNAS(ivec3, 16)
 
 /// ivec4
 /// 4D integer vector
-/// Components are 32 bit fixed-size
+/// Components are 32 bit fixed-size signed integer
+/// Struct Layout: [int32_t x][int32_t y][int32_t z][int32_t w]
 typedef union VECTORMATH_ALIGNAS(ivec4, 16)
 {
     struct
@@ -191,7 +213,8 @@ typedef union VECTORMATH_ALIGNAS(ivec4, 16)
 
 /// ivec2
 /// 2D integer vector
-/// Components are 32 bit fixed-size
+/// Components are 32 bit fixed-size unsigned integer
+/// Struct Layout: [uint32_t x][uint32_t y]
 typedef struct uvec2
 {
     uint32_t                    x, y;
@@ -199,7 +222,8 @@ typedef struct uvec2
 
 /// ivec3
 /// 3D integer vector
-/// Components are 32 bit fixed-size
+/// Components are 32 bit fixed-size unsigned integer
+/// Struct Layout: [uint32_t x][uint32_t y][uint32_t z][uint32_t __unused]
 typedef union VECTORMATH_ALIGNAS(uvec3, 16)
 {
     struct
@@ -212,7 +236,8 @@ typedef union VECTORMATH_ALIGNAS(uvec3, 16)
 
 /// ivec4
 /// 4D integer vector
-/// Components are 32 bit fixed-size
+/// Components are 32 bit fixed-size unsigned integer
+/// Struct Layout: [uint32_t x][uint32_t y][uint32_t z][uint32_t w]
 typedef union VECTORMATH_ALIGNAS(uvec4, 16)
 {
     struct
@@ -224,8 +249,11 @@ typedef union VECTORMATH_ALIGNAS(uvec4, 16)
 } uvec4;
 
 /// mat2
-/// 2x2 floating-point matrix
-/// Components are 32 bit fixed-size
+/// 2x2 floating-point row-major matrix
+/// Components are 32 bit fixed-size floating-point number
+/// Struct Layout: 
+///		[float m00][float m01]
+///		[float m10][float m11]
 typedef union VECTORMATH_ALIGNAS(mat2, 16)
 {
     struct
@@ -239,12 +267,18 @@ typedef union VECTORMATH_ALIGNAS(mat2, 16)
         float                   m00, m01;
         float                   m10, m11;
     };
+
     __m128                      m128;
 } mat2;
 
 /// mat3
-/// 3x3 floating-point matrix
-/// Components are 32 bit fixed-size
+/// 3x3 floating-point row-major matrix
+/// Components are 32 bit fixed-size floating-point number
+/// Struct Layout: 
+///		[float  m00][float  m01][float  m02][float _m03]
+///		[float  m10][float  m11][float  m12][float _m13]
+///		[float  m20][float  m21][float  m22][float _m23]
+///		[float _m30][float _m31][float _m32][float _m33]
 typedef union VECTORMATH_ALIGNAS(mat3, 16)
 {
     struct
@@ -263,8 +297,13 @@ typedef union VECTORMATH_ALIGNAS(mat3, 16)
 } mat3;
 
 /// mat4
-/// 4x4 floating-point matrix
-/// Components are 32 bit fixed-size
+/// 4x4 floating-point row-major matrix
+/// Components are 32 bit fixed-size floating-point number
+/// Struct Layout: 
+///		[float m00][float m01][float m02][float m03]
+///		[float m10][float m11][float m12][float m13]
+///		[float m20][float m21][float m22][float m23]
+///		[float m30][float m31][float m32][float m33]
 typedef union VECTORMATH_ALIGNAS(mat4, 16)
 {
     struct
