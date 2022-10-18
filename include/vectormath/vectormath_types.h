@@ -327,6 +327,7 @@ typedef union VECTORMATH_ALIGNAS(mat4, 16)
 // Argument types, use for functions' parameters (optimize on C++)
 // -------------------------------------------------------------
 
+/** NOT USE NOW 
 #ifdef __cplusplus
 typedef const vec2&		vec2_arg_t;
 typedef const vec3&		vec3_arg_t;
@@ -360,5 +361,6 @@ typedef mat2			mat2_arg_t;
 typedef mat3			mat3_arg_t;
 typedef mat4			mat4_arg_t;
 #endif
+*/
 
 //! LEAVE AN EMPTY LINE HERE, REQUIRE BY GCC/G++
