@@ -85,15 +85,18 @@
 // Define __m128
 #if VECTORMATH_SSE_SUPPORT
 #   include <emmintrin.h>
+	typedef __m128i		__m128u;
 #elif VECTORMATH_NEON_SUPPORT
 #   include <arm_neon.h>
     typedef float32x2_t __m64;
     typedef float32x4_t __m128;
-    typedef int32x4_t   __m128i;
+	typedef int32x4_t   __m128i;
+	typedef uint32x4_t  __m128u;
 #else
     typedef struct      __m64   { float      data[2]; } __m64;
     typedef struct      __m128  { float      data[4]; } __m128;
-    typedef struct      __m128i { int32_t    data[4]; } __m128i;
+	typedef struct      __m128i { int32_t    data[4]; } __m128i;
+	typedef struct      __m128u { uint32_t   data[4]; } __m128u;
 #endif
 
 // -------------------------------------------------------------
@@ -231,7 +234,7 @@ typedef union VECTORMATH_ALIGNAS(uvec3, 16)
         uint32_t                x, y, z;
     };
 
-    __m128i                     m128i;
+    __m128u                     m128u;
 } uvec3;
 
 /// ivec4
@@ -245,7 +248,7 @@ typedef union VECTORMATH_ALIGNAS(uvec4, 16)
         uint32_t                x, y, z, w;
     };
 
-    __m128i                     m128i;
+    __m128u                     m128u;
 } uvec4;
 
 /// mat2
