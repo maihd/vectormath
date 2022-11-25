@@ -3,13 +3,13 @@
 DEFINE_UNIT_TEST("Test radians()")
 {
     const float a = radians(180.0f);
-    const float b = PI;
+    const float b = FLOAT_PI;
     TEST(a == b);
 }
 
 DEFINE_UNIT_TEST("Test degrees()")
 {
-    const float a = degrees(PI);
+    const float a = degrees(FLOAT_PI);
     const float b = 180.0f;
     TEST(a == b);
 }

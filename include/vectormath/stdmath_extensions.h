@@ -1,7 +1,7 @@
 #pragma once
 
 #include <math.h>
-#include <float.h>
+#include <stdint.h>
 #include <stdbool.h>
 
 // -------------------------------------------------------------
@@ -44,15 +44,31 @@
 // Constants
 // -------------------------------------------------------------
 
-constexpr float PI                   = 3.141592653589f;
-constexpr float TWO_PI               = 3.141592653589f * 2.0f;
-constexpr float HALF_PI              = 3.141592653589f * 0.5f;
-constexpr float THREE_HALF_PI        = 3.141592653589f * 1.5f;
+constexpr int32_t   FLOAT_DECIMAL_DIG       = 9;                        // # of decimal digits of rounding precision
+constexpr int32_t   FLOAT_DIG               = 6;                        // # of decimal digits of precision
+constexpr float     FLOAT_EPSILON           = 1.192092896e-07F;         // smallest such that 1.0+FLT_EPSILON != 1.0
+constexpr float     FLOAT_HAS_SUBNORM       = 1;                        // type does support subnormal numbers
+constexpr float     FLOAT_GUARD             = 0;
+constexpr float     FLOAT_MANT_DIG          = 24;                       // # of bits in mantissa
+constexpr float     FLOAT_MAX               = 3.402823466e+38F;         // max value
+constexpr float     FLOAT_MAX_10_EXP        = 38;                       // max decimal exponent
+constexpr float     FLOAT_MAX_EXP           = 128;                      // max binary exponent
+constexpr float     FLOAT_MIN               = 1.175494351e-38F;         // min normalized positive value
+constexpr int32_t   FLOAT_MIN_10_EXP        = (-37);                    // min decimal exponent
+constexpr int32_t   FLOAT_MIN_EXP           = (-125);                   // min binary exponent
+constexpr int32_t   FLOAT_NORMALIZE         = 0;
+constexpr int32_t   FLOAT_RADIX             = 2;                        // exponent radix
+constexpr float     FLOAT_TRUE_MIN          = 1.401298464e-45F;         // min positive value
 
-constexpr float INV_PI               = 1.0f / (3.141592653589f * 1.0f);
-constexpr float INV_TWO_PI           = 1.0f / (3.141592653589f * 2.0f);
-constexpr float INV_HALF_PI          = 1.0f / (3.141592653589f * 0.5f);
-constexpr float INV_THREE_HALF_PI    = 1.0f / (3.141592653589f * 1.5f);
+constexpr float     FLOAT_PI                = 3.141592653589f;
+constexpr float     FLOAT_TWO_PI            = 3.141592653589f * 2.0f;
+constexpr float     FLOAT_HALF_PI           = 3.141592653589f * 0.5f;
+constexpr float     FLOAT_THREE_HALF_PI     = 3.141592653589f * 1.5f;
+
+constexpr float     FLOAT_INV_PI            = 1.0f / (3.141592653589f * 1.0f);
+constexpr float     FLOAT_INV_TWO_PI        = 1.0f / (3.141592653589f * 2.0f);
+constexpr float     FLOAT_INV_HALF_PI       = 1.0f / (3.141592653589f * 0.5f);
+constexpr float     FLOAT_INV_THREE_HALF_PI = 1.0f / (3.141592653589f * 1.5f);
 
 // -------------------------------------------------------------
 // Functions
@@ -61,13 +77,13 @@ constexpr float INV_THREE_HALF_PI    = 1.0f / (3.141592653589f * 1.5f);
 /// Convert degrees to radians
 __forceinline float radians(float degrees)
 {
-    return degrees * PI / 180.0f;
+    return degrees * FLOAT_PI / 180.0f;
 }
 
 /// Convert radians to degrees
 __forceinline float degrees(float radians)
 {
-    return radians * 180.0f / PI;
+    return radians * 180.0f / FLOAT_PI;
 }
 
 /// Compute the sign of 'x'
@@ -181,7 +197,7 @@ __forceinline float smoothstepf(float min, float max, float x)
 /// Test is two values are closely equal
 __forceinline bool isclosef(float a, float b)
 {
-    return fabsf(a - b) <= FLT_EPSILON;
+    return fabsf(a - b) <= FLOAT_EPSILON;
 }
 
 //! LEAVE AN EMPTY LINE HERE, REQUIRE BY GCC/G++
