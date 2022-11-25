@@ -87,32 +87,32 @@ __forceinline float degrees(float radians)
 }
 
 /// Compute the sign of 'x'
-__forceinline int sign(int x)
+__forceinline int32_t sign(int32_t x)
 {
     const int result = (x >> 31) | (!!x);
 	return result;
 }
 
 /// Get the smaller value
-__forceinline int min(int x, int y)
+__forceinline int32_t min(int32_t x, int32_t y)
 {
     return x < y ? x : y;
 }
 
 /// Get the larger value
-__forceinline int max(int x, int y)
+__forceinline int32_t max(int32_t x, int32_t y)
 {
     return x > y ? x : y;
 }
 
 /// Clamps the 'x' to the [min, max]
-__forceinline int clamp(int x, int min, int max)
+__forceinline int32_t clamp(int32_t x, int32_t min, int32_t max)
 {
     return x < min ? min : (x > max ? max : x);
 }
 
 /// Computes sign of 'x'
-__forceinline int signf(float x)
+__forceinline int32_t signf(float x)
 {
     union
     {
