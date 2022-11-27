@@ -557,7 +557,7 @@ __forceinline bool vec3_not_equal(vec3 a, vec3 b)
 __forceinline bool vec3_isclose(vec3 a, vec3 b)
 {
     const __m128 sub_abs = m128_fabsf(_mm_sub_ps(a.m128, b.m128));
-    return (_mm_movemask_ps(_mm_cmplt_ps(sub_abs, _mm_set_ps1(FLT_EPSILON))) & 0x7) == 0x7;
+    return (_mm_movemask_ps(_mm_cmplt_ps(sub_abs, _mm_set_ps1(FLOAT_EPSILON))) & 0x7) == 0x7;
 }
 
 __forceinline vec4 vec4_neg(vec4 v)
@@ -628,7 +628,7 @@ __forceinline bool vec4_not_equal(vec4 a, vec4 b)
 __forceinline bool vec4_isclose(vec4 a, vec4 b)
 {
     const __m128 sub_abs = m128_fabsf(_mm_sub_ps(a.m128, b.m128));
-    return _mm_movemask_ps(_mm_cmplt_ps(sub_abs, _mm_set_ps1(FLT_EPSILON))) == 0x16;
+    return _mm_movemask_ps(_mm_cmplt_ps(sub_abs, _mm_set_ps1(FLOAT_EPSILON))) == 0x16;
 }
 
 __forceinline mat4 mat4_neg(mat4 m)
@@ -949,9 +949,13 @@ __forceinline vec2 vec2_faceforward(vec2 n, vec2 i, vec2 nref)
 /// Computes sign of 'x'
 __forceinline ivec3 vec3_sign(vec3 v)
 {
-    ivec3 result;
-    result.m128i = _mm_castps_si128(_mm_and_ps(v.m128, _mm_castsi128_ps(_mm_set1_epi32(0x80000000))));
-    return result;
+    //__m128i iv = _mm_castps_si128(v.m128);
+    //int32_t* c = (int32_t*)&iv;
+    //
+    //ivec3 result;
+    //result.m128i = _mm_or_si128(_mm_srli_epi32(iv, 31), _mm_set_epi32(!!c[3], !!c[2], !!c[1], !!c[0]));
+    //return result;
+    return { signf(v.x), signf(v.y), signf(v.z) };
 }
 
 /// Computes absolute value
@@ -1235,9 +1239,15 @@ __forceinline vec3 vec3_faceforward(vec3 n, vec3 i, vec3 nref)
 /// Computes sign of 'x'
 __forceinline ivec4 vec4_sign(vec4 v)
 {
-    ivec4 result;
-    result.m128i = _mm_castps_si128(_mm_and_ps(v.m128, _mm_castsi128_ps(_mm_set1_epi32(0x80000000))));
-    return result;
+    //__m128i iv = _mm_castps_si128(v.m128);
+    //__m128i im = _mm_set1_epi32(31);
+    //
+    //int32_t* c = (int32_t*)&iv;
+    //
+    //ivec4 result;
+    //result.m128i = _mm_or_si128(iv, _mm_set_epi32(!!c[3], !!c[2], !!c[1], !!c[0]));
+    //return result;
+    return { signf(v.x), signf(v.y), signf(v.z), signf(v.w) };
 }
 
 /// Computes absolute value

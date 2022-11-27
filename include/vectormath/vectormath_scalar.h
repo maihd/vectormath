@@ -725,7 +725,7 @@ __forceinline vec3 vec3_asin(vec3 v)
 /// Computes inverse tangent
 __forceinline vec3 vec3_atan(vec3 v)
 {
-    return vec3_new(atanf(v.x), atanf(v.y), asinf(v.z));
+    return vec3_new(atanf(v.x), atanf(v.y), atanf(v.z));
 }
 
 /// Computes inverse tangent with 2 args
@@ -843,7 +843,7 @@ __forceinline vec3 vec3_lerp(vec3 a, vec3 b, vec3 t)
 }
 
 /// Performs a linear interpolation.
-__forceinline vec3 vec3_lerp(vec3 a, vec3 b, float t)
+__forceinline vec3 vec3_lerp1(vec3 a, vec3 b, float t)
 {
     return vec3_new(lerpf(a.x, b.x, t), lerpf(a.y, b.y, t), lerpf(a.z, b.z, t));
 }
@@ -1149,7 +1149,7 @@ __forceinline vec4 vec4_lerp(vec4 a, vec4 b, vec4 t)
 }
 
 /// Performs a linear interpolation.
-__forceinline vec4 vec4_lerp(vec4 a, vec4 b, float t)
+__forceinline vec4 vec4_lerp1(vec4 a, vec4 b, float t)
 {
     return vec4_new(
         lerpf(a.x, b.x, t),
