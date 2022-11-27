@@ -253,12 +253,12 @@ __forceinline vec3 vec3_div1(vec3 a, float b)
 
 __forceinline vec3 vec3_mul_add(vec3 a, vec3 b, vec3 c)
 {
-    return vec3_mul(vec3_add(a, b), c);
+    return vec3_add(c, vec3_mul(a, b));
 }
 
 __forceinline vec3 vec3_mul_sub(vec3 a, vec3 b, vec3 c)
 {
-    return vec3_mul(vec3_sub(a, b), c);
+    return vec3_sub(c, vec3_mul(a, b));
 }
 
 __forceinline bool vec3_equal(vec3 a, vec3 b)

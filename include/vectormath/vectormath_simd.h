@@ -1016,7 +1016,7 @@ __forceinline vec3 vec3_asin(vec3 v)
 /// Computes inverse tangent
 __forceinline vec3 vec3_atan(vec3 v)
 {
-    return vec3_new(atanf(v.x), atanf(v.y), asinf(v.z));
+    return vec3_new(atanf(v.x), atanf(v.y), atanf(v.z));
 }
 
 /// Computes inverse tangent with 2 args

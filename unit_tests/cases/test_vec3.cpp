@@ -151,7 +151,7 @@ DEFINE_UNIT_TEST("vec3 vec3_mul_add(vec3 a, vec3 b)")
     const vec3 b = vec3_new(4.0f, 5.0f, 6.0f);
     const vec3 c = vec3_new(7.0f, 8.0f, 9.0f);
     const vec3 d = vec3_mul_add(a, b, c);
-    TEST(d.x == 35.0f && d.y == 56.0f && d.z == 81.0f);
+    TEST(d.x == 11.0f && d.y == 18.0f && d.z == 27.0f);
 }
 
 DEFINE_UNIT_TEST("vec3 vec3_mul_sub(vec3 a, vec3 b)")
@@ -160,7 +160,7 @@ DEFINE_UNIT_TEST("vec3 vec3_mul_sub(vec3 a, vec3 b)")
     const vec3 b = vec3_new(4.0f, 5.0f, 6.0f);
     const vec3 c = vec3_new(7.0f, 8.0f, 9.0f);
     const vec3 d = vec3_mul_sub(a, b, c);
-    TEST(d.x == -21.0f && d.y == -24.0f && d.z == -27.0f);
+    TEST(d.x == 3.0f && d.y == -2.0f && d.z == -9.0f);
 }
 
 DEFINE_UNIT_TEST("vec3 vec3_equal(vec3 a, vec3 b)")
