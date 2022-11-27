@@ -5,11 +5,6 @@
 #error Your platform is not supporting Neon
 #endif
 
-// Warning when misuse this header
-#if !defined(VECTORMATH_INCLUDING_SSE2NEON)
-#warning You are attempt to use SSE2Neon outside of VectorMath.h, which is not a good idea
-#endif
-
 // -------------------------------------------------------------
 // SSE2NEON
 // -------------------------------------------------------------

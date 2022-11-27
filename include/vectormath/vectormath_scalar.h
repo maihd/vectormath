@@ -38,24 +38,21 @@ __forceinline vec2 vec2_from_vec3(vec3 v)
 /// Create a new vector 3D
 __forceinline vec3 vec3_new(float x, float y, float z)
 {
-    vec3 result;
-    result.m128 = _mm_setr_ps(x, y, z, 0.0f);
+    vec3 result = { x, y, z };
     return result;
 }
 
 /// Create a new vector 3D with 3 components have same value
 __forceinline vec3 vec3_new1(float s)
 {
-    vec3 result;
-    result.m128 = _mm_set_ps1(s);
+    vec3 result = { s, s, s };
     return result;
 }
 
 /// Create a new vector 3D from a vector 2D
 __forceinline vec3 vec3_from_vec2(vec2 v)
 {
-    vec3 result;
-    result.m128 = _mm_setr_ps(v.x, v.y, 0.0f, 0.0f);
+    vec3 result = { v.x, v.y, 0.0f };
     return result;
 }
 
@@ -70,16 +67,14 @@ __forceinline vec3 vec3_from_vec4(vec4 v)
 /// Create a new vector 4D
 __forceinline vec4 vec4_new(float x, float y, float z, float w)
 {
-    vec4 result;
-    result.m128 = _mm_setr_ps(x, y, z, w);
+    vec4 result = { x, y, z, w };
     return result;
 }
 
 /// Create a new vector 4D with 4 components have same value
 __forceinline vec4 vec4_new1(float s)
 {
-    vec4 result;
-    result.m128 = _mm_set_ps1(s);
+    vec4 result = { s, s, s, s };
     return result;
 }
 

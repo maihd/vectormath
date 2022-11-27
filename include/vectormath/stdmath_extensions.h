@@ -131,7 +131,7 @@ __forceinline float fracf(float x)
 }
 
 // Android polyfill for log2 and log2f
-#if defined(__ANDROID__)
+#if defined(__ANDROID__) && __ANDROID_API__ < 18
 __forceinline float log2f(float x)
 {
     return (logf(x) / 0.693147180559945f);

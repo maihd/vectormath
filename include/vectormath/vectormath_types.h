@@ -34,15 +34,16 @@
 #endif
 
 // Detect neon support & enable
-#if defined(__ARM_NEON) && defined(VECTORMATH_SIMD_ENABLE) && VECTORMATH_SIMD_ENABLE
-#   if defined(__aarch64__) && defined(__ANDROID__)
-#       define VECTORMATH_NEON_SUPPORT 0
-#   else
-#       define VECTORMATH_NEON_SUPPORT 1
-#   endif         
-#else
-#   define VECTORMATH_NEON_SUPPORT 0
-#endif
+#define VECTORMATH_NEON_SUPPORT 0 // No neon support now
+//#if (defined(__ARM_NEON) || defined(__ARM_NEON__)) && (defined(VECTORMATH_SIMD_ENABLE) && VECTORMATH_SIMD_ENABLE)
+//#   if defined(__ARM_ARCH_7A__) && defined(__ANDROID__)
+//#       define VECTORMATH_NEON_SUPPORT 0 // NO SUPPORT for Android 32bit
+//#   else
+//#       define VECTORMATH_NEON_SUPPORT 1
+//#   endif
+//#else
+//#   define VECTORMATH_NEON_SUPPORT 0
+//#endif
 
 // Detect SSE support & enable
 #define VECTORMATH_SSE_SUPPORT 0
@@ -85,18 +86,18 @@
 // Define __m128
 #if VECTORMATH_SSE_SUPPORT
 #   include <emmintrin.h>
-	typedef __m128i		__m128u;
+    typedef __m128i		__m128u;
 #elif VECTORMATH_NEON_SUPPORT
 #   include <arm_neon.h>
     typedef float32x2_t __m64;
     typedef float32x4_t __m128;
-	typedef int32x4_t   __m128i;
-	typedef uint32x4_t  __m128u;
+    typedef int32x4_t   __m128i;
+    typedef uint32x4_t  __m128u;
 #else
     typedef struct      __m64   { float      data[2]; } __m64;
     typedef struct      __m128  { float      data[4]; } __m128;
-	typedef struct      __m128i { int32_t    data[4]; } __m128i;
-	typedef struct      __m128u { uint32_t   data[4]; } __m128u;
+    typedef struct      __m128i { int32_t    data[4]; } __m128i;
+    typedef struct      __m128u { uint32_t   data[4]; } __m128u;
 #endif
 
 // -------------------------------------------------------------
@@ -281,7 +282,6 @@ typedef union VECTORMATH_ALIGNAS(mat2, 16)
 ///		[float  m00][float  m01][float  m02][float _m03]
 ///		[float  m10][float  m11][float  m12][float _m13]
 ///		[float  m20][float  m21][float  m22][float _m23]
-///		[float _m30][float _m31][float _m32][float _m33]
 typedef union VECTORMATH_ALIGNAS(mat3, 16)
 {
     struct
@@ -325,45 +325,5 @@ typedef union VECTORMATH_ALIGNAS(mat4, 16)
         float                   m30, m31, m32, m33;
     };
 } mat4;
-
-// -------------------------------------------------------------
-// Argument types, use for functions' parameters (optimize on C++)
-// -------------------------------------------------------------
-
-/** NOT USE NOW 
-#ifdef __cplusplus
-typedef const vec2&		vec2_arg_t;
-typedef const vec3&		vec3_arg_t;
-typedef const vec4&		vec4_arg_t;
-
-typedef const ivec2&	ivec2_arg_t;
-typedef const ivec3&	ivec3_arg_t;
-typedef const ivec4&	ivec4_arg_t;
-
-typedef const uvec2&	uvec2_arg_t;
-typedef const uvec3&	uvec3_arg_t;
-typedef const uvec4&	uvec4_arg_t;
-
-typedef const mat2&		mat2_arg_t;
-typedef const mat3&		mat3_arg_t;
-typedef const mat4&		mat4_arg_t;
-#else
-typedef vec2			vec2_arg_t;
-typedef vec3			vec3_arg_t;
-typedef vec4			vec4_arg_t;
-
-typedef ivec2			ivec2_arg_t;
-typedef ivec3			ivec3_arg_t;
-typedef ivec4			ivec4_arg_t;
-
-typedef uvec2			uvec2_arg_t;
-typedef uvec3			uvec3_arg_t;
-typedef uvec4			uvec4_arg_t;
-
-typedef mat2			mat2_arg_t;
-typedef mat3			mat3_arg_t;
-typedef mat4			mat4_arg_t;
-#endif
-*/
 
 //! LEAVE AN EMPTY LINE HERE, REQUIRE BY GCC/G++

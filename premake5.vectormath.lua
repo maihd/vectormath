@@ -10,6 +10,14 @@ local function getsubincludedir(directory)
 end
 
 return {
+    -- Get header files folder path
+    -- @param: directory - where vectormath is locate
+    getincludedir = getincludedir,
+
+    -- Get header files sub folder path
+    -- @param: directory - where vectormath is locate
+    getsubincludedir = getsubincludedir,
+
     -- Add vectormath's include directory to project
     -- @param: directory - where vectormath is locate
     includedirs = function (directory)

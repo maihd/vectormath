@@ -182,13 +182,25 @@ __forceinline vec3 operator+(vec3 v)
 
 __forceinline vec3& operator--(vec3& v)
 {
+#if VECTORMATH_SIMD_ENABLE
     v.m128 = _mm_sub_ps(v.m128, _mm_set_ps1(1.0f));
+#else
+    v.x--;
+    v.y--;
+    v.z--;
+#endif
     return v;
 }
 
 __forceinline vec3& operator++(vec3& v)
 {
+#if VECTORMATH_SIMD_ENABLE
     v.m128 = _mm_add_ps(v.m128, _mm_set_ps1(1.0f));
+#else
+    v.x++;
+    v.y++;
+    v.z++;
+#endif
     return v;
 }
 
@@ -332,13 +344,27 @@ __forceinline vec4 operator+(vec4 v)
 
 __forceinline vec4& operator--(vec4& v)
 {
+#if VECTORMATH_SIMD_ENABLE
     v.m128 = _mm_sub_ps(v.m128, _mm_set_ps1(1.0f));
+#else
+    v.x--;
+    v.y--;
+    v.z--;
+    v.w--;
+#endif
     return v;
 }
 
 __forceinline vec4& operator++(vec4& v)
 {
+#if VECTORMATH_SIMD_ENABLE
     v.m128 = _mm_add_ps(v.m128, _mm_set_ps1(1.0f));
+#else
+    v.x--;
+    v.y--;
+    v.z--;
+    v.w--;
+#endif
     return v;
 }
 
