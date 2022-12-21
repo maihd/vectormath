@@ -4,7 +4,7 @@
 // Swizzle functions
 // -------------------------------------------------------------
 
-#if !defined(VECTORMATH_SWIZZLES_DISABLED) && defined(__cplusplus)
+#if !defined(VECTORMATH_SWIZZLES_DISABLED)
 
 // Make sure we have vector_math functions
 #ifndef VECTORMATH_FUNCTIONS_DEFINED
