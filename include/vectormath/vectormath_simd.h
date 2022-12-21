@@ -2442,14 +2442,16 @@ __forceinline mat4 mat4_rotation_quat(vec4 quaternion)
     return mat4_rotation(axisangle.x, axisangle.y, axisangle.z, axisangle.w);
 }
 
+/// Create 2D transformation matrix
 __forceinline mat4 mat4_transform2(vec2 position, float angle, vec2 scale)
 {
-    const mat4 translation  = mat4_translation_vec3(vec3_from_vec2(position));
+    const mat4 translation  = mat4_translation_vec2(position);
     const mat4 rotation     = mat4_rotation_z(angle);
     const mat4 scalation    = mat4_scalation_vec2(scale);
     return mat4_mul(mat4_mul(translation, rotation), scalation);
 }
 
+/// Create 3D transformation matrix
 __forceinline mat4 mat4_transform3(vec3 position, vec4 quat, vec3 scale)
 {
     const mat4 translation  = mat4_translation_vec3(position);
