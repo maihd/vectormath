@@ -667,6 +667,28 @@ __forceinline vec2 vec2_faceforward(vec2 n, vec2 i, vec2 nref)
     return vec2_dot(i, nref) < 0.0f ? n : vec2_neg(n);
 }
 
+/// Compute angle vector
+__forceinline float vec2_angle(vec2 v)
+{
+    return atan2f(v.y, v.x);
+}
+
+/// Compute angle vector in degrees
+__forceinline float vec2_angle_deg(vec2 v)
+{
+    return float_rad2deg(vec2_angle(v));
+}
+
+/// Create new vector with angle and length
+__forceinline vec2 vec2_from_angle(float angle, float length) {
+    return vec2_new(cosf(angle) * length, sinf(angle) * length);
+}
+
+/// Create new vector with angle in degrees, and length
+__forceinline vec2 vec2_from_angle_deg(float angle, float length) {
+    return vec2_from_angle(float_rad2deg(angle), length);
+}
+
 /// Computes sign of 'x'
 __forceinline ivec3 vec3_sign(vec3 v)
 {
