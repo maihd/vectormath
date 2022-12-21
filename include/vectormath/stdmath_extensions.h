@@ -71,20 +71,8 @@ constexpr float     FLOAT_INV_HALF_PI       = 1.0f / (3.141592653589f * 0.5f);
 constexpr float     FLOAT_INV_THREE_HALF_PI = 1.0f / (3.141592653589f * 1.5f);
 
 // -------------------------------------------------------------
-// Functions
+// int32_t Functions
 // -------------------------------------------------------------
-
-/// Convert degrees to radians
-__forceinline float float_rad2deg(float degrees)
-{
-    return degrees * FLOAT_PI / 180.0f;
-}
-
-/// Convert radians to degrees
-__forceinline float float_deg2rad(float radians)
-{
-    return radians * 180.0f / FLOAT_PI;
-}
 
 /// Compute the sign of 'x'
 __forceinline int32_t int32_sign(int32_t x)
@@ -111,6 +99,22 @@ __forceinline int32_t int32_clamp(int32_t x, int32_t min, int32_t max)
     return x < min ? min : (x > max ? max : x);
 }
 
+// -------------------------------------------------------------
+// float Functions
+// -------------------------------------------------------------
+
+/// Convert degrees to radians
+__forceinline float float_rad2deg(float degrees)
+{
+    return degrees * FLOAT_PI / 180.0f;
+}
+
+/// Convert radians to degrees
+__forceinline float float_deg2rad(float radians)
+{
+    return radians * 180.0f / FLOAT_PI;
+}
+
 /// Computes sign of 'x'
 __forceinline int32_t float_sign(float x)
 {
@@ -131,7 +135,7 @@ __forceinline float float_frac(float x)
 }
 
 // Android polyfill for log2 and log2f
-#if defined(__ANDROID__) && __ANDROID_API__ < 18
+#if defined(__ANDROID__) && defined(__ANDROID_API__) && __ANDROID_API__ < 18
 __forceinline float log2f(float x)
 {
     return (logf(x) / 0.693147180559945f);
@@ -142,6 +146,11 @@ __forceinline double log2(double x)
     return (log(x) / 0.693147180559945);
 }
 #endif
+
+__forceinline float float_log2(float x)
+{
+    return (logf(x) / 0.693147180559945f);
+}
 
 /// Get the smaller value
 __forceinline float float_min(float x, float y)
