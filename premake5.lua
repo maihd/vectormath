@@ -1,11 +1,13 @@
 local ROOT_DIR = path.getabsolute(".")
 local BUILD_DIR = path.join(ROOT_DIR, "projects")
 
-local ENV = require("premake5.env")
+local ENV = require(".env")
 local PROJECT_PREFIX = "vectormath"
 
 local MAILIB_PATH = path.join(ROOT_DIR, "examples/3rd_party/mailib")
 local MaiLib = dofile(path.join(MAILIB_PATH, "premake5.mailib.lua"))
+
+local vectormath = require("vectormath.premake5")
 
 local function vectormathproject(name)
     if (type(name) == "string") then
@@ -15,7 +17,6 @@ local function vectormathproject(name)
     end
 
     -- Import vectormath premake5 module
-    local vectormath = require("premake5.vectormath")
     vectormath.includedirs(ROOT_DIR)
     vectormath.files(ROOT_DIR)
 end
