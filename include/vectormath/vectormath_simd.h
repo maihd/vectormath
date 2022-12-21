@@ -678,7 +678,7 @@ __forceinline bool mat4_not_equal(mat4 a, mat4 b)
 /// Computes sign of 'x'
 __forceinline ivec2 vec2_sign(vec2 v)
 {
-    ivec2 result = { signf(v.x), signf(v.y) };
+    ivec2 result = { float_sign(v.x), float_sign(v.y) };
     return result;
 }
 
@@ -787,7 +787,7 @@ __forceinline vec2 vec2_pow(vec2 a, vec2 b)
 /// Get the fractal part of floating point
 __forceinline vec2 vec2_frac(vec2 v)
 {
-    return vec2_new(fracf(v.x), fracf(v.y));
+    return vec2_new(float_frac(v.x), float_frac(v.y));
 }
 
 /// Computes the floating-point remainder of the division operation x/y
@@ -823,49 +823,49 @@ __forceinline vec2 vec2_trunc(vec2 v)
 /// Get the smaller value
 __forceinline vec2 vec2_min(vec2 a, vec2 b)
 {
-    return vec2_new(minf(a.x, b.x), minf(a.y, b.y));
+    return vec2_new(float_min(a.x, b.x), float_min(a.y, b.y));
 }
 
 /// Get the larger value
 __forceinline vec2 vec2_max(vec2 a, vec2 b)
 {
-    return vec2_new(maxf(a.x, b.x), maxf(a.y, b.y));
+    return vec2_new(float_max(a.x, b.x), float_max(a.y, b.y));
 }
 
 /// Clamps the 'x' value to the [min, max].
 __forceinline vec2 vec2_clamp(vec2 v, vec2 min, vec2 max)
 {
-    return vec2_new(clampf(v.x, min.x, max.x), clampf(v.y, min.y, max.y));
+    return vec2_new(float_clamp(v.x, min.x, max.x), float_clamp(v.y, min.y, max.y));
 }
 
 /// Clamps the specified value within the range of 0 to 1
 __forceinline vec2 vec2_saturate(vec2 v)
 {
-    return vec2_new(saturatef(v.x), saturatef(v.y));
+    return vec2_new(float_saturate(v.x), float_saturate(v.y));
 }
 
 /// Compares two values, returning 0 or 1 based on which value is greater.
 __forceinline vec2 vec2_step(vec2 a, vec2 b)
 {
-    return vec2_new(stepf(a.x, b.x), stepf(a.y, b.y));
+    return vec2_new(float_step(a.x, b.x), float_step(a.y, b.y));
 }
 
 /// Performs a linear interpolation.
 __forceinline vec2 vec2_lerp(vec2 a, vec2 b, vec2 t)
 {
-    return vec2_new(lerpf(a.x, b.x, t.x), lerpf(a.y, b.y, t.y));
+    return vec2_new(float_lerp(a.x, b.x, t.x), float_lerp(a.y, b.y, t.y));
 }
 
 /// Performs a linear interpolation.
 __forceinline vec2 vec2_lerp1(vec2 a, vec2 b, float t)
 {
-    return vec2_new(lerpf(a.x, b.x, t), lerpf(a.y, b.y, t));
+    return vec2_new(float_lerp(a.x, b.x, t), float_lerp(a.y, b.y, t));
 }
 
 /// Compute a smooth Hermite interpolation
 __forceinline vec2 vec2_smoothstep(vec2 a, vec2 b, vec2 t)
 {
-    return vec2_new(smoothstepf(a.x, b.x, t.x), smoothstepf(a.y, b.y, t.y));
+    return vec2_new(float_smoothstep(a.x, b.x, t.x), float_smoothstep(a.y, b.y, t.y));
 }
 
 /// Computes square root of 'x'.
@@ -877,7 +877,7 @@ __forceinline vec2 vec2_sqrt(vec2 v)
 /// Computes inverse square root of 'x'.
 __forceinline vec2 vec2_rsqrt(vec2 v)
 {
-    return vec2_new(rsqrtf(v.x), rsqrtf(v.y));
+    return vec2_new(float_rsqrt(v.x), float_rsqrt(v.y));
 }
 
 /// Compute dot product of two vectors
@@ -955,7 +955,7 @@ __forceinline ivec3 vec3_sign(vec3 v)
     //ivec3 result;
     //result.m128i = _mm_or_si128(_mm_srli_epi32(iv, 31), _mm_set_epi32(!!c[3], !!c[2], !!c[1], !!c[0]));
     //return result;
-    return { signf(v.x), signf(v.y), signf(v.z) };
+    return { float_sign(v.x), float_sign(v.y), float_sign(v.z) };
 }
 
 /// Computes absolute value
@@ -1064,7 +1064,7 @@ __forceinline vec3 vec3_pow(vec3 a, vec3 b)
 /// Get the fractal part of floating point
 __forceinline vec3 vec3_frac(vec3 v)
 {
-    return vec3_new(fracf(v.x), fracf(v.y), fracf(v.z));
+    return vec3_new(float_frac(v.x), float_frac(v.y), float_frac(v.z));
 }
 
 /// Computes the floating-point remainder of the division operation x/y
@@ -1100,49 +1100,49 @@ __forceinline vec3 vec3_trunc(vec3 v)
 /// Get the smaller value
 __forceinline vec3 vec3_min(vec3 a, vec3 b)
 {
-    return vec3_new(minf(a.x, b.x), minf(a.y, b.y), minf(a.z, b.z));
+    return vec3_new(float_min(a.x, b.x), float_min(a.y, b.y), float_min(a.z, b.z));
 }
 
 /// Get the larger value
 __forceinline vec3 vec3_max(vec3 a, vec3 b)
 {
-    return vec3_new(maxf(a.x, b.x), maxf(a.y, b.y), maxf(a.z, b.z));
+    return vec3_new(float_max(a.x, b.x), float_max(a.y, b.y), float_max(a.z, b.z));
 }
 
 /// Clamps the 'x' value to the [min, max].
 __forceinline vec3 vec3_clamp(vec3 v, vec3 min, vec3 max)
 {
-    return vec3_new(clampf(v.x, min.x, max.x), clampf(v.y, min.y, max.y), clampf(v.z, min.z, max.z));
+    return vec3_new(float_clamp(v.x, min.x, max.x), float_clamp(v.y, min.y, max.y), float_clamp(v.z, min.z, max.z));
 }
 
 /// Clamps the specified value within the range of 0 to 1
 __forceinline vec3 vec3_saturate(vec3 v)
 {
-    return vec3_new(saturatef(v.x), saturatef(v.y), saturatef(v.z));
+    return vec3_new(float_saturate(v.x), float_saturate(v.y), float_saturate(v.z));
 }
 
 /// Compares two values, returning 0 or 1 based on which value is greater.
 __forceinline vec3 vec3_step(vec3 a, vec3 b)
 {
-    return vec3_new(stepf(a.x, b.x), stepf(a.y, b.y), stepf(a.z, b.z));
+    return vec3_new(float_step(a.x, b.x), float_step(a.y, b.y), float_step(a.z, b.z));
 }
 
 /// Performs a linear interpolation.
 __forceinline vec3 vec3_lerp(vec3 a, vec3 b, vec3 t)
 {
-    return vec3_new(lerpf(a.x, b.x, t.x), lerpf(a.y, b.y, t.y), lerpf(a.z, b.z, t.z));
+    return vec3_new(float_lerp(a.x, b.x, t.x), float_lerp(a.y, b.y, t.y), float_lerp(a.z, b.z, t.z));
 }
 
 /// Performs a linear interpolation.
 __forceinline vec3 vec3_lerp1(vec3 a, vec3 b, float t)
 {
-    return vec3_new(lerpf(a.x, b.x, t), lerpf(a.y, b.y, t), lerpf(a.z, b.z, t));
+    return vec3_new(float_lerp(a.x, b.x, t), float_lerp(a.y, b.y, t), float_lerp(a.z, b.z, t));
 }
 
 // Compute a smooth Hermite interpolation
 __forceinline vec3 vec3_smoothstep(vec3 a, vec3 b, vec3 t)
 {
-    return vec3_new(smoothstepf(a.x, b.x, t.x), smoothstepf(a.y, b.y, t.y), smoothstepf(a.z, b.z, t.z));
+    return vec3_new(float_smoothstep(a.x, b.x, t.x), float_smoothstep(a.y, b.y, t.y), float_smoothstep(a.z, b.z, t.z));
 }
 
 /// Computes square root of 'x'.
@@ -1154,7 +1154,7 @@ __forceinline vec3 vec3_sqrt(vec3 v)
 /// Computes inverse square root of 'x'.
 __forceinline vec3 vec3_rsqrt(vec3 v)
 {
-    return vec3_new(rsqrtf(v.x), rsqrtf(v.y), rsqrtf(v.z));
+    return vec3_new(float_rsqrt(v.x), float_rsqrt(v.y), float_rsqrt(v.z));
 }
 
 /// Compute cross product of two vectors
@@ -1206,7 +1206,7 @@ __forceinline vec3 vec3_normalize(vec3 v)
     const float lsqr = vec3_lensqr(v);
     if (lsqr > 0.0f)
     {
-        const float f = rsqrtf(lsqr);
+        const float f = float_rsqrt(lsqr);
         return vec3_mul1(v, f);
     }
     else
@@ -1247,7 +1247,7 @@ __forceinline ivec4 vec4_sign(vec4 v)
     //ivec4 result;
     //result.m128i = _mm_or_si128(iv, _mm_set_epi32(!!c[3], !!c[2], !!c[1], !!c[0]));
     //return result;
-    return { signf(v.x), signf(v.y), signf(v.z), signf(v.w) };
+    return { float_sign(v.x), float_sign(v.y), float_sign(v.z), float_sign(v.w) };
 }
 
 /// Computes absolute value
@@ -1356,7 +1356,7 @@ __forceinline vec4 vec4_pow(vec4 a, vec4 b)
 /// Get the fractal part of floating point
 __forceinline vec4 vec4_frac(vec4 v)
 {
-    return vec4_new(fracf(v.x), fracf(v.y), fracf(v.z), fracf(v.w));
+    return vec4_new(float_frac(v.x), float_frac(v.y), float_frac(v.z), float_frac(v.w));
 }
 
 /// Computes the floating-point remainder of the division operation x/y
@@ -1393,10 +1393,10 @@ __forceinline vec4 vec4_trunc(vec4 v)
 __forceinline vec4 vec4_min(vec4 a, vec4 b)
 {
     return vec4_new(
-        minf(a.x, b.x),
-        minf(a.y, b.y),
-        minf(a.z, b.z),
-        minf(a.w, b.w)
+        float_min(a.x, b.x),
+        float_min(a.y, b.y),
+        float_min(a.z, b.z),
+        float_min(a.w, b.w)
     );
 }
 
@@ -1404,10 +1404,10 @@ __forceinline vec4 vec4_min(vec4 a, vec4 b)
 __forceinline vec4 vec4_max(vec4 a, vec4 b)
 {
     return vec4_new(
-        maxf(a.x, b.x), 
-        maxf(a.y, b.y),
-        maxf(a.z, b.z),
-        maxf(a.w, b.w)
+        float_max(a.x, b.x), 
+        float_max(a.y, b.y),
+        float_max(a.z, b.z),
+        float_max(a.w, b.w)
     );
 }
 
@@ -1415,27 +1415,27 @@ __forceinline vec4 vec4_max(vec4 a, vec4 b)
 __forceinline vec4 vec4_clamp(vec4 v, vec4 min, vec4 max)
 {
     return vec4_new(
-        clampf(v.x, min.x, max.x), 
-        clampf(v.y, min.y, max.y), 
-        clampf(v.z, min.z, max.z), 
-        clampf(v.w, min.w, max.w)
+        float_clamp(v.x, min.x, max.x), 
+        float_clamp(v.y, min.y, max.y), 
+        float_clamp(v.z, min.z, max.z), 
+        float_clamp(v.w, min.w, max.w)
     );
 }
 
 /// Clamps the specified value within the range of 0 to 1
 __forceinline vec4 vec4_saturate(vec4 v)
 {
-    return vec4_new(saturatef(v.x), saturatef(v.y), saturatef(v.z), saturatef(v.w));
+    return vec4_new(float_saturate(v.x), float_saturate(v.y), float_saturate(v.z), float_saturate(v.w));
 }
 
 /// Compares two values, returning 0 or 1 based on which value is greater.
 __forceinline vec4 vec4_step(vec4 a, vec4 b)
 {
     return vec4_new(
-        stepf(a.x, b.x),
-        stepf(a.y, b.y),
-        stepf(a.z, b.z),
-        stepf(a.w, b.w)
+        float_step(a.x, b.x),
+        float_step(a.y, b.y),
+        float_step(a.z, b.z),
+        float_step(a.w, b.w)
     );
 }
 
@@ -1443,10 +1443,10 @@ __forceinline vec4 vec4_step(vec4 a, vec4 b)
 __forceinline vec4 vec4_lerp(vec4 a, vec4 b, vec4 t)
 {
     return vec4_new(
-        lerpf(a.x, b.x, t.x),
-        lerpf(a.y, b.y, t.y),
-        lerpf(a.z, b.z, t.z),
-        lerpf(a.w, b.w, t.w)
+        float_lerp(a.x, b.x, t.x),
+        float_lerp(a.y, b.y, t.y),
+        float_lerp(a.z, b.z, t.z),
+        float_lerp(a.w, b.w, t.w)
     );
 }
 
@@ -1454,10 +1454,10 @@ __forceinline vec4 vec4_lerp(vec4 a, vec4 b, vec4 t)
 __forceinline vec4 vec4_lerp1(vec4 a, vec4 b, float t)
 {
     return vec4_new(
-        lerpf(a.x, b.x, t),
-        lerpf(a.y, b.y, t),
-        lerpf(a.z, b.z, t),
-        lerpf(a.w, b.w, t)
+        float_lerp(a.x, b.x, t),
+        float_lerp(a.y, b.y, t),
+        float_lerp(a.z, b.z, t),
+        float_lerp(a.w, b.w, t)
     );
 }
 
@@ -1465,10 +1465,10 @@ __forceinline vec4 vec4_lerp1(vec4 a, vec4 b, float t)
 __forceinline vec4 vec4_smoothstep(vec4 a, vec4 b, vec4 t)
 {
     return vec4_new(
-        smoothstepf(a.x, b.x, t.x),
-        smoothstepf(a.y, b.y, t.y),
-        smoothstepf(a.z, b.z, t.z),
-        smoothstepf(a.w, b.w, t.w)
+        float_smoothstep(a.x, b.x, t.x),
+        float_smoothstep(a.y, b.y, t.y),
+        float_smoothstep(a.z, b.z, t.z),
+        float_smoothstep(a.w, b.w, t.w)
     );
 }
 
@@ -1481,7 +1481,7 @@ __forceinline vec4 vec4_sqrt(vec4 v)
 /// Computes inverse square root of 'x'.
 __forceinline vec4 vec4_rsqrt(vec4 v)
 {
-    return vec4_new(rsqrtf(v.x), rsqrtf(v.y), rsqrtf(v.z), rsqrtf(v.w));
+    return vec4_new(float_rsqrt(v.x), float_rsqrt(v.y), float_rsqrt(v.z), float_rsqrt(v.w));
 }
 
 /// Compute dot product of two vectors
@@ -1521,7 +1521,7 @@ __forceinline vec4 vec4_normalize(vec4 v)
     const float lsqr = vec4_lensqr(v);
     if (lsqr > 0.0f)
     {
-        const float f = rsqrtf(lsqr);
+        const float f = float_rsqrt(lsqr);
         return vec4_new(v.x * f, v.y * f, v.z * f, v.w * f);
     }
     else
@@ -2488,7 +2488,7 @@ __forceinline void mat4_decompose(mat4 m, vec3* scalation, vec4* quaternion, vec
 
     const float scale_x = vec3_length(xaxis);
     const float scale_y = vec3_length(yaxis);
-    const float scale_z = signf(det) * vec3_length(zaxis);
+    const float scale_z = float_sign(det) * vec3_length(zaxis);
 
     if (scalation)
     {

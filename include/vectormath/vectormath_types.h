@@ -30,7 +30,7 @@
 // -------------------------------------------------------------
 
 #ifndef VECTORMATH_SIMD_ENABLE
-#define VECTORMATH_SIMD_ENABLE 1
+#define VECTORMATH_SIMD_ENABLE 0
 #endif
 
 // Detect neon support & enable

@@ -196,9 +196,9 @@ DEFINE_UNIT_TEST("vec3 vec3_cos(vec3 v)")
     const vec3 a = vec3_new(1.0f, 2.0f, 3.0f);
     const vec3 b = vec3_cos(a);
     // This test is obviously dumb!
-    TEST(isclosef(b.x, cosf(a.x)));
-    TEST(isclosef(b.y, cosf(a.y)));
-    TEST(isclosef(b.z, cosf(a.z)));
+    TEST(float_isclose(b.x, cosf(a.x)));
+    TEST(float_isclose(b.y, cosf(a.y)));
+    TEST(float_isclose(b.z, cosf(a.z)));
 }
 
 DEFINE_UNIT_TEST("vec3 vec3_sin(vec3 v)")
@@ -256,9 +256,9 @@ DEFINE_UNIT_TEST("vec3 vec3_acos(vec3 v)")
     const vec3 a = vec3_new(-1.0f, 0.0f, 1.0f);
     const vec3 b = vec3_acos(a);
     // This test is obviously dumb!
-    TEST(isclosef(b.x, acosf(a.x)));
-    TEST(isclosef(b.y, acosf(a.y)));
-    TEST(isclosef(b.z, acosf(a.z)));
+    TEST(float_isclose(b.x, acosf(a.x)));
+    TEST(float_isclose(b.y, acosf(a.y)));
+    TEST(float_isclose(b.z, acosf(a.z)));
 }
 
 DEFINE_UNIT_TEST("vec3 vec3_asin(vec3 v)")
@@ -266,9 +266,9 @@ DEFINE_UNIT_TEST("vec3 vec3_asin(vec3 v)")
     const vec3 a = vec3_new(-1.0f, 0.0f, 1.0f);
     const vec3 b = vec3_asin(a);
     // This test is obviously dumb!
-    TEST(isclosef(b.x, asinf(a.x)));
-    TEST(isclosef(b.y, asinf(a.y)));
-    TEST(isclosef(b.z, asinf(a.z)));
+    TEST(float_isclose(b.x, asinf(a.x)));
+    TEST(float_isclose(b.y, asinf(a.y)));
+    TEST(float_isclose(b.z, asinf(a.z)));
 }
 
 DEFINE_UNIT_TEST("vec3 vec3_atan(vec3 v)")
@@ -276,9 +276,9 @@ DEFINE_UNIT_TEST("vec3 vec3_atan(vec3 v)")
     const vec3 a = vec3_new(-1.0f, 0.0f, 1.0f);
     const vec3 b = vec3_atan(a);
     // This test is obviously dumb!
-    TEST(isclosef(b.x, atanf(a.x)));
-    TEST(isclosef(b.y, atanf(a.y)));
-    TEST(isclosef(b.z, atanf(a.z)));
+    TEST(float_isclose(b.x, atanf(a.x)));
+    TEST(float_isclose(b.y, atanf(a.y)));
+    TEST(float_isclose(b.z, atanf(a.z)));
 }
 
 DEFINE_UNIT_TEST("vec3 vec3_exp(vec3 v)")
@@ -347,9 +347,9 @@ DEFINE_UNIT_TEST("vec3 vec3_frac(vec3 v)")
     const vec3 a = vec3_new(1.2f, 3.4f, 5.6f);
     const vec3 b = vec3_frac(a);
     // This test is obviously dumb!
-    TEST(b.x == fracf(a.x));
-    TEST(b.y == fracf(a.y));
-    TEST(b.z == fracf(a.z));
+    TEST(b.x == float_frac(a.x));
+    TEST(b.y == float_frac(a.y));
+    TEST(b.z == float_frac(a.z));
 }
 
 DEFINE_UNIT_TEST("vec3 vec3_fmod(vec3 a, vec3 b)")
@@ -409,9 +409,9 @@ DEFINE_UNIT_TEST("vec3 vec3_min(vec3 a, vec3 b)")
     const vec3 b = vec3_new(4.0f, 5.0f, 6.0f);;
     const vec3 c = vec3_min(a, b);
     // This test is obviously dumb!
-    TEST(c.x == minf(a.x, b.x));
-    TEST(c.y == minf(a.y, b.y));
-    TEST(c.z == minf(a.z, b.z));
+    TEST(c.x == float_min(a.x, b.x));
+    TEST(c.y == float_min(a.y, b.y));
+    TEST(c.z == float_min(a.z, b.z));
 }
 
 DEFINE_UNIT_TEST("vec3 vec3_max(vec3 a, vec3 b)")
@@ -420,9 +420,9 @@ DEFINE_UNIT_TEST("vec3 vec3_max(vec3 a, vec3 b)")
     const vec3 b = vec3_new(4.0f, 5.0f, 6.0f);;
     const vec3 c = vec3_max(a, b);
     // This test is obviously dumb!
-    TEST(c.x == maxf(a.x, b.x));
-    TEST(c.y == maxf(a.y, b.y));
-    TEST(c.z == maxf(a.z, b.z));
+    TEST(c.x == float_max(a.x, b.x));
+    TEST(c.y == float_max(a.y, b.y));
+    TEST(c.z == float_max(a.z, b.z));
 }
 
 DEFINE_UNIT_TEST("vec3 vec3_clamp(vec3 v, vec3 min, vec3 max)")
@@ -432,9 +432,9 @@ DEFINE_UNIT_TEST("vec3 vec3_clamp(vec3 v, vec3 min, vec3 max)")
     const vec3 max      = vec3_new(7.0f, 8.0f, 9.0f);
     const vec3 clamped  = vec3_clamp(v, min, max);
     // This test is obviously dumb!
-    TEST(clamped.x == clampf(v.x, min.x, max.x));
-    TEST(clamped.y == clampf(v.y, min.y, max.y));
-    TEST(clamped.z == clampf(v.z, min.z, max.z));
+    TEST(clamped.x == float_clamp(v.x, min.x, max.x));
+    TEST(clamped.y == float_clamp(v.y, min.y, max.y));
+    TEST(clamped.z == float_clamp(v.z, min.z, max.z));
 }
 
 DEFINE_UNIT_TEST("vec3 vec3_saturate(vec3 v)")
@@ -442,9 +442,9 @@ DEFINE_UNIT_TEST("vec3 vec3_saturate(vec3 v)")
     const vec3 a = vec3_new(1.0f, 2.0f, 3.0f);
     const vec3 b = vec3_saturate(a);
     // This test is obviously dumb!
-    TEST(b.x == saturatef(a.x));
-    TEST(b.y == saturatef(a.y));
-    TEST(b.z == saturatef(a.z));
+    TEST(b.x == float_saturate(a.x));
+    TEST(b.y == float_saturate(a.y));
+    TEST(b.z == float_saturate(a.z));
 }
 
 DEFINE_UNIT_TEST("vec3 vec3_lerp(vec3 a, vec3 b, vec3 t)")
@@ -454,9 +454,9 @@ DEFINE_UNIT_TEST("vec3 vec3_lerp(vec3 a, vec3 b, vec3 t)")
     const vec3 t        = vec3_new(-1.0f, 0.0f, 1.0f);
     const vec3 lerped   = vec3_lerp(a, b, t);
     // This test is obviously dumb!
-    TEST(lerped.x == lerpf(a.x, b.x, t.x));
-    TEST(lerped.y == lerpf(a.y, b.y, t.y));
-    TEST(lerped.z == lerpf(a.z, b.z, t.z));
+    TEST(lerped.x == float_lerp(a.x, b.x, t.x));
+    TEST(lerped.y == float_lerp(a.y, b.y, t.y));
+    TEST(lerped.z == float_lerp(a.z, b.z, t.z));
 }
 
 DEFINE_UNIT_TEST("vec3 vec3_lerp1(vec3 a, vec3 b, float t)")
@@ -466,9 +466,9 @@ DEFINE_UNIT_TEST("vec3 vec3_lerp1(vec3 a, vec3 b, float t)")
     const float t       = 0.5f;
     const vec3  lerped  = vec3_lerp1(a, b, t);
     // This test is obviously dumb!
-    TEST(lerped.x == lerpf(a.x, b.x, t));
-    TEST(lerped.y == lerpf(a.y, b.y, t));
-    TEST(lerped.z == lerpf(a.z, b.z, t));
+    TEST(lerped.x == float_lerp(a.x, b.x, t));
+    TEST(lerped.y == float_lerp(a.y, b.y, t));
+    TEST(lerped.z == float_lerp(a.z, b.z, t));
 }
 
 DEFINE_UNIT_TEST("vec3 vec3_smoothstep(vec3 a, vec3 b, vec3 t)")
@@ -478,9 +478,9 @@ DEFINE_UNIT_TEST("vec3 vec3_smoothstep(vec3 a, vec3 b, vec3 t)")
     const vec3 t        = vec3_new(-1.0f, 0.0f, 1.0f);
     const vec3 smoothed = vec3_smoothstep(a, b, t);
     // This test is obviously dumb!
-    TEST(smoothed.x == smoothstepf(a.x, b.x, t.x));
-    TEST(smoothed.y == smoothstepf(a.y, b.y, t.y));
-    TEST(smoothed.z == smoothstepf(a.z, b.z, t.z));
+    TEST(smoothed.x == float_smoothstep(a.x, b.x, t.x));
+    TEST(smoothed.y == float_smoothstep(a.y, b.y, t.y));
+    TEST(smoothed.z == float_smoothstep(a.z, b.z, t.z));
 }
 
 DEFINE_UNIT_TEST("vec3 vec3_sqrt(vec3 v)")
@@ -498,9 +498,9 @@ DEFINE_UNIT_TEST("vec3 vec3_rsqrt(vec3 v)")
     const vec3 a = vec3_new(1.0f, 2.0f, 3.0f);
     const vec3 b = vec3_rsqrt(a);
     // This test is obviously dumb!
-    TEST(b.x == rsqrtf(a.x));
-    TEST(b.y == rsqrtf(a.y));
-    TEST(b.z == rsqrtf(a.z));
+    TEST(b.x == float_rsqrt(a.x));
+    TEST(b.y == float_rsqrt(a.y));
+    TEST(b.z == float_rsqrt(a.z));
 }
 
 DEFINE_UNIT_TEST("float vec3_dot(vec3 a, vec3 b)")
@@ -556,9 +556,9 @@ DEFINE_UNIT_TEST("vec3 vec3_normalize(vec3 v)")
     const vec3 c = vec3_new(0.0f, 0.0f, 0.0f);
     const vec3 d = vec3_normalize(c);
 
-    TEST(isclosef(vec3_lensqr(b), 1.0f));
-    TEST(isclosef(vec3_lensqr(c), 0.0f));
-    TEST(isclosef(vec3_lensqr(d), 0.0f));
+    TEST(float_isclose(vec3_lensqr(b), 1.0f));
+    TEST(float_isclose(vec3_lensqr(c), 0.0f));
+    TEST(float_isclose(vec3_lensqr(d), 0.0f));
 }
 
 DEFINE_UNIT_TEST("vec3 vec3_reflect(vec3 v, vec3 n)")

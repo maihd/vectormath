@@ -75,44 +75,44 @@ constexpr float     FLOAT_INV_THREE_HALF_PI = 1.0f / (3.141592653589f * 1.5f);
 // -------------------------------------------------------------
 
 /// Convert degrees to radians
-__forceinline float radians(float degrees)
+__forceinline float float_rad2deg(float degrees)
 {
     return degrees * FLOAT_PI / 180.0f;
 }
 
 /// Convert radians to degrees
-__forceinline float degrees(float radians)
+__forceinline float float_deg2rad(float radians)
 {
     return radians * 180.0f / FLOAT_PI;
 }
 
 /// Compute the sign of 'x'
-__forceinline int32_t sign(int32_t x)
+__forceinline int32_t int32_sign(int32_t x)
 {
     const int result = (x >> 31) | (!!x);
 	return result;
 }
 
 /// Get the smaller value
-__forceinline int32_t min(int32_t x, int32_t y)
+__forceinline int32_t int32_min(int32_t x, int32_t y)
 {
     return x < y ? x : y;
 }
 
 /// Get the larger value
-__forceinline int32_t max(int32_t x, int32_t y)
+__forceinline int32_t int32_max(int32_t x, int32_t y)
 {
     return x > y ? x : y;
 }
 
 /// Clamps the 'x' to the [min, max]
-__forceinline int32_t clamp(int32_t x, int32_t min, int32_t max)
+__forceinline int32_t int32_clamp(int32_t x, int32_t min, int32_t max)
 {
     return x < min ? min : (x > max ? max : x);
 }
 
 /// Computes sign of 'x'
-__forceinline int32_t signf(float x)
+__forceinline int32_t float_sign(float x)
 {
     union
     {
@@ -120,11 +120,11 @@ __forceinline int32_t signf(float x)
         int   i;
     } cvt;
     cvt.f = x;
-    return sign(cvt.i);
+    return int32_sign(cvt.i);
 }
 
 /// Get the fractal part of floating point
-__forceinline float fracf(float x)
+__forceinline float float_frac(float x)
 {
     float y;
     return modff(x, &y);
@@ -144,43 +144,43 @@ __forceinline double log2(double x)
 #endif
 
 /// Get the smaller value
-__forceinline float minf(float x, float y)
+__forceinline float float_min(float x, float y)
 {
     return x < y ? x : y;
 }
 
 /// Get the larger value
-__forceinline float maxf(float x, float y)
+__forceinline float float_max(float x, float y)
 {
     return x > y ? x : y;
 }
 
 /// Clamps the 'x' value to the [min, max].
-__forceinline float clampf(float x, float min, float max)
+__forceinline float float_clamp(float x, float min, float max)
 {
     return x < min ? min : (x > max ? max : x);
 }
 
 /// Clamps the specified value within the range of 0 to 1
-__forceinline float saturatef(float x)
+__forceinline float float_saturate(float x)
 {
-    return clampf(x, 0.0f, 1.0f);
+    return float_clamp(x, 0.0f, 1.0f);
 }
 
 /// Compares two values, returning 0 or 1 based on which value is greater.
-__forceinline float stepf(float y, float x)
+__forceinline float float_step(float y, float x)
 {
     return (float)(x >= y);
 }
 
 /// Performs a linear interpolation.
-__forceinline float lerpf(float x, float y, float s)
+__forceinline float float_lerp(float x, float y, float s)
 {
     return x + (y - x) * s;
 }
 
 /// Computes inverse square root of 'x'.
-__forceinline float rsqrtf(float x)
+__forceinline float float_rsqrt(float x)
 {
     return 1.0f / sqrtf(x);
 }
@@ -189,13 +189,13 @@ __forceinline float rsqrtf(float x)
 /// @return: 0 if x <= min
 ///          1 if x >= max
 ///          (0, 1) otherwise
-__forceinline float smoothstepf(float min, float max, float x)
+__forceinline float float_smoothstep(float min, float max, float x)
 {
-    return (clampf(x, min, max) - min) / (max - min);
+    return (float_clamp(x, min, max) - min) / (max - min);
 }
 
 /// Test is two values are closely equal
-__forceinline bool isclosef(float a, float b)
+__forceinline bool float_isclose(float a, float b)
 {
     return fabsf(a - b) <= FLOAT_EPSILON;
 }

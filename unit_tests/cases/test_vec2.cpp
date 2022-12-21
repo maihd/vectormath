@@ -374,7 +374,7 @@ DEFINE_UNIT_TEST("vec2 vec2_frac(vec2 v)")
     const vec2 a = vec2_new(1.2f, 3.4f);
     const vec2 b = vec2_frac(a);
     // This test is obviously dumb!
-    TEST(b.x == fracf(a.x) && b.y == fracf(a.y));
+    TEST(b.x == float_frac(a.x) && b.y == float_frac(a.y));
 }
 
 DEFINE_UNIT_TEST("vec2 vec2_fmod(vec2 a, vec2 b)")
@@ -424,7 +424,7 @@ DEFINE_UNIT_TEST("vec2 vec2_min(vec2 a, vec2 b)")
     const vec2 b = vec2_new(3.0f, 4.0f);
     const vec2 c = vec2_min(a, b);
     // This test is obviously dumb!
-    TEST(c.x == minf(a.x, b.x) && c.y == minf(a.y, b.y));
+    TEST(c.x == float_min(a.x, b.x) && c.y == float_min(a.y, b.y));
 }
 
 DEFINE_UNIT_TEST("vec2 vec2_max(vec2 a, vec2 b)")
@@ -433,7 +433,7 @@ DEFINE_UNIT_TEST("vec2 vec2_max(vec2 a, vec2 b)")
     const vec2 b = vec2_new(3.0f, 4.0f);
     const vec2 c = vec2_max(a, b);
     // This test is obviously dumb!
-    TEST(c.x == maxf(a.x, b.x) && c.y == maxf(a.y, b.y));
+    TEST(c.x == float_max(a.x, b.x) && c.y == float_max(a.y, b.y));
 }
 
 DEFINE_UNIT_TEST("vec2 vec2_clamp(vec2 v, vec2 min, vec2 max)")
@@ -443,8 +443,8 @@ DEFINE_UNIT_TEST("vec2 vec2_clamp(vec2 v, vec2 min, vec2 max)")
     const vec2 max      = vec2_new(5.0f, 6.0f);
     const vec2 clamped  = vec2_clamp(v, min, max);
     // This test is obviously dumb!
-    TEST(clamped.x == clampf(v.x, min.x, max.x));
-    TEST(clamped.y == clampf(v.y, min.y, max.y));
+    TEST(clamped.x == float_clamp(v.x, min.x, max.x));
+    TEST(clamped.y == float_clamp(v.y, min.y, max.y));
 }
 
 DEFINE_UNIT_TEST("vec2 vec2_saturate(vec2 v)")
@@ -452,7 +452,7 @@ DEFINE_UNIT_TEST("vec2 vec2_saturate(vec2 v)")
     const vec2 a = vec2_new(1.0f, 2.0f);
     const vec2 b = vec2_saturate(a);
     // This test is obviously dumb!
-    TEST(b.x == saturatef(a.x) && b.y == saturatef(a.y));
+    TEST(b.x == float_saturate(a.x) && b.y == float_saturate(a.y));
 }
 
 DEFINE_UNIT_TEST("vec2 vec2_lerp(vec2 a, vec2 b, vec2 t)")
@@ -462,8 +462,8 @@ DEFINE_UNIT_TEST("vec2 vec2_lerp(vec2 a, vec2 b, vec2 t)")
     const vec2 t        = vec2_new(0.0f, 1.0f);
     const vec2 lerped   = vec2_lerp(a, b, t);
     // This test is obviously dumb!
-    TEST(lerped.x == lerpf(a.x, b.x, t.x));
-    TEST(lerped.y == lerpf(a.y, b.y, t.y));
+    TEST(lerped.x == float_lerp(a.x, b.x, t.x));
+    TEST(lerped.y == float_lerp(a.y, b.y, t.y));
 }
 
 DEFINE_UNIT_TEST("vec2 vec2_lerp1(vec2 a, vec2 b, float t)")
@@ -473,8 +473,8 @@ DEFINE_UNIT_TEST("vec2 vec2_lerp1(vec2 a, vec2 b, float t)")
     const float t       = 0.5f;
     const vec2  lerped  = vec2_lerp1(a, b, t);
     // This test is obviously dumb!
-    TEST(lerped.x == lerpf(a.x, b.x, t));
-    TEST(lerped.y == lerpf(a.y, b.y, t));
+    TEST(lerped.x == float_lerp(a.x, b.x, t));
+    TEST(lerped.y == float_lerp(a.y, b.y, t));
 }
 
 DEFINE_UNIT_TEST("vec2 vec2_smoothstep(vec2 a, vec2 b, vec2 t)")
@@ -484,8 +484,8 @@ DEFINE_UNIT_TEST("vec2 vec2_smoothstep(vec2 a, vec2 b, vec2 t)")
     const vec2 t        = vec2_new(0.0f, 1.0f);
     const vec2 smoothed = vec2_smoothstep(a, b, t);
     // This test is obviously dumb!
-    TEST(smoothed.x == smoothstepf(a.x, b.x, t.x));
-    TEST(smoothed.y == smoothstepf(a.y, b.y, t.y));
+    TEST(smoothed.x == float_smoothstep(a.x, b.x, t.x));
+    TEST(smoothed.y == float_smoothstep(a.y, b.y, t.y));
 }
 
 DEFINE_UNIT_TEST("vec2 vec2_sqrt(vec2 v)")
@@ -501,7 +501,7 @@ DEFINE_UNIT_TEST("vec2 vec2_rsqrt(vec2 v)")
     const vec2 a = vec2_new(1.0f, 2.0f);
     const vec2 b = vec2_rsqrt(a);
     // This test is obviously dumb!
-    TEST(b.x == rsqrtf(a.x) && b.y == rsqrtf(a.y));
+    TEST(b.x == float_rsqrt(a.x) && b.y == float_rsqrt(a.y));
 }
 
 DEFINE_UNIT_TEST("float vec2_dot(vec2 a, vec2 b)")
@@ -549,9 +549,9 @@ DEFINE_UNIT_TEST("vec2 vec2_normalize(vec2 v)")
     const vec2 c = vec2_new(0.0f, 0.0f);
     const vec2 d = vec2_normalize(c);
 
-    TEST(isclosef(vec2_lensqr(b), 1.0f));
-    TEST(isclosef(vec2_lensqr(c), 0.0f));
-    TEST(isclosef(vec2_lensqr(d), 0.0f));
+    TEST(float_isclose(vec2_lensqr(b), 1.0f));
+    TEST(float_isclose(vec2_lensqr(c), 0.0f));
+    TEST(float_isclose(vec2_lensqr(d), 0.0f));
 }
 
 DEFINE_UNIT_TEST("vec2 vec2_reflect(vec2 v, vec2 n)")

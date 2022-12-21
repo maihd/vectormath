@@ -50,7 +50,7 @@ float Random()
         uint32_t    u;
     } number = { rand() };
 
-    return clampf(2.0f * (float)(number.u % UINT16_MAX) / (float)UINT16_MAX, 0.0f, 1.0f);
+    return float_clamp(2.0f * (float)(number.u % UINT16_MAX) / (float)UINT16_MAX, 0.0f, 1.0f);
 }
 
 float RandomFloat(float min, float max)
