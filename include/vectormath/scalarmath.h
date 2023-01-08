@@ -149,11 +149,88 @@ __forceinline int32_t float_sign(float x)
     return int32_sign(cvt.i);
 }
 
-/// Get the fractal part of floating point
-__forceinline float float_frac(float x)
+/// Computes absolute value
+__forceinline float float_abs(float x)
 {
-    float y;
-    return modff(x, &y);
+    return fabsf(x);
+}
+
+/// Computes cosine
+__forceinline float float_cos(float x)
+{
+    return cosf(x);
+}
+
+/// Computes sine
+__forceinline float float_sin(float x)
+{
+    return sinf(x);
+}
+
+/// Computes tangent
+__forceinline float float_tan(float x)
+{
+    return tanf(x);
+}
+
+/// Computes hyperbolic cosine
+__forceinline float float_cosh(float x)
+{
+    return coshf(x);
+}
+
+/// Computes hyperbolic sine
+__forceinline float float_sinh(float x)
+{
+    return sinhf(x);
+}
+
+/// Computes hyperbolic tangent
+__forceinline float float_tanh(float x)
+{
+    return tanhf(x);
+}
+
+/// Computes inverse cosine
+__forceinline float float_acos(float x)
+{
+    return acosf(x);
+}
+
+/// Computes inverse sine
+__forceinline float float_asin(float x)
+{
+    return asinf(x);
+}
+
+/// Computes inverse tangent
+__forceinline float float_atan(float x)
+{
+    return atanf(x);
+}
+
+/// Computes inverse tangent with 2 args
+__forceinline float float_atan2(float x, float y)
+{
+    return atan2f(x, y);
+}
+
+/// Computes Euler number raised to the power 'x'
+__forceinline float float_exp(float x)
+{
+    return expf(x);
+}
+
+/// Computes 2 raised to the power 'x'
+__forceinline float float_exp2(float x)
+{
+    return exp2f(x);
+}
+
+/// Computes the base Euler number logarithm
+__forceinline float float_log(float x)
+{
+    return logf(x);
 }
 
 // Android polyfill for log2 and log2f
@@ -167,11 +244,67 @@ __forceinline double log2(double x)
 {
     return (log(x) / 0.693147180559945);
 }
-#endif
 
+/// Computes the base 2 logarithm
 __forceinline float float_log2(float x)
 {
     return (logf(x) / 0.693147180559945f);
+}
+#else
+/// Computes the base 2 logarithm
+__forceinline float float_log2(float x)
+{
+    return log2f(x);
+}
+#endif // Android polyfill for log2 and log2f
+
+/// Computes the base 10 logarithm
+__forceinline float float_log10(float x)
+{
+    return log10f(x);
+}
+
+/// Computes the value of base raised to the power exponent
+__forceinline float float_pow(float x, float y)
+{
+    return powf(x, y);
+}
+
+/// Get the fractal part of floating point
+__forceinline float float_frac(float x)
+{
+    float y;
+    return modff(x, &y);
+}
+
+/// Computes the floating-point remainder of the division operation x/y
+__forceinline float float_fmod(float x, float y)
+{
+    return fmodf(x, y);
+}
+
+/// Computes the smallest integer value not less than 'x'
+__forceinline float float_ceil(float x)
+{
+    return ceilf(x);
+}
+
+/// Computes the largest integer value not greater than 'x'
+__forceinline float float_floor(float x)
+{
+    return floorf(x);
+}
+
+/// Computes the nearest integer value
+__forceinline float float_round(float x)
+{
+    return roundf(x);
+}
+
+/// Computes the nearest integer not greater in magnitude than 'x'
+__forceinline float float_trunc(float x)
+{
+    return truncf(x);
 }
 
 /// Get the smaller value
@@ -204,7 +337,7 @@ __forceinline float float_step(float y, float x)
     return (float)(x >= y);
 }
 
-/// Performs a linear interpolation.
+/// Performs x linear interpolation.
 __forceinline float float_lerp(float x, float y, float s)
 {
     return x + (y - x) * s;
@@ -216,7 +349,7 @@ __forceinline float float_rsqrt(float x)
     return 1.0f / sqrtf(x);
 }
 
-/// Compute a smooth Hermite interpolation
+/// Compute x smooth Hermite interpolation
 /// @return: 0 if x <= min
 ///          1 if x >= max
 ///          (0, 1) otherwise
@@ -226,9 +359,9 @@ __forceinline float float_smoothstep(float min, float max, float x)
 }
 
 /// Test is two values are closely equal
-__forceinline bool float_isclose(float a, float b)
+__forceinline bool float_isclose(float x, float y)
 {
-    return fabsf(a - b) <= FLOAT_EPSILON;
+    return fabsf(x - y) <= FLOAT_EPSILON;
 }
 
 //! LEAVE AN EMPTY LINE HERE, REQUIRE BY GCC/G++
