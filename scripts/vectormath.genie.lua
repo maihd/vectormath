@@ -11,21 +11,21 @@ end
 
 return {
     -- Get header files folder path
-    -- @param: directory - where vectormath is locate
+    -- @param: directory - where vectormath is located
     getincludedir = getincludedir,
 
     -- Get header files sub folder path
-    -- @param: directory - where vectormath is locate
+    -- @param: directory - where vectormath is located
     getsubincludedir = getsubincludedir,
 
     -- Add vectormath's include directory to project
-    -- @param: directory - where vectormath is locate
+    -- @param: directory - where vectormath is located
     includedirs = function (directory)
         includedirs {
             getincludedir(directory)
         }
 
-        filter { "action:vs*"}
+        configuration "vs*"
         do
             files {
                 path.join(directory, "vectormath_types.natvis"),
@@ -34,14 +34,14 @@ return {
     end,
 
     -- Import vectormath's files to project
-    -- @param: directory - where vectormath is locate
+    -- @param: directory - where vectormath is located
     files = function (directory)
         local includedir = getincludedir(directory)
         local subincludedir = getsubincludedir(directory)
 
         files {
             path.join(subincludedir, "sse_to_neon.h"),
-            path.join(subincludedir, "stdmath_extensions.h"),
+            path.join(subincludedir, "scalarmath.h"),
     
             path.join(subincludedir, "vectormath_types.h"),
     

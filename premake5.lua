@@ -7,7 +7,7 @@ local PROJECT_PREFIX = "vectormath"
 local MAILIB_PATH = path.join(ROOT_DIR, "examples/3rd_party/mailib")
 local MaiLib = dofile(path.join(MAILIB_PATH, "premake5.mailib.lua"))
 
-local vectormath = require("vectormath.premake5")
+local vectormath = require("scripts.vectormath.premake5")
 
 local function vectormathproject(name)
     if (type(name) == "string") then
