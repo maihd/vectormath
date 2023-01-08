@@ -5,5 +5,6 @@
 - Build with your chosen build system
 
 ## Meta
+- Version: v0.1.0
 - License: UNLICENSE
 - Copyright: MaiHD @ 2022
