@@ -77,7 +77,7 @@ constexpr float     FLOAT_INV_THREE_HALF_PI = 1.0f / (3.141592653589f * 1.5f);
 /// Compute the sign of 'x'
 __forceinline int32_t int32_sign(int32_t x)
 {
-    const int result = (x >> 31) | (!!x);
+    const int32_t result = (x >> 31) | (!!x);
 	return result;
 }
 
@@ -95,6 +95,28 @@ __forceinline int32_t int32_max(int32_t x, int32_t y)
 
 /// Clamps the 'x' to the [min, max]
 __forceinline int32_t int32_clamp(int32_t x, int32_t min, int32_t max)
+{
+    return x < min ? min : (x > max ? max : x);
+}
+
+// -------------------------------------------------------------
+// uint32_t Functions
+// -------------------------------------------------------------
+
+/// Get the smaller value
+__forceinline uint32_t uint32_min(uint32_t x, uint32_t y)
+{
+    return x < y ? x : y;
+}
+
+/// Get the larger value
+__forceinline uint32_t uint32_max(uint32_t x, uint32_t y)
+{
+    return x > y ? x : y;
+}
+
+/// Clamps the 'x' to the [min, max]
+__forceinline uint32_t uint32_clamp(uint32_t x, uint32_t min, uint32_t max)
 {
     return x < min ? min : (x > max ? max : x);
 }

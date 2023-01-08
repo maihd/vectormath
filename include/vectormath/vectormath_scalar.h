@@ -1,6 +1,6 @@
 #pragma once
 
-#include "stdmath_extensions.h"
+#include "scalarmath.h"
 #include "vectormath_types.h"
 
 // Should not use both scalar & m128 versions of vector_math together

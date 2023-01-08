@@ -1,6 +1,6 @@
 #pragma once
 
-#include "stdmath_extensions.h"
+#include "scalarmath.h"
 #include "vectormath_types.h"
 
 // Make sure m128 is enable

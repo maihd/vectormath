@@ -41,7 +41,7 @@ return {
 
         files {
             path.join(subincludedir, "sse_to_neon.h"),
-            path.join(subincludedir, "stdmath_extensions.h"),
+            path.join(subincludedir, "scalarmath.h"),
     
             path.join(subincludedir, "vectormath_types.h"),
     
