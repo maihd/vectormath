@@ -16,6 +16,7 @@ Naming convention
 Function implementation philosophy
 ----------------------------------
 - Avoid branching!
+- Please avoid std version of floating-point math. Use scalarmath.h instead. (By now, there no implement for floating-point math functions. So we need std version, but its just a backend.)
 - Donot add more SIMD implementation module, instead add a wrapper, like sse_to_neon.h do!
 - Support both C and C++. But avoid C++ function overloading.
 - Only add basic operator overloading (+,-,*,/), with SIMD meaning.
