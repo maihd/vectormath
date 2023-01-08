@@ -4,7 +4,7 @@
 #include <assert.h>
 #include <stdlib.h>
 
-#include "../VectorMath.h"
+#include <vectormath.h>
 
 // ------------------------------------------------------------------------------------------
 // Unit tests API

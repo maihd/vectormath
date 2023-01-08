@@ -4,3 +4,6 @@
 
 /projects
 /unit_tests/out
+
+/scripts/*.exe
+/scripts/*.ilk
