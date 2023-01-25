@@ -41,7 +41,9 @@ int main(int argc, const char* argv[])
 
 void main_loop()
 {
-    srand((unsigned int)time(nullptr));
+    static float t = 0.0f;
+
+    t += 0.01f;
 
     SDL_Event event;
     while (SDL_PollEvent(&event))
@@ -59,7 +61,7 @@ void main_loop()
 
         SDL_GL_MakeCurrent(window, context);
         
-        glClearColor(0.0, 0.0, 0.0, 1);
+        glClearColor(t, t, t, 1);
         glClear(GL_COLOR_BUFFER_BIT);
         
         SDL_GL_SwapWindow(window);
