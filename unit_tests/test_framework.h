@@ -158,11 +158,19 @@ static_assert(!IS_DEFINED(__UNDEFINED_MACRO), "IS_DEFINED is wrong!");
 #define UNIT_TEST_GOTO_FILE_COMMAND     "code --goto %s:%d"
 #endif
 
+#ifdef EMSCRIPTEN
+#define PRINTF_COLOR_RED		
+#define PRINTF_COLOR_BLUE		
+#define PRINTF_COLOR_BLACK		
+#define PRINTF_COLOR_GREEN		
+#define PRINTF_COLOR_YELLOW		
+#else
 #define PRINTF_COLOR_RED		"\033[0;31m"
 #define PRINTF_COLOR_BLUE		"\033[0;34m"
 #define PRINTF_COLOR_BLACK		"\033[0m"
 #define PRINTF_COLOR_GREEN		"\033[0;32m"
 #define PRINTF_COLOR_YELLOW		"\033[0;33m"
+#endif
 
 #define PRINTF_STRING_RED(string) PRINTF_COLOR_RED string PRINTF_COLOR_BLACK
 #define PRINTF_STRING_BLUE(string) PRINTF_COLOR_BLUE string PRINTF_COLOR_BLACK

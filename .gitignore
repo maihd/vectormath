@@ -7,3 +7,5 @@
 
 /scripts/*.exe
 /scripts/*.ilk
+
+/examples/wasm/dist
