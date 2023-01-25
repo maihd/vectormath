@@ -9,3 +9,4 @@
 /scripts/*.ilk
 
 /examples/wasm/dist
+/unit_tests/projects/vectormath_unit_tests_wasm/dist
