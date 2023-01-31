@@ -8,7 +8,7 @@ set DIST_FOLDER=%EXE_FOLDER%\dist
 :: Build flags
 set OUTPUT=%DIST_FOLDER%\index.html
 set INCDIR=-I%ROOT_FOLDER%\include
-set CFLAGS=-O3
+set CFLAGS=-O3 -s ASYNCIFY
 set LFLAGS=-lGL -sUSE_SDL=2 -sWASM=1
 
 :: Setup environment
