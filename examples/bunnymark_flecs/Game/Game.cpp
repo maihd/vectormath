@@ -2,12 +2,11 @@
 #include <float.h>
 #include <memory.h>
 #include <stdlib.h>
-#include <VectorMath.h>
+#include <vectormath.h>
 
 #include "Game/Game.h"
 #include "Game/Components.h"
 
-#include "Native/Window.h"
 #include "Renderer/Renderer.h"
 
 #include "flecs/flecs.h"
@@ -24,10 +23,10 @@ static void Game_MoveEntity(PositionComponent& positionComponent, MoveComponent&
 	vec2 velocity = moveComponent.velocity;
 	vec2 position = positionComponent.position + velocity * deltaTime;
 
-	if (position.x < bounds.xMin) { velocity.x = -velocity.x; position.x = bounds.xMin; }
-	if (position.x > bounds.xMax) { velocity.x = -velocity.x; position.x = bounds.xMax; }
-	if (position.y < bounds.yMin) { velocity.y = -velocity.y; position.y = bounds.yMin; }
-	if (position.y > bounds.yMax) { velocity.y = -velocity.y; position.y = bounds.yMax; }
+	if (position.x < bounds.xMin) { velocity.x =  float_abs(velocity.x); position.x = bounds.xMin; }
+	if (position.x > bounds.xMax) { velocity.x = -float_abs(velocity.x); position.x = bounds.xMax; }
+	if (position.y < bounds.yMin) { velocity.y =  float_abs(velocity.y); position.y = bounds.yMin; }
+	if (position.y > bounds.yMax) { velocity.y = -float_abs(velocity.y); position.y = bounds.yMax; }
 
 	positionComponent.position = position;
 	moveComponent.velocity = velocity;
@@ -73,8 +72,13 @@ void Game_Setup(struct SpriteBatch* spriteBatch, int entityCount)
 	gWorld.system<SpriteComponent, FadeComponent>()
 		.each(Game_FadeEntity);
 
+#if defined(__EMSCRIPTEN__)
+	const float worldWidth = 1280;
+	const float worldHeight = 720;
+#else
     const float worldWidth = Window_GetWidth();
     const float worldHeight = Window_GetHeight();
+#endif
     gWorldBounds.xMin = 0;
     gWorldBounds.xMax = worldWidth;
     gWorldBounds.yMin = 0;
