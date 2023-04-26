@@ -44,8 +44,8 @@ constexpr const char* fshader_src =
     "uniform vec3 Color;"
     "uniform sampler2D Image;"
     "void main() {"
-        "gl_FragColor = vec4(1.0);"
-        // "gl_FragColor = vec4(Color, 1.0);"
+        // "gl_FragColor = vec4(1.0);"
+        "gl_FragColor = vec4(Color, 1.0);"
         // "gl_FragColor = texture2D(Image, UV);"
         // "gl_FragColor = texture2D(Image, UV) * vec4(Color, 1.0);"
     "}";
@@ -230,6 +230,11 @@ void Renderer_LoadSpritesHorizontal(SpriteBatch* spriteBatch, const char* file, 
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 
     SDL_Surface* image = IMG_Load(file);
+    if (!image)
+    {
+        printf("Failed to load %s, due to %s\n", file, IMG_GetError());
+    }
+
     int width, height, channels;
     // const void* pixels = stbi_load(file, &width, &height, &channels, 0);
     const void* pixels = image->pixels;
