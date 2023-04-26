@@ -101,9 +101,32 @@
 #endif
 
 // -------------------------------------------------------------
+// Clang extensions
+// -------------------------------------------------------------
+
+#if defined(__clang__) && __clang__ && VECTORMATH_USE_CLANG_EXT
+#define VECTORMATH_ENABLE_CLANG_EXT 1
+#else
+#define VECTORMATH_ENABLE_CLANG_EXT 0
+#endif
+
+// -------------------------------------------------------------
 // Types
 // -------------------------------------------------------------
 
+#if VECTORMATH_USE_CLANG_EXT
+typedef float vec2 __attribute__((ext_vector_type(2)));
+typedef float vec3 __attribute__((ext_vector_type(3)));
+typedef float vec4 __attribute__((ext_vector_type(4)));
+
+typedef int32_t ivec2 __attribute__((ext_vector_type(2)));
+typedef int32_t ivec3 __attribute__((ext_vector_type(3)));
+typedef int32_t ivec4 __attribute__((ext_vector_type(4)));
+
+typedef uint32_t uvec2 __attribute__((ext_vector_type(2)));
+typedef uint32_t uvec3 __attribute__((ext_vector_type(3)));
+typedef uint32_t uvec4 __attribute__((ext_vector_type(4)));
+#else
 /// vec2
 /// 2D floating-point vector
 /// Components are 32 bit fixed-size floating-point number
@@ -251,6 +274,7 @@ typedef union VECTORMATH_ALIGNAS(uvec4, 16)
 
     __m128u                     m128u;
 } uvec4;
+#endif // VECTORMATH_USE_CLANG_EXT
 
 /// mat2
 /// 2x2 floating-point row-major matrix

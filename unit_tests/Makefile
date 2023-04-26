@@ -3,13 +3,14 @@ CC=gcc
 RUN_ALLS=false
 
 # Build flags
-CFLAGS=-Wall
+CFLAGS=-Wall -DVECTORMATH_USE_CLANG_EXT
 LFLAGS=
 ifneq ($(OS),Windows_NT)
 LFLAGS+=-lm
 endif
 
 OUT_DIR=out
+INC_DIR=../include
 
 UNIT_TESTS_DIR=cases
 UNIT_TESTS_SRC=$(wildcard $(UNIT_TESTS_DIR)/*.cpp)

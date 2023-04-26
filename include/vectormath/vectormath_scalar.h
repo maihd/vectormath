@@ -60,7 +60,11 @@ __forceinline vec3 vec3_from_vec2(vec2 v)
 __forceinline vec3 vec3_from_vec4(vec4 v)
 {
     vec3 result;
-    result.m128 = v.m128;
+
+    result.x = v.x;
+    result.y = v.y;
+    result.z = v.z;
+
     return result;
 }
 
@@ -680,19 +684,24 @@ __forceinline float vec2_angle_deg(vec2 v)
 }
 
 /// Create new vector with angle and length
-__forceinline vec2 vec2_from_angle(float angle, float length) {
+__forceinline vec2 vec2_from_angle(float angle, float length)
+{
     return vec2_new(cosf(angle) * length, sinf(angle) * length);
 }
 
 /// Create new vector with angle in degrees, and length
-__forceinline vec2 vec2_from_angle_deg(float angle, float length) {
+__forceinline vec2 vec2_from_angle_deg(float angle, float length)
+{
     return vec2_from_angle(float_rad2deg(angle), length);
 }
 
 /// Computes sign of 'x'
 __forceinline ivec3 vec3_sign(vec3 v)
 {
-    ivec3 result = { float_sign(v.x), float_sign(v.y), float_sign(v.z) };
+    ivec3 result;
+    result.x = float_sign(v.x);
+    result.y = float_sign(v.y);
+    result.z = float_sign(v.z);
     return result;
 }
 
@@ -1330,8 +1339,10 @@ __forceinline vec4 quat_to_axis_angle(vec4 quat)
     const float angle = 2.0f * cosf(c.w);
 
     vec4 result;
-    result.axis = axis;
-    result.angle = angle;
+    result.x = axis.x;
+    result.y = axis.y;
+    result.z = axis.z;
+    result.w = angle;
     return result;
 }
 
@@ -1806,7 +1817,11 @@ __forceinline mat4 mat4_inverse(mat4 m)
     const float det = n11 * t11 + n21 * t12 + n31 * t13 + n41 * t14;
     if (det < 0.0f)
     {
-        mat4 result = { 0.0f };
+        mat4 result;
+        result.m00 = 0.0f; result.m01 = 0.0f; result.m02 = 0.0f; result.m03 = 0.0f;
+        result.m10 = 0.0f; result.m11 = 0.0f; result.m12 = 0.0f; result.m13 = 0.0f;
+        result.m20 = 0.0f; result.m21 = 0.0f; result.m22 = 0.0f; result.m23 = 0.0f;
+        result.m30 = 0.0f; result.m31 = 0.0f; result.m32 = 0.0f; result.m33 = 0.0f;
         return result;
     }
 
