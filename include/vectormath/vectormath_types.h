@@ -356,9 +356,9 @@ typedef union VECTORMATH_ALIGNAS(mat4, 16)
 
 #if !defined(__cplusplus) && !defined(static_assert)
     #if __STDC_VERSION__ >= 201112L
-    #define static_assert _Static_assert
+    #define static_assert               _Static_assert
     #else
-    #define static_assert(cond, msg) typedef char static_assertion_##msg[(cond) ? 1 : -1]
+    #define static_assert(cond, msg)    typedef char static_assertion_##msg[(cond) ? 1 : -1]
     #endif
 #endif
 
