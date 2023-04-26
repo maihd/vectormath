@@ -303,9 +303,9 @@ typedef union VECTORMATH_ALIGNAS(mat2, 16)
 /// 3x3 floating-point row-major matrix
 /// Components are 32 bit fixed-size floating-point number
 /// Struct Layout: 
-///		[float  m00][float  m01][float  m02][float _m03]
-///		[float  m10][float  m11][float  m12][float _m13]
-///		[float  m20][float  m21][float  m22][float _m23]
+///		[float m00][float m01][float m02][float _m03]
+///		[float m10][float m11][float m12][float _m13]
+///		[float m20][float m21][float m22][float _m23]
 typedef union VECTORMATH_ALIGNAS(mat3, 16)
 {
     struct
@@ -349,5 +349,33 @@ typedef union VECTORMATH_ALIGNAS(mat4, 16)
         float                   m30, m31, m32, m33;
     };
 } mat4;
+
+// -------------------------------------------------------------
+// Type size verification
+// -------------------------------------------------------------
+
+#if !defined(__cplusplus) && !defined(static_assert)
+    #if __STDC_VERSION__ >= 201112L
+    #define static_assert _Static_assert
+    #else
+    #define static_assert(cond, msg) typedef char static_assertion_##msg[(cond) ? 1 : -1]
+    #endif
+#endif
+
+static_assert(sizeof(vec2)  ==  8, "sizeof(vec2) must be 8 bytes");
+static_assert(sizeof(vec3)  == 16, "sizeof(vec3) must be 12 bytes");
+static_assert(sizeof(vec4)  == 16, "sizeof(vec4) must be 16 bytes");
+
+static_assert(sizeof(ivec2) ==  8, "sizeof(ivec2) must be 8 bytes");
+static_assert(sizeof(ivec3) == 16, "sizeof(ivec3) must be 16 bytes");
+static_assert(sizeof(ivec4) == 16, "sizeof(ivec4) must be 16 bytes");
+
+static_assert(sizeof(uvec2) ==  8, "sizeof(uvec2) must be 8 bytes");
+static_assert(sizeof(uvec3) == 16, "sizeof(uvec3) must be 16 bytes");
+static_assert(sizeof(uvec4) == 16, "sizeof(uvec4) must be 16 bytes");
+
+static_assert(sizeof(mat2)  == 16, "sizeof(mat2) must be 16 bytes");
+static_assert(sizeof(mat3)  == 48, "sizeof(mat3) must be 48 bytes");
+static_assert(sizeof(mat4)  == 64, "sizeof(mat4) must be 64 bytes");
 
 //! LEAVE AN EMPTY LINE HERE, REQUIRE BY GCC/G++
