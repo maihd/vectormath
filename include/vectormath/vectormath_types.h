@@ -340,18 +340,18 @@ typedef union VECTORMATH_ALIGNAS(mat4, 16)
 {
     struct
     {
-        vec4                    row0;
-        vec4                    row1;
-        vec4                    row2;
-        vec4                    row3;
+        vec4                    row0;               // Matrix first row  (4 components)
+        vec4                    row1;               // Matrix second row (4 components)
+        vec4                    row2;               // Matrix third row  (4 components)
+        vec4                    row3;               // Matrix fourth row (4 components)
     };
 
     struct
     {
-        float                   m00, m01, m02, m03;
-        float                   m10, m11, m12, m13;
-        float                   m20, m21, m22, m23;
-        float                   m30, m31, m32, m33;
+        float                   m00, m01, m02, m03; // Matrix first row  (4 components)
+        float                   m10, m11, m12, m13; // Matrix second row (4 components)
+        float                   m20, m21, m22, m23; // Matrix third row  (4 components)
+        float                   m30, m31, m32, m33; // Matrix fourth row (4 components)
     };
 } mat4;
 

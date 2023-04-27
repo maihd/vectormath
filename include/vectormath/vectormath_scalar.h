@@ -1793,7 +1793,7 @@ __forceinline vec2 mat4_mul_vec2(mat4 a, vec2 b)
     return vec2_new(b1.x * iw, b1.y * iw);
 }
 
-__forceinline vec3 vec4_mul_mat4(vec3 a, mat4 b)
+__forceinline vec3 vec3_mul_mat4(vec3 a, mat4 b)
 {
     const vec4 a0 = vec4_new(a.x, a.y, a.z, 1.0f);
     const vec4 a1 = vec4_mul_mat4(a0, b);
@@ -2198,7 +2198,7 @@ __forceinline void mat4_decompose(mat4 m, vec3* scalation, vec4* quaternion, vec
     }
 }
 
-__forceinline void mat4_decompose(mat4 m, vec3* scalation, vec3* axis, float* angle, vec3* translation)
+__forceinline void mat4_decompose_axis_angle(mat4 m, vec3* scalation, vec3* axis, float* angle, vec3* translation)
 {
     if (axis || angle)
     {
