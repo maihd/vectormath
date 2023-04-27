@@ -16,10 +16,10 @@
 ## FAQs
 - Why another math library? I'm a big fan of The-Forge renderer, when I read the source, discovered Sony's Math library. But the Sony's Math was support C++ only, then I write a port to support both C and C++ for learning purposes.
 
-- Why Unlicense? Mostly source codes were re-written, so I don't own the code.
+- Why Unlicense? Mostly source codes were re-written from The-Forge's VectorMath library, so I don't own the code.
 - Where the functions docs, and tutorials? WIP.
 
 ## Meta
-- Version: v0.1.1-dev
+- Version: v0.1.2-dev
 - License: UNLICENSED
 - Copyright: MaiHD @ 2022
