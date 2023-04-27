@@ -362,7 +362,7 @@ typedef union VECTORMATH_ALIGNAS(mat4, 16)
 } mat4;
 
 // -------------------------------------------------------------
-// Type size verification
+// Type size and align verification
 // -------------------------------------------------------------
 
 #if !defined(__cplusplus) && !defined(static_assert)
@@ -390,5 +390,21 @@ static_assert(sizeof(uvec4) == 16, "sizeof(uvec4) must be 16 bytes");
 static_assert(sizeof(mat2)  == 16, "sizeof(mat2) must be 16 bytes");
 static_assert(sizeof(mat3)  == 48, "sizeof(mat3) must be 48 bytes");
 static_assert(sizeof(mat4)  == 64, "sizeof(mat4) must be 64 bytes");
+
+static_assert(alignof(vec2)  ==  4, "alignof(vec2) must be 4 bytes");
+static_assert(alignof(vec3)  == 16, "alignof(vec3) must be 16 bytes");
+static_assert(alignof(vec4)  == 16, "alignof(vec4) must be 16 bytes");
+
+static_assert(alignof(ivec2) ==  4, "alignof(ivec2) must be 4 bytes");
+static_assert(alignof(ivec3) == 16, "alignof(ivec3) must be 16 bytes");
+static_assert(alignof(ivec4) == 16, "alignof(ivec4) must be 16 bytes");
+
+static_assert(alignof(uvec2) ==  4, "alignof(uvec2) must be 4 bytes");
+static_assert(alignof(uvec3) == 16, "alignof(uvec3) must be 16 bytes");
+static_assert(alignof(uvec4) == 16, "alignof(uvec4) must be 16 bytes");
+
+static_assert(alignof(mat2)  == 16, "alignof(mat2) must be 16 bytes");
+static_assert(alignof(mat3)  == 16, "alignof(mat3) must be 16 bytes");
+static_assert(alignof(mat4)  == 16, "alignof(mat4) must be 16 bytes");
 
 //! LEAVE AN EMPTY LINE HERE, REQUIRE BY GCC/G++
