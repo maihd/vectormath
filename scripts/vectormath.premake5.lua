@@ -25,7 +25,7 @@ return {
             getincludedir(directory)
         }
 
-        config { "action:vs*"}
+        filter { "action:vs*"}
         do
             files {
                 path.join(directory, "vectormath_types.natvis"),

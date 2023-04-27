@@ -9,4 +9,5 @@
 /scripts/*.ilk
 
 /examples/wasm/dist
+/examples/wasm_raylib/dist
 /unit_tests/projects/vectormath_unit_tests_wasm/dist
