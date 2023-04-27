@@ -17,7 +17,7 @@ set SRC=%THIRD_PARTY_SRC% %BUNNYMARK_SRC% %SRCDIR%\Renderer.cpp
 :: Build flags
 set OUTPUT=%DIST_FOLDER%\index.html
 set INCDIR=-I%ROOT_FOLDER%\include -I%EXE_FOLDER% -I%THIRD_PARTY_DIR% -I%BUNNYMARK_DIR% -I%SRCDIR%
-set CFLAGS=-O3 -s ASYNCIFY -Wno-enum-constexpr-conversion 
+set CFLAGS=-O3 -s ASYNCIFY -DVECTORMATH_USE_CLANG_EXT -Wno-enum-constexpr-conversion 
 set LFLAGS=-lGL -sUSE_SDL=2 -s USE_SDL_IMAGE=2 -s SDL2_IMAGE_FORMATS="[""png""]" -sWASM=1 -sFULL_ES3=1 -sALLOW_MEMORY_GROWTH=1 --preload-file ../assets/sprites.png@sprites.png
 
 :: Setup environment
