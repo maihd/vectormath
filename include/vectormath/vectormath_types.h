@@ -119,7 +119,7 @@
 // Types
 // -------------------------------------------------------------
 
-#if VECTORMATH_USE_CLANG_EXT
+#if VECTORMATH_ENABLE_CLANG_EXT
 typedef float vec2 __attribute__((ext_vector_type(2)));
 typedef float vec3 __attribute__((ext_vector_type(3), __aligned__(16)));
 typedef float vec4 __attribute__((ext_vector_type(4), __aligned__(16)));
