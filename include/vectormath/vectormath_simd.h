@@ -489,6 +489,11 @@ __forceinline bool vec2_not_equal(vec2 a, vec2 b)
     return a.x != b.x || a.y != b.y;
 }
 
+__forceinline bool vec2_isclose(vec2 a, vec2 b)
+{
+    return float_isclose(a.x, b.x) && float_isclose(a.y, b.y);
+}
+
 __forceinline vec3 vec3_neg(vec3 v)
 {
     return vec3_from_m128(_mm_sub_ps(_mm_setzero_ps(), v.m128));
