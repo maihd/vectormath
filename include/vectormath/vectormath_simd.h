@@ -977,7 +977,11 @@ __forceinline ivec3 vec3_sign(vec3 v)
     //ivec3 result;
     //result.m128i = _mm_or_si128(_mm_srli_epi32(iv, 31), _mm_set_epi32(!!c[3], !!c[2], !!c[1], !!c[0]));
     //return result;
-    return { float_sign(v.x), float_sign(v.y), float_sign(v.z) };
+    ivec3 result;
+    result.x = float_sign(v.x);
+    result.y = float_sign(v.y);
+    result.z = float_sign(v.z);
+    return result;
 }
 
 /// Computes absolute value
@@ -1269,7 +1273,12 @@ __forceinline ivec4 vec4_sign(vec4 v)
     //ivec4 result;
     //result.m128i = _mm_or_si128(iv, _mm_set_epi32(!!c[3], !!c[2], !!c[1], !!c[0]));
     //return result;
-    return { float_sign(v.x), float_sign(v.y), float_sign(v.z), float_sign(v.w) };
+    ivec4 result;
+    result.x = float_sign(v.x);
+    result.y = float_sign(v.y);
+    result.z = float_sign(v.z);
+    result.w = float_sign(v.w);
+    return result;
 }
 
 /// Computes absolute value

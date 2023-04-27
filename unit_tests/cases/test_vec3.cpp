@@ -49,27 +49,45 @@ DEFINE_UNIT_TEST("Test vec3 operator/")
 DEFINE_UNIT_TEST("vec3 vec3_new(float x, float y)")
 {
     const vec3 a = vec3_new(1.0f, 2.0f, 3.0f);
-    const vec3 b = { 1.0f, 2.0f, 3.0f };
+    
+    vec3 b;
+    b.x = 1.0f;
+    b.y = 2.0f;
+    b.z = 3.0f;
+
     TEST(a.x == b.x && a.x == 1.0f && a.y == b.y && a.y == 2.0f && a.z == b.z && a.z == 3.0f);
 }
 
 DEFINE_UNIT_TEST("vec3 vec3_new1(float s)")
 {
     const vec3 a = vec3_new1(1.0f);
-    const vec3 b = { 1.0f, 1.0f, 1.0f };
+
+    vec3 b;
+    b.x = 1.0f;
+    b.y = 1.0f;
+    b.z = 1.0f;
+
     TEST(a.x == a.y && a.y == a.z && a.x == b.x && a.x == 1.0f && a.y == b.y && a.y == 1.0f && a.z == b.y && a.z == 1.0f);
 }
 
 DEFINE_UNIT_TEST("vec3 vec3_from_vec2(vec2 v)")
 {
-    const vec2 a = { 1.0f, 2.0f };
+    vec2 a;
+    a.x = 1.0f;
+    a.y = 2.0f;
+
     const vec3 b = vec3_from_vec2(a);
     TEST(a.x == b.x && a.y == b.y && b.z == 0.0f);
 }
 
 DEFINE_UNIT_TEST("vec3 vec3_from_vec4(vec4 v)")
 {
-    const vec4 a = { 1.0f, 2.0f, 3.0f, 4.0f };
+    vec4 a;
+    a.x = 1.0f;
+    a.y = 2.0f;
+    a.z = 3.0f;
+    a.w = 4.0f;
+
     const vec3 b = vec3_from_vec4(a);
     TEST(a.x == b.x && a.y == b.y && a.z == b.z);
 }

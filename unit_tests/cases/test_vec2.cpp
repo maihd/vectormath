@@ -126,7 +126,7 @@ DEFINE_UNIT_TEST("vec2 vec2_new1(float s)")
 
 DEFINE_UNIT_TEST("vec2 vec2_from_vec3(vec3 v)")
 {
-	const vec3 a = { 1.0f, 2.0f, 3.0f };
+	const vec3 a = vec3_new(1.0f, 2.0f, 3.0f);
 	const vec2 b = vec2_from_vec3(a);
 	TEST(a.x == b.x && a.y == b.y);
 }

@@ -10,6 +10,21 @@
 #endif
 
 // -------------------------------------------------------------
+// Prefer language extensions if enabled
+// -------------------------------------------------------------
+
+#if defined(__clang__) && __clang__ && VECTORMATH_USE_CLANG_EXT
+#define VECTORMATH_ENABLE_CLANG_EXT 1
+#else
+#define VECTORMATH_ENABLE_CLANG_EXT 0
+#endif
+
+#if VECTORMATH_ENABLE_CLANG_EXT
+#undef  VECTORMATH_SIMD_ENABLE
+#define VECTORMATH_SIMD_ENABLE 0 // Force to not use simd
+#endif
+
+// -------------------------------------------------------------
 // Data structure alignment
 // -------------------------------------------------------------
 
@@ -93,21 +108,11 @@
     typedef float32x4_t __m128;
     typedef int32x4_t   __m128i;
     typedef uint32x4_t  __m128u;
-#else
+#elif !VECTORMATH_ENABLE_CLANG_EXT
     typedef struct      __m64   { float      data[2]; } __m64;
     typedef struct      __m128  { float      data[4]; } __m128;
     typedef struct      __m128i { int32_t    data[4]; } __m128i;
     typedef struct      __m128u { uint32_t   data[4]; } __m128u;
-#endif
-
-// -------------------------------------------------------------
-// Clang extensions
-// -------------------------------------------------------------
-
-#if defined(__clang__) && __clang__ && VECTORMATH_USE_CLANG_EXT
-#define VECTORMATH_ENABLE_CLANG_EXT 1
-#else
-#define VECTORMATH_ENABLE_CLANG_EXT 0
 #endif
 
 // -------------------------------------------------------------
@@ -116,16 +121,16 @@
 
 #if VECTORMATH_USE_CLANG_EXT
 typedef float vec2 __attribute__((ext_vector_type(2)));
-typedef float vec3 __attribute__((ext_vector_type(3)));
-typedef float vec4 __attribute__((ext_vector_type(4)));
+typedef float vec3 __attribute__((ext_vector_type(3), __aligned__(16)));
+typedef float vec4 __attribute__((ext_vector_type(4), __aligned__(16)));
 
 typedef int32_t ivec2 __attribute__((ext_vector_type(2)));
-typedef int32_t ivec3 __attribute__((ext_vector_type(3)));
-typedef int32_t ivec4 __attribute__((ext_vector_type(4)));
+typedef int32_t ivec3 __attribute__((ext_vector_type(3), __aligned__(16)));
+typedef int32_t ivec4 __attribute__((ext_vector_type(4), __aligned__(16)));
 
 typedef uint32_t uvec2 __attribute__((ext_vector_type(2)));
-typedef uint32_t uvec3 __attribute__((ext_vector_type(3)));
-typedef uint32_t uvec4 __attribute__((ext_vector_type(4)));
+typedef uint32_t uvec3 __attribute__((ext_vector_type(3), __aligned__(16)));
+typedef uint32_t uvec4 __attribute__((ext_vector_type(4), __aligned__(16)));
 #else
 /// vec2
 /// 2D floating-point vector

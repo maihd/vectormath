@@ -3,33 +3,298 @@
 #include "scalarmath.h"
 #include "vectormath_types.h"
 
-// Should not use both scalar & m128 versions of vector_math together
+// Make sure clang extensions is enable
+#if !VECTORMATH_ENABLE_CLANG_EXT
+#error The vector_math support for clang vector extensions is not enable, please use vector_math_scalar.h or vector_math_simd instead
+#endif
+
+// Should not use with other versions of vector_math together
 #if defined(VECTORMATH_FUNCTIONS_DEFINED)
-#error vector_math_simd.h has been include, please remove this from your source if you attempt to use scalar version of vector_math_simd.h
+#error another version of vector_math has been include, please remove that from your source if you attempt to use vector_math_simd.h
 #endif
 
 // Helper for extensions
 #define VECTORMATH_FUNCTIONS_DEFINED
 
 // -------------------------------------------------------------
+// Helper constants
+// -------------------------------------------------------------
+
+// Small epsilon value
+constexpr float SIMD_SLERP_TOL  = 0.999f;
+
+// Common constants used to evaluate simdSinf/cosf4/tanf4
+constexpr float SIMD_SINCOS_CC0 = -0.0013602249f;
+constexpr float SIMD_SINCOS_CC1 =  0.0416566950f;
+constexpr float SIMD_SINCOS_CC2 = -0.4999990225f;
+constexpr float SIMD_SINCOS_SC0 = -0.0001950727f;
+constexpr float SIMD_SINCOS_SC1 =  0.0083320758f;
+constexpr float SIMD_SINCOS_SC2 = -0.1666665247f;
+constexpr float SIMD_SINCOS_KC1 =  1.57079625129f;
+constexpr float SIMD_SINCOS_KC2 =  7.54978995489e-8f;
+
+// Shorthand functions to get the unit vectors as __m128
+__forceinline __m128 m128_unit_1000() { return _mm_setr_ps(1.0f, 0.0f, 0.0f, 0.0f); }
+__forceinline __m128 m128_unit_0100() { return _mm_setr_ps(0.0f, 1.0f, 0.0f, 0.0f); }
+__forceinline __m128 m128_unit_0010() { return _mm_setr_ps(0.0f, 0.0f, 1.0f, 0.0f); }
+__forceinline __m128 m128_unit_0001() { return _mm_setr_ps(0.0f, 0.0f, 0.0f, 1.0f); }
+
+// ========================================================
+// Internal helper types and functions
+// ========================================================
+
+// These have to be macros because _MM_SHUFFLE() requires compile-time constants.
+#define m128_ror(vec, i)       (((i) % 4) ? (_mm_shuffle_ps(vec, vec, _MM_SHUFFLE((uint32_t)(i + 3) % 4, (uint32_t)(i + 2) % 4, (uint32_t)(i + 1) % 4, (uint32_t)(i + 0) % 4))) : (vec))
+#define m128_splat(x, e)       _mm_shuffle_ps(x, x, _MM_SHUFFLE(e, e, e, e))
+#define m128_sld(vec, vec2, x) m128_ror(vec, ((x) / 4))
+
+__forceinline __m128 m128_mul_add(__m128 a, __m128 b, __m128 c)
+{
+    return _mm_add_ps(c, _mm_mul_ps(a, b));
+}
+
+__forceinline __m128 m128_mul_sub(__m128 a, __m128 b, __m128 c)
+{
+    return _mm_sub_ps(c, _mm_mul_ps(a, b));
+}
+
+__forceinline __m128 m128_merge_hi(__m128 a, __m128 b)
+{
+    return _mm_unpacklo_ps(a, b);
+}
+
+__forceinline __m128 m128_merge_lo(__m128 a, __m128 b)
+{
+    return _mm_unpackhi_ps(a, b);
+}
+
+__forceinline __m128 m128_select(__m128 a, __m128 b, __m128 mask)
+{
+    return _mm_or_ps(_mm_and_ps(mask, b), _mm_andnot_ps(mask, a));
+}
+
+__forceinline __m128 m128_negatef(__m128 x)
+{
+    return _mm_sub_ps(_mm_setzero_ps(), x);
+}
+
+__forceinline __m128 m128_fabsf(__m128 x)
+{
+    return _mm_and_ps(x, _mm_castsi128_ps(_mm_set1_epi32(0x7FFFFFFF)));
+    //return _mm_andnot_ps(x, _mm_castsi128_ps(_mm_set1_epi32(0x80000000)));
+}
+
+__forceinline __m128 m128_acosf(__m128 x)
+{
+    const __m128 xabs   = m128_fabsf(x);
+    const __m128 select = _mm_cmplt_ps(x, _mm_setzero_ps());
+    const __m128 t1     = _mm_sqrt_ps(_mm_sub_ps(_mm_set1_ps(1.0f), xabs));
+
+    /* Instruction counts can be reduced if the polynomial was
+     * computed entirely from nested (dependent) fma's. However,
+     * to reduce the number of pipeline stalls, the polygon is evaluated
+     * in two halves (hi and lo).
+     */
+    const __m128 xabs2 = _mm_mul_ps(xabs, xabs);
+    const __m128 xabs4 = _mm_mul_ps(xabs2, xabs2);
+
+    const __m128 hi = m128_mul_add(m128_mul_add(m128_mul_add(_mm_set1_ps(-0.0012624911f),
+        xabs, _mm_set1_ps( 0.0066700901f)),
+        xabs, _mm_set1_ps(-0.0170881256f)),
+        xabs, _mm_set1_ps( 0.0308918810f));
+
+    const __m128 lo = m128_mul_add(m128_mul_add(m128_mul_add(_mm_set1_ps(-0.0501743046f),
+        xabs, _mm_set1_ps( 0.0889789874f)),
+        xabs, _mm_set1_ps(-0.2145988016f)),
+        xabs, _mm_set1_ps( 1.5707963050f));
+
+    const __m128 result = m128_mul_add(hi, xabs4, lo);
+
+    // Adjust the result if x is negative.
+    return m128_select(
+        _mm_mul_ps(t1, result),                                     // Positive
+        m128_mul_sub(t1, result, _mm_set1_ps(3.1415926535898f)),    // Negative
+        select
+    );
+}
+
+__forceinline __m128 m128_cosf(__m128 x)
+{
+    // Range reduction
+    // Find the quadrant the angle falls in
+    // Algo:
+    //      xl = angle * TwoOverPi; 
+    //      q = (int32_t)(ceil(abs(xl)) * sign(xl))
+    const __m128i q = _mm_cvtps_epi32(_mm_mul_ps(x, _mm_set1_ps(0.63661977236f)));
+
+    // Compute the offset based on the quadrant that the angle falls in.
+    // Add 1 to the offset for the cosine.
+    const __m128i offset_sin = _mm_and_si128(q, _mm_set1_epi32(0x3));
+    const __m128i offset_cos = _mm_add_epi32(_mm_set1_epi32(1), offset_sin);
+
+    // Remainder in range [-pi/4..pi/4]
+    const __m128 qf = _mm_cvtepi32_ps(q);
+    const __m128 xl = m128_mul_sub(qf, _mm_set1_ps(SIMD_SINCOS_KC2), m128_mul_sub(qf, _mm_set1_ps(SIMD_SINCOS_KC1), x));
+
+    // Compute x^2 and x^3
+    const __m128 xl2 = _mm_mul_ps(xl, xl);
+    const __m128 xl3 = _mm_mul_ps(xl2, xl);
+
+    // Compute both the sin and cos of the angles
+    // using a polynomial expression:
+    //      cx = 1.0f + xl2 * ((C0 * xl2 + C1) * xl2 + C2)
+    //      sx =   xl + xl3 * ((S0 * xl2 + S1) * xl2 + S2)
+    const __m128 cx =
+        m128_mul_add(
+            m128_mul_add(
+                m128_mul_add(_mm_set1_ps(SIMD_SINCOS_CC0), xl2, _mm_set1_ps(SIMD_SINCOS_CC1)), xl2, _mm_set1_ps(SIMD_SINCOS_CC2)),
+            xl2, _mm_set1_ps(1.0f));
+
+    const __m128 sx =
+        m128_mul_add(
+            m128_mul_add(
+                m128_mul_add(_mm_set1_ps(SIMD_SINCOS_SC0), xl2, _mm_set1_ps(SIMD_SINCOS_SC1)), xl2, _mm_set1_ps(SIMD_SINCOS_SC2)),
+            xl3, xl);
+
+    // Use the cosine when the offset is odd and the sin
+    // when the offset is even
+    __m128 cos_mask = _mm_castsi128_ps(_mm_cmpeq_epi32(_mm_and_si128(offset_cos, _mm_set1_epi32(0x1)), _mm_setzero_si128()));
+
+    __m128 cos = m128_select(cx, sx, cos_mask);
+
+    // Flip the sign of the result when (offset mod 4) = 1 or 2
+    cos_mask = _mm_castsi128_ps(_mm_cmpeq_epi32(_mm_and_si128(offset_cos, _mm_set1_epi32(0x2)), _mm_setzero_si128()));
+
+    // Write the result
+    return m128_select(_mm_xor_ps(_mm_castsi128_ps(_mm_set1_epi32(0x80000000)), cos), cos, cos_mask);    
+}
+
+__forceinline __m128 m128_sinf(__m128 x)
+{
+    // Range reduction
+    // Find the quadrant the angle falls in
+    // Algo:
+    //      xl = angle * TwoOverPi; 
+    //      q = (int32_t)(ceil(abs(xl)) * sign(xl))
+    const __m128i q = _mm_cvtps_epi32(_mm_mul_ps(x, _mm_set1_ps(0.63661977236f)));
+
+    // Compute the offset based on the quadrant that the angle falls in.
+    // Add 1 to the offset for the cosine.
+    const __m128i offset_sin = _mm_and_si128(q, _mm_set1_epi32(0x3));
+
+    // Remainder in range [-pi/4..pi/4]
+    const __m128 qf = _mm_cvtepi32_ps(q);
+    const __m128 xl = m128_mul_sub(qf, _mm_set1_ps(SIMD_SINCOS_KC2), m128_mul_sub(qf, _mm_set1_ps(SIMD_SINCOS_KC1), x));
+
+    // Compute x^2 and x^3
+    const __m128 xl2 = _mm_mul_ps(xl, xl);
+    const __m128 xl3 = _mm_mul_ps(xl2, xl);
+
+    // Compute both the sin and cos of the angles
+    // using a polynomial expression:
+    //      cx = 1.0f + xl2 * ((C0 * xl2 + C1) * xl2 + C2)
+    //      sx =   xl + xl3 * ((S0 * xl2 + S1) * xl2 + S2)
+    const __m128 cx =
+        m128_mul_add(
+            m128_mul_add(
+                m128_mul_add(_mm_set1_ps(SIMD_SINCOS_CC0), xl2, _mm_set1_ps(SIMD_SINCOS_CC1)), xl2, _mm_set1_ps(SIMD_SINCOS_CC2)),
+            xl2, _mm_set1_ps(1.0f));
+
+    const __m128 sx =
+        m128_mul_add(
+            m128_mul_add(
+                m128_mul_add(_mm_set1_ps(SIMD_SINCOS_SC0), xl2, _mm_set1_ps(SIMD_SINCOS_SC1)), xl2, _mm_set1_ps(SIMD_SINCOS_SC2)),
+            xl3, xl);
+
+    // Use the cosine when the offset is odd and the sin
+    // when the offset is even
+    __m128 sin_mask = _mm_castsi128_ps(_mm_cmpeq_epi32(_mm_and_si128(offset_sin, _mm_set1_epi32(0x1)), _mm_setzero_si128()));
+
+    __m128 sin = m128_select(cx, sx, sin_mask);
+
+    // Flip the sign of the result when (offset mod 4) = 1 or 2
+    sin_mask = _mm_castsi128_ps(_mm_cmpeq_epi32(_mm_and_si128(offset_sin, _mm_set1_epi32(0x2)), _mm_setzero_si128()));
+
+    // Write the result
+    return m128_select(_mm_xor_ps(_mm_castsi128_ps(_mm_set1_epi32(0x80000000)), sin), sin, sin_mask);
+}
+
+__forceinline void m128_sinf_cosf(__m128 x, __m128* out_sin, __m128* out_cos)
+{
+    // Range reduction
+    // Find the quadrant the angle falls in
+    // Algo:
+    //      xl = angle * TwoOverPi; 
+    //      q = (int32_t)(ceil(abs(xl)) * sign(xl))
+    const __m128i q = _mm_cvtps_epi32(_mm_mul_ps(x, _mm_set1_ps(0.63661977236f)));
+
+    // Compute the offset based on the quadrant that the angle falls in.
+    // Add 1 to the offset for the cosine.
+    const __m128i offset_sin = _mm_and_si128(q, _mm_set1_epi32(0x3));
+    const __m128i offset_cos = _mm_add_epi32(_mm_set1_epi32(1), offset_sin);
+
+    // Remainder in range [-pi/4..pi/4]
+    const __m128 qf = _mm_cvtepi32_ps(q);
+    const __m128 xl = m128_mul_sub(qf, _mm_set1_ps(SIMD_SINCOS_KC2), m128_mul_sub(qf, _mm_set1_ps(SIMD_SINCOS_KC1), x));
+
+    // Compute x^2 and x^3
+    const __m128 xl2 = _mm_mul_ps(xl, xl);
+    const __m128 xl3 = _mm_mul_ps(xl2, xl);
+
+    // Compute both the sin and cos of the angles
+    // using a polynomial expression:
+    //      cx = 1.0f + xl2 * ((C0 * xl2 + C1) * xl2 + C2)
+    //      sx =   xl + xl3 * ((S0 * xl2 + S1) * xl2 + S2)
+    const __m128 cx =
+        m128_mul_add(
+            m128_mul_add(
+                m128_mul_add(_mm_set1_ps(SIMD_SINCOS_CC0), xl2, _mm_set1_ps(SIMD_SINCOS_CC1)), xl2, _mm_set1_ps(SIMD_SINCOS_CC2)),
+            xl2, _mm_set1_ps(1.0f));
+
+    const __m128 sx =
+        m128_mul_add(
+            m128_mul_add(
+                m128_mul_add(_mm_set1_ps(SIMD_SINCOS_SC0), xl2, _mm_set1_ps(SIMD_SINCOS_SC1)), xl2, _mm_set1_ps(SIMD_SINCOS_SC2)),
+            xl3, xl);
+
+    // Use the cosine when the offset is odd and the sin
+    // when the offset is even
+    __m128 sin_mask = _mm_castsi128_ps(_mm_cmpeq_epi32(_mm_and_si128(offset_sin, _mm_set1_epi32(0x1)), _mm_setzero_si128()));
+    __m128 cos_mask = _mm_castsi128_ps(_mm_cmpeq_epi32(_mm_and_si128(offset_cos, _mm_set1_epi32(0x1)), _mm_setzero_si128()));
+
+    __m128 sin = m128_select(cx, sx, sin_mask);
+    __m128 cos = m128_select(cx, sx, cos_mask);
+
+    // Flip the sign of the result when (offset mod 4) = 1 or 2
+    sin_mask = _mm_castsi128_ps(_mm_cmpeq_epi32(_mm_and_si128(offset_sin, _mm_set1_epi32(0x2)), _mm_setzero_si128()));
+    cos_mask = _mm_castsi128_ps(_mm_cmpeq_epi32(_mm_and_si128(offset_cos, _mm_set1_epi32(0x2)), _mm_setzero_si128()));
+
+    // Write the result
+    *out_sin = m128_select(_mm_xor_ps(_mm_castsi128_ps(_mm_set1_epi32(0x80000000)), sin), sin, sin_mask);
+    *out_cos = m128_select(_mm_xor_ps(_mm_castsi128_ps(_mm_set1_epi32(0x80000000)), cos), cos, cos_mask);
+}
+
+// -------------------------------------------------------------
 // Constructors
 // -------------------------------------------------------------
+
+/// Create __m128 from vec3
+__forceinline __m128 m128_from_vec3(vec3 v)
+{
+    return _mm_set_ps(0.0f, v.z, v.y, v.x);
+}
 
 /// Create a new vector 2D
 __forceinline vec2 vec2_new(float x, float y)
 {
-    vec2 result;
-    result.x = x;
-    result.y = y;
+    vec2 result = { x, y };
     return result;
 }
 
-/// Create a new vector 2D with 2 components have same value
+/// Create a new vector 2D, with components have same value
 __forceinline vec2 vec2_new1(float s)
 {
-    vec2 result;
-    result.x = s;
-    result.y = s;
+    vec2 result = { s, s };
     return result;
 }
 
@@ -42,86 +307,71 @@ __forceinline vec2 vec2_from_vec3(vec3 v)
 /// Create a new vector 3D
 __forceinline vec3 vec3_new(float x, float y, float z)
 {
-    vec3 result;
-    result.x = x;
-    result.y = y;
-    result.z = z;
+    vec3 result = { x, y, z };
     return result;
 }
 
-/// Create a new vector 3D with 3 components have same value
+/// Create a new vector 3D, with components have same value
 __forceinline vec3 vec3_new1(float s)
 {
-    vec3 result;
-    result.x = s;
-    result.y = s;
-    result.z = s;
+    vec3 result = { s, s, s };
     return result;
 }
 
 /// Create a new vector 3D from a vector 2D
 __forceinline vec3 vec3_from_vec2(vec2 v)
 {
-    vec3 result;
-    result.x = v.x;
-    result.y = v.y;
-    result.z = 0.0f;
-    return result;
+    return { v.x, v.y, 0.0f };
 }
 
 /// Create a new vector 3D from a vector 4D
 __forceinline vec3 vec3_from_vec4(vec4 v)
 {
+    return v.xyz;
+}
+
+/// Create a new vector 3D from a __m128 simd
+/// @note: available only on SIMD vectormath version
+__forceinline vec3 vec3_from_m128(__m128 m128)
+{
     vec3 result;
-    result.x = v.x;
-    result.y = v.y;
-    result.z = v.z;
+    result.x = m128[0];
+    result.y = m128[1];
+    result.z = m128[2];
     return result;
 }
 
 /// Create a new vector 4D
 __forceinline vec4 vec4_new(float x, float y, float z, float w)
 {
-    vec4 result;
-    result.x = x;
-    result.y = y;
-    result.z = z;
-    result.w = w;
-    return result;
+    return { x, y, z, w };
 }
 
-/// Create a new vector 4D with 4 components have same value
+/// Create a new vector 4D, with components have same value
 __forceinline vec4 vec4_new1(float s)
 {
-    vec4 result;
-    result.x = s;
-    result.y = s;
-    result.z = s;
-    result.w = s;
-    return result;
+    return { s, s, s, s };
 }
 
-/// Create a new vector 3D, with components' values load from an scalars array
-/// @note: this functions is not pointer-safe 
+/// Create a new vector 4D from a __m128 simd
+/// @note: available only on SIMD vectormath version
+__forceinline vec4 vec4_from_m128(__m128 m128)
+{
+    return (vec4)m128;
+}
+
+/// Create a new vector 3D, with components' values load from a scalars array
+/// @note: this functions is not pointer-safe
 __forceinline vec3 vec3_load(const float ptr[])
 {
-    vec3 result;
-    result.x = ptr[0];
-    result.y = ptr[1];
-    result.z = ptr[2];
-    return result;
+    return vec3_from_m128(_mm_load_ps(ptr));
 }
 
 /// Create a new vector 4D, with components' values load from an scalars array
 /// @note: this functions is not pointer-safe
 __forceinline vec4 vec4_load(const float ptr[])
 {
-    vec4 result;
-    result.x = ptr[0];
-    result.y = ptr[1];
-    result.z = ptr[2];
-    result.w = ptr[3];
-    return result;
+    return vec4_from_m128(_mm_load_ps(ptr));
 }
 
 // Create a new matrix 4x4
@@ -231,79 +481,81 @@ __forceinline bool vec2_not_equal(vec2 a, vec2 b)
     return a.x != b.x || a.y != b.y;
 }
 
-__forceinline bool vec2_isclose(vec2 a, vec2 b)
-{
-    return float_isclose(a.x, b.x)
-        && float_isclose(a.y, b.y);
-}
-
 __forceinline vec3 vec3_neg(vec3 v)
 {
-    return vec3_new(-v.x, -v.y, -v.z);
+    return -v;
 }
 
 __forceinline vec3 vec3_add(vec3 a, vec3 b)
 {
-    return vec3_new(a.x + b.x, a.y + b.y, a.z + b.z);
+    return a + b;
 }
 
 __forceinline vec3 vec3_sub(vec3 a, vec3 b)
 {
-    return vec3_new(a.x - b.x, a.y - b.y, a.z - b.z);
+    return a - b;
 }
 
 __forceinline vec3 vec3_mul(vec3 a, vec3 b)
 {
-    return vec3_new(a.x * b.x, a.y * b.y, a.z * b.z);
+    return a * b;
 }
 
 __forceinline vec3 vec3_div(vec3 a, vec3 b)
 {
-    return vec3_new(a.x / b.x, a.y / b.y, a.z / b.z);
+    return a / b;
 }
 
 __forceinline vec3 vec3_add1(vec3 a, float b)
 {
-    return vec3_add(a, vec3_new1(b));
+    return a + b;
 }
 
 __forceinline vec3 vec3_sub1(vec3 a, float b)
 {
-    return vec3_sub(a, vec3_new1(b));
+    return a - b;
 }
 
 __forceinline vec3 vec3_mul1(vec3 a, float b)
 {
-    return vec3_mul(a, vec3_new1(b));
+    return a * b;
 }
 
 __forceinline vec3 vec3_div1(vec3 a, float b)
 {
-    return vec3_mul(a, vec3_new1(1.0f / b));
+    return a / b;
 }
 
 __forceinline vec3 vec3_mul_add(vec3 a, vec3 b, vec3 c)
 {
-    return vec3_add(c, vec3_mul(a, b));
+    return c + a * b;
 }
 
 __forceinline vec3 vec3_mul_sub(vec3 a, vec3 b, vec3 c)
 {
-    return vec3_sub(c, vec3_mul(a, b));
+    return c - a * b;
 }
 
 __forceinline bool vec3_equal(vec3 a, vec3 b)
 {
-    return a.x == b.x && a.y == b.y && a.z == b.z;
+    //return (_mm_movemask_ps(_mm_cmpeq_ps(a, b)) & 0x7) == 0x7;
+    return a.x == b.x
+        && a.y == b.y
+        && a.z == b.z;
 }
 
 __forceinline bool vec3_not_equal(vec3 a, vec3 b)
 {
-    return a.x != b.x || a.y != b.y || a.z != b.z;
+    //return (_mm_movemask_ps(_mm_cmpeq_ps(a, b)) & 0x7) != 0x7;
+    return a.x != b.x
+        || a.y != b.y
+        || a.z != b.z;
 }
 
 __forceinline bool vec3_isclose(vec3 a, vec3 b)
 {
+    //const __m128 sub_abs = m128_fabsf(_mm_sub_ps(a, b));
+    //return (_mm_movemask_ps(_mm_cmplt_ps(sub_abs, _mm_set_ps1(FLOAT_EPSILON))) & 0x7) == 0x7;
     return float_isclose(a.x, b.x)
         && float_isclose(a.y, b.y)
         && float_isclose(a.z, b.z);
@@ -311,71 +563,81 @@ __forceinline bool vec3_isclose(vec3 a, vec3 b)
 
 __forceinline vec4 vec4_neg(vec4 v)
 {
-    return vec4_new(-v.x, -v.y, -v.z, -v.w);
+    return -v;
 }
 
 __forceinline vec4 vec4_add(vec4 a, vec4 b)
 {
-    return vec4_new(a.x + b.x, a.y + b.y, a.z + b.z, a.w + b.w);
+    return a + b;
 }
 
 __forceinline vec4 vec4_sub(vec4 a, vec4 b)
 {
-    return vec4_new(a.x - b.x, a.y - b.y, a.z - b.z, a.w - b.w);
+    return a - b;
 }
 
 __forceinline vec4 vec4_mul(vec4 a, vec4 b)
 {
-    return vec4_new(a.x * b.x, a.y * b.y, a.z * b.z, a.w * b.w);
+    return a * b;
 }
 
 __forceinline vec4 vec4_div(vec4 a, vec4 b)
 {
-    return vec4_new(a.x / b.x, a.y / b.y, a.z / b.z, a.w / b.w);
+    return a / b;
 }
 
 __forceinline vec4 vec4_add1(vec4 a, float b)
 {
-    return vec4_add(a, vec4_new1(b));
+    return a + b;
 }
 
 __forceinline vec4 vec4_sub1(vec4 a, float b)
 {
-    return vec4_sub(a, vec4_new1(b));
+    return a - b;
 }
 
 __forceinline vec4 vec4_mul1(vec4 a, float b)
 {
-    return vec4_mul(a, vec4_new1(b));
+    return a * b;
 }
 
 __forceinline vec4 vec4_div1(vec4 a, float b)
 {
-    return vec4_mul(a, vec4_new1(1.0f / b));
+    return a / b;
 }
 
 __forceinline vec4 vec4_mul_add(vec4 a, vec4 b, vec4 c)
 {
-    return vec4_mul(vec4_add(a, b), c);
+    return c + a * b;
 }
 
 __forceinline vec4 vec4_mul_sub(vec4 a, vec4 b, vec4 c)
 {
-    return vec4_mul(vec4_sub(a, b), c);
+    return c - a * b;
 }
 
 __forceinline bool vec4_equal(vec4 a, vec4 b)
 {
-    return a.x == b.x && a.y == b.y && a.z == b.z && a.w == b.w;
+    //return _mm_movemask_ps(_mm_cmpeq_ps(a.m128, b.m128)) == 0x16;
+    return a.x == b.x
+        && a.y == b.y
+        && a.z == b.z
+        && a.w == b.w;
 }
 
 __forceinline bool vec4_not_equal(vec4 a, vec4 b)
 {
-    return a.x != b.x || a.y != b.y || a.z != b.z || a.w == b.w;
+    //return _mm_movemask_ps(_mm_cmpeq_ps(a.m128, b.m128)) != 0x16;
+    return a.x != b.x
+        || a.y != b.y
+        || a.z != b.z
+        || a.w != b.w;
 }
 
 __forceinline bool vec4_isclose(vec4 a, vec4 b)
 {
+    //const __m128 sub_abs = m128_fabsf(_mm_sub_ps(a.m128, b.m128));
+    //return _mm_movemask_ps(_mm_cmplt_ps(sub_abs, _mm_set_ps1(FLOAT_EPSILON))) == 0x16;
     return float_isclose(a.x, b.x)
         && float_isclose(a.y, b.y)
         && float_isclose(a.z, b.z)
@@ -429,7 +691,9 @@ __forceinline bool mat4_not_equal(mat4 a, mat4 b)
 /// Computes sign of 'x'
 __forceinline ivec2 vec2_sign(vec2 v)
 {
-    ivec2 result = { float_sign(v.x), float_sign(v.y) };
+    ivec2 result;
+    result.x = float_sign(v.x);
+    result.y = float_sign(v.y);
     return result;
 }
 
@@ -710,20 +974,24 @@ __forceinline float vec2_angle_deg(vec2 v)
 }
 
 /// Create new vector with angle and length
-__forceinline vec2 vec2_from_angle(float angle, float length)
-{
+__forceinline vec2 vec2_from_angle(float angle, float length) {
     return vec2_new(cosf(angle) * length, sinf(angle) * length);
 }
 
 /// Create new vector with angle in degrees, and length
-__forceinline vec2 vec2_from_angle_deg(float angle, float length)
-{
+__forceinline vec2 vec2_from_angle_deg(float angle, float length) {
     return vec2_from_angle(float_rad2deg(angle), length);
 }
 
 /// Computes sign of 'x'
 __forceinline ivec3 vec3_sign(vec3 v)
 {
+    //__m128i iv = _mm_castps_si128(v.m128);
+    //int32_t* c = (int32_t*)&iv;
+    //
+    //ivec3 result;
+    //result.m128i = _mm_or_si128(_mm_srli_epi32(iv, 31), _mm_set_epi32(!!c[3], !!c[2], !!c[1], !!c[0]));
+    //return result;
     ivec3 result;
     result.x = float_sign(v.x);
     result.y = float_sign(v.y);
@@ -734,25 +1002,26 @@ __forceinline ivec3 vec3_sign(vec3 v)
 /// Computes absolute value
 __forceinline vec3 vec3_abs(vec3 v)
 {
-    return vec3_new(fabsf(v.x), fabsf(v.y), fabsf(v.z));
+    return vec3_from_m128(m128_fabsf(m128_from_vec3(v)));
 }
 
 /// Computes cosine
 __forceinline vec3 vec3_cos(vec3 v)
 {
-    return vec3_new(cosf(v.x), cosf(v.y), cosf(v.z));
+    return vec3_from_m128(m128_cosf(m128_from_vec3(v)));
 }
 
 /// Computes sine
 __forceinline vec3 vec3_sin(vec3 v)
 {
-    return vec3_new(sinf(v.x), sinf(v.y), sinf(v.z));
+    return vec3_from_m128(m128_sinf(m128_from_vec3(v)));
 }
 
 /// Computes tangent
 __forceinline vec3 vec3_tan(vec3 v)
 {
     return vec3_new(tanf(v.x), tanf(v.y), tanf(v.z));
+    //return vec3_from_m128(m128_tanf(v.m128));
 }
 
 /// Computes hyperbolic cosine
@@ -776,7 +1045,7 @@ __forceinline vec3 vec3_tanh(vec3 v)
 /// Computes inverse cosine
 __forceinline vec3 vec3_acos(vec3 v)
 {
-    return vec3_new(acosf(v.x), acosf(v.y), acosf(v.z));
+    return vec3_from_m128(m128_acosf(m128_from_vec3(v)));
 }
 
 /// Computes inverse sine
@@ -932,17 +1201,20 @@ __forceinline vec3 vec3_rsqrt(vec3 v)
 /// Compute cross product of two vectors
 __forceinline vec3 vec3_cross(vec3 a, vec3 b)
 {
-    return vec3_new(
-        a.y * b.z - a.z * b.y,
-        a.z * b.x - a.x * b.z,
-        a.x * b.y - a.y * b.x
-    );
+    const __m128 tmp0   = _mm_shuffle_ps(m128_from_vec3(a), m128_from_vec3(a), _MM_SHUFFLE(3, 0, 2, 1));
+    const __m128 tmp1   = _mm_shuffle_ps(m128_from_vec3(b), m128_from_vec3(b), _MM_SHUFFLE(3, 1, 0, 2));
+    const __m128 tmp2   = _mm_shuffle_ps(m128_from_vec3(a), m128_from_vec3(a), _MM_SHUFFLE(3, 1, 0, 2));
+    const __m128 tmp3   = _mm_shuffle_ps(m128_from_vec3(b), m128_from_vec3(b), _MM_SHUFFLE(3, 0, 2, 1));
+          __m128 result = _mm_mul_ps(tmp0, tmp1);
+                 result = m128_mul_sub(tmp2, tmp3, result);
+    return vec3_from_m128(result);
 }
 
 /// Compute dot product of two vectors
 __forceinline float vec3_dot(vec3 a, vec3 b)
 {
-    return a.x * b.x + a.y * b.y + a.z * b.z;
+    const vec3 c = vec3_mul(a, b);
+    return c.x + c.y + c.z;
 }
 
 /// Compute squared length of vector
@@ -976,7 +1248,7 @@ __forceinline vec3 vec3_normalize(vec3 v)
     if (lsqr > 0.0f)
     {
         const float f = float_rsqrt(lsqr);
-        return vec3_new(v.x * f, v.y * f, v.z * f);
+        return vec3_mul1(v, f);
     }
     else
     {
@@ -996,7 +1268,7 @@ __forceinline vec3 vec3_refract(vec3 v, vec3 n, float eta)
     const float k = 1.0f - eta * eta * (1.0f - vec3_dot(v, n) * vec3_dot(v, n));
     return k < 0.0f
         ? vec3_new1(0.0f)
-        : vec3_sub(vec3_mul1(v, eta), vec3_mul1(n, eta * vec3_dot(v, n) + sqrtf(k)));
+        : vec3_sub(vec3_mul1(v, eta), vec3_mul1(n, (eta * vec3_dot(v, n) + sqrtf(k))));
 }
 
 /// Compute faceforward vector
@@ -1008,6 +1280,14 @@ __forceinline vec3 vec3_faceforward(vec3 n, vec3 i, vec3 nref)
 /// Computes sign of 'x'
 __forceinline ivec4 vec4_sign(vec4 v)
 {
+    //__m128i iv = _mm_castps_si128(v.m128);
+    //__m128i im = _mm_set1_epi32(31);
+    //
+    //int32_t* c = (int32_t*)&iv;
+    //
+    //ivec4 result;
+    //result.m128i = _mm_or_si128(iv, _mm_set_epi32(!!c[3], !!c[2], !!c[1], !!c[0]));
+    //return result;
     ivec4 result;
     result.x = float_sign(v.x);
     result.y = float_sign(v.y);
@@ -1019,25 +1299,26 @@ __forceinline ivec4 vec4_sign(vec4 v)
 /// Computes absolute value
 __forceinline vec4 vec4_abs(vec4 v)
 {
-    return vec4_new(fabsf(v.x), fabsf(v.y), fabsf(v.z), fabsf(v.w));
+    return vec4_from_m128(m128_fabsf((__m128)v));
 }
 
 /// Computes cosine
 __forceinline vec4 vec4_cos(vec4 v)
 {
-    return vec4_new(cosf(v.x), cosf(v.y), cosf(v.z), cosf(v.w));
+    return vec4_from_m128(m128_cosf((__m128)v));
 }
 
 /// Computes sine
 __forceinline vec4 vec4_sin(vec4 v)
 {
-    return vec4_new(sinf(v.x), sinf(v.y), sinf(v.z), sinf(v.w));
+    return vec4_from_m128(m128_sinf((__m128)v));
 }
 
 /// Computes tangent
 __forceinline vec4 vec4_tan(vec4 v)
 {
     return vec4_new(tanf(v.x), tanf(v.y), tanf(v.z), tanf(v.w));
+    //return vec4_from_m128(m128_tanf(v.m128));
 }
 
 /// Computes hyperbolic cosine
@@ -1061,7 +1342,7 @@ __forceinline vec4 vec4_tanh(vec4 v)
 /// Computes inverse cosine
 __forceinline vec4 vec4_acos(vec4 v)
 {
-    return vec4_new(acosf(v.x), acosf(v.y), acosf(v.z), acosf(v.w));
+    return vec4_from_m128(m128_acosf((__m128)v));
 }
 
 /// Computes inverse sine
@@ -1252,7 +1533,8 @@ __forceinline vec4 vec4_rsqrt(vec4 v)
 /// Compute dot product of two vectors
 __forceinline float vec4_dot(vec4 a, vec4 b)
 {
-    return a.x * b.x + a.y * b.y + a.z * b.z + a.w * b.w;
+    const vec4 c = vec4_mul(a, b);
+    return c.x + c.y + c.z + c.w;
 }
 
 /// Compute squared length of vector
@@ -1267,13 +1549,13 @@ __forceinline float vec4_length(vec4 v)
     return sqrtf(vec4_lensqr(v));
 }
 
-/// Compute distance from 'a' to b
-__forceinline float distance(vec4 a, vec4 b)
+/// Compute distance from 'a' to 'b'
+__forceinline float vec4_distance(vec4 a, vec4 b)
 {
     return vec4_length(vec4_sub(a, b));
 }
 
-/// Compute squared distance from 'a' to b
+/// Compute squared distance from 'a' to 'b'
 __forceinline float vec4_distsqr(vec4 a, vec4 b)
 {
     return vec4_lensqr(vec4_sub(a, b));
@@ -1303,11 +1585,10 @@ __forceinline vec4 vec4_reflect(vec4 v, vec4 n)
 /// Compute refraction vector
 __forceinline vec4 vec4_refract(vec4 v, vec4 n, float eta)
 {
-    const float d = vec4_dot(v, n);
-    const float k = 1.0f - eta * eta * (1.0f - d * d);
+    const float k = 1.0f - eta * eta * (1.0f - vec4_dot(v, n) * vec4_dot(v, n));
     return k < 0.0f
         ? vec4_new1(0.0f)
-        : vec4_sub(vec4_mul1(v, eta), vec4_mul1(n, eta * d + sqrtf(k)));
+        : vec4_sub(vec4_mul1(v, eta), vec4_mul1(n, eta * vec4_dot(v, n) + sqrtf(k)));
 }
 
 /// Compute faceforward vector
@@ -1319,12 +1600,12 @@ __forceinline vec4 vec4_faceforward(vec4 n, vec4 i, vec4 nref)
 /// Quaternion multiplication
 __forceinline vec4 quat_mul(vec4 a, vec4 b)
 {
-    const vec3  a3 = vec3_new(a.x, a.y, a.z);
-    const vec3  b3 = vec3_new(b.x, b.y, b.z);
+    const vec3  a3  = vec3_new(a.x, a.y, a.z);
+    const vec3  b3  = vec3_new(b.x, b.y, b.z);
 
     const vec3  xyz = vec3_add(vec3_add(vec3_mul1(a3, b.w), vec3_mul1(b3, a.w)), vec3_cross(a3, b3));
-    const float w = a.w * b.w - vec3_dot(a3, b3);
-
+    const float w   = a.w * b.w - vec3_dot(a3, b3);
+        
     return vec4_new(xyz.x, xyz.y, xyz.z, w);
 }
 
@@ -1340,19 +1621,19 @@ __forceinline vec4 quat_conj(vec4 q)
     return vec4_new(-q.x, -q.y, -q.z, q.w);
 }
 
+/// Create quaternion from axes and angle
 __forceinline vec4 quat_from_axis_angle(vec3 axis, float angle)
 {
     if (vec3_lensqr(axis) == 0.0f)
     {
         return vec4_new(0, 0, 0, 1);
     }
-
-    vec4 result;
-    result.xyz  = vec3_mul1(vec3_normalize(axis), sinf(angle * 0.5f));
-    result.w    = cosf(angle * 0.5f);
-    return result;
+    
+    const vec3 normalized = vec3_mul1(vec3_normalize(axis), sinf(angle * 0.5f));
+    return vec4_new(normalized.x, normalized.y, normalized.z, cosf(angle * 0.5f));
 }
 
+/// Convert quaternion from axes and angle
 __forceinline vec4 quat_to_axis_angle(vec4 quat)
 {
     vec4 c = quat;
@@ -1362,27 +1643,23 @@ __forceinline vec4 quat_to_axis_angle(vec4 quat)
     }
 
     const float den = sqrtf(1.0f - c.w * c.w);
-    const vec3 axis = (den > 0.0001f) 
+    const vec3 axis = (den > 0.0001f)
         ? vec3_div1(vec3_new(c.x, c.y, c.z), den)
-        : vec3_new(1, 0, 0);
+        : vec3_new(1.0f, 0.0f, 0.0f);
 
     const float angle = 2.0f * cosf(c.w);
-
-    vec4 result;
-    result.x = axis.x;
-    result.y = axis.y;
-    result.z = axis.z;
-    result.w = angle;
-    return result;
+    return vec4_new(axis.x, axis.y, axis.z, angle);
 }
 
+/// Convert quaternion from axes and angle, pass-by-ref
 __forceinline void quat_to_axis_angle_ref(vec4 quat, vec3* axis, float* angle)
 {
     vec4 axisAngle = quat_to_axis_angle(quat);
-    if (axis) *axis = axisAngle.xyz;
+    if (axis) *axis = vec3_from_vec4(axisAngle);
     if (angle) *angle = axisAngle.w;
 }
 
+/// Create quaternion from euler
 __forceinline vec4 quat_from_euler(float x, float y, float z)
 {
     float r;
@@ -1755,23 +2032,19 @@ __forceinline mat4 mat4_rsqrt(mat4 m)
     return mat4_new(vec4_rsqrt(m.row0), vec4_rsqrt(m.row1), vec4_rsqrt(m.row2), vec4_rsqrt(m.row3));
 }
 
-__forceinline vec4 mat4_mul_vec4(mat4 m, vec4 v)
+__forceinline vec4 mat4_mul_vec4(mat4 a, vec4 b)
 {
-    return vec4_new(
-        m.row0.x * v.x + m.row1.x * v.y + m.row2.x * v.z + m.row3.x * v.w,
-        m.row0.y * v.x + m.row1.y * v.y + m.row2.y * v.z + m.row3.y * v.w,
-        m.row0.z * v.x + m.row1.z * v.y + m.row2.z * v.z + m.row3.z * v.w,
-        m.row0.w * v.x + m.row1.w * v.y + m.row2.w * v.z + m.row3.w * v.w
-    );
-}
-
-__forceinline vec4 vec4_mul_mat4(vec4 v, mat4 m)
-{
-    return vec4_new(
-        vec4_dot(v, m.row0),
-        vec4_dot(v, m.row1),
-        vec4_dot(v, m.row2),
-        vec4_dot(v, m.row3)
+    return vec4_from_m128(
+        _mm_add_ps(
+            _mm_add_ps(
+                _mm_mul_ps((__m128)a.row0, _mm_shuffle_ps((__m128)b, b, _MM_SHUFFLE(0, 0, 0, 0))), 
+                _mm_mul_ps((__m128)a.row1, _mm_shuffle_ps((__m128)b, b, _MM_SHUFFLE(1, 1, 1, 1)))
+            ),
+            _mm_add_ps(
+                _mm_mul_ps((__m128)a.row2, _mm_shuffle_ps((__m128)b, b, _MM_SHUFFLE(2, 2, 2, 2))),
+                _mm_mul_ps((__m128)a.row3, _mm_shuffle_ps((__m128)b, b, _MM_SHUFFLE(3, 3, 3, 3)))
+            )
+        )
     );
 }
 
@@ -1791,15 +2064,6 @@ __forceinline vec2 mat4_mul_vec2(mat4 a, vec2 b)
 
     const float iw = 1.0f / b1.w;
     return vec2_new(b1.x * iw, b1.y * iw);
-}
-
-__forceinline vec3 vec4_mul_mat4(vec3 a, mat4 b)
-{
-    const vec4 a0 = vec4_new(a.x, a.y, a.z, 1.0f);
-    const vec4 a1 = vec4_mul_mat4(a0, b);
-
-    const float iw = 1.0f / a1.w;
-    return vec3_new(a1.x * iw, a1.y * iw, a1.z * iw);
 }
 
 __forceinline mat4 mat4_mul(mat4 a, mat4 b)
@@ -1824,141 +2088,285 @@ __forceinline mat4 mat4_mul1(mat4 a, float b)
 
 __forceinline mat4 mat4_transpose(mat4 m)
 {
-    return mat4_new_f16(
-        m.m00, m.m10, m.m20, m.m30,
-        m.m01, m.m11, m.m21, m.m31,
-        m.m02, m.m12, m.m22, m.m32,
-        m.m03, m.m13, m.m23, m.m33
-    );
+    __m128 tmp0, tmp1, tmp2, tmp3, res0, res1, res2, res3;
+    tmp0 = m128_merge_hi((__m128)m.row0, (__m128)m.row2);
+    tmp1 = m128_merge_hi((__m128)m.row1, (__m128)m.row3);
+    tmp2 = m128_merge_lo((__m128)m.row0, (__m128)m.row2);
+    tmp3 = m128_merge_lo((__m128)m.row1, (__m128)m.row3);
+    res0 = m128_merge_hi(tmp0, tmp1);
+    res1 = m128_merge_lo(tmp0, tmp1);
+    res2 = m128_merge_hi(tmp2, tmp3);
+    res3 = m128_merge_lo(tmp2, tmp3);
+    return mat4_new(vec4_from_m128(res0), vec4_from_m128(res1), vec4_from_m128(res2), vec4_from_m128(res3));
 }
 
 __forceinline mat4 mat4_inverse(mat4 m)
 {
-    const float n11 = m.m00, n12 = m.m10, n13 = m.m20, n14 = m.m30;
-    const float n21 = m.m01, n22 = m.m11, n23 = m.m21, n24 = m.m31;
-    const float n31 = m.m02, n32 = m.m12, n33 = m.m22, n34 = m.m32;
-    const float n41 = m.m03, n42 = m.m13, n43 = m.m23, n44 = m.m33;
+    VECTORMATH_ALIGNAS(unsigned int PNPN[4], 16) = { 0x00000000, 0x80000000, 0x00000000, 0x80000000 };
+    VECTORMATH_ALIGNAS(unsigned int NPNP[4], 16) = { 0x80000000, 0x00000000, 0x80000000, 0x00000000 };
+    VECTORMATH_ALIGNAS(float X1_YZ0_W1[4]  , 16) = { 1.0f, 0.0f, 0.0f, 1.0f };
 
-    const float t11 = n23 * n34 * n42 - n24 * n33 * n42 + n24 * n32 * n43 - n22 * n34 * n43 - n23 * n32 * n44 + n22 * n33 * n44;
-    const float t12 = n14 * n33 * n42 - n13 * n34 * n42 - n14 * n32 * n43 + n12 * n34 * n43 + n13 * n32 * n44 - n12 * n33 * n44;
-    const float t13 = n13 * n24 * n42 - n14 * n23 * n42 + n14 * n22 * n43 - n12 * n24 * n43 - n13 * n22 * n44 + n12 * n23 * n44;
-    const float t14 = n14 * n23 * n32 - n13 * n24 * n32 - n14 * n22 * n33 + n12 * n24 * n33 + n13 * n22 * n34 - n12 * n23 * n34;
+    __m128 Va, Vb, Vc;
+    __m128 r1, r2, r3, tt, tt2;
+    __m128 sum, Det, RDet;
+    __m128 trns0, trns1, trns2, trns3;
 
-    const float det = n11 * t11 + n21 * t12 + n31 * t13 + n41 * t14;
-    if (det < 0.0f)
-    {
-        mat4 result;
-        result.m00 = 0.0f; result.m01 = 0.0f; result.m02 = 0.0f; result.m03 = 0.0f;
-        result.m10 = 0.0f; result.m11 = 0.0f; result.m12 = 0.0f; result.m13 = 0.0f;
-        result.m20 = 0.0f; result.m21 = 0.0f; result.m22 = 0.0f; result.m23 = 0.0f;
-        result.m30 = 0.0f; result.m31 = 0.0f; result.m32 = 0.0f; result.m33 = 0.0f;
-        return result;
-    }
+    __m128 _L1 = (__m128)m.row0;
+    __m128 _L2 = (__m128)m.row1;
+    __m128 _L3 = (__m128)m.row2;
+    __m128 _L4 = (__m128)m.row3;
+    // Calculating the minterms for the first line.
 
-    const float idet = 1.0f / det;
+    // simdRor is just a macro using _mm_shuffle_ps().
+    tt = _L4;
+    tt2 = m128_ror(_L3, 1);
+    Vc = _mm_mul_ps(tt2, m128_ror(tt, 0)); // V3'�V4
+    Va = _mm_mul_ps(tt2, m128_ror(tt, 2)); // V3'�V4"
+    Vb = _mm_mul_ps(tt2, m128_ror(tt, 3)); // V3'�V4^
 
-    mat4 result;
-    result.m00 = t11 * idet;
-    result.m01 = (n24 * n33 * n41 - n23 * n34 * n41 - n24 * n31 * n43 + n21 * n34 * n43 + n23 * n31 * n44 - n21 * n33 * n44) * idet;
-    result.m02 = (n22 * n34 * n41 - n24 * n32 * n41 + n24 * n31 * n42 - n21 * n34 * n42 - n22 * n31 * n44 + n21 * n32 * n44) * idet;
-    result.m03 = (n23 * n32 * n41 - n22 * n33 * n41 - n23 * n31 * n42 + n21 * n33 * n42 + n22 * n31 * n43 - n21 * n32 * n43) * idet;
+    r1 = _mm_sub_ps(m128_ror(Va, 1), m128_ror(Vc, 2)); // V3"�V4^ - V3^�V4"
+    r2 = _mm_sub_ps(m128_ror(Vb, 2), m128_ror(Vb, 0)); // V3^�V4' - V3'�V4^
+    r3 = _mm_sub_ps(m128_ror(Va, 0), m128_ror(Vc, 1)); // V3'�V4" - V3"�V4'
 
-    result.m10 = t12 * idet;
-    result.m11 = (n13 * n34 * n41 - n14 * n33 * n41 + n14 * n31 * n43 - n11 * n34 * n43 - n13 * n31 * n44 + n11 * n33 * n44) * idet;
-    result.m12 = (n14 * n32 * n41 - n12 * n34 * n41 - n14 * n31 * n42 + n11 * n34 * n42 + n12 * n31 * n44 - n11 * n32 * n44) * idet;
-    result.m13 = (n12 * n33 * n41 - n13 * n32 * n41 + n13 * n31 * n42 - n11 * n33 * n42 - n12 * n31 * n43 + n11 * n32 * n43) * idet;
+    tt = _L2;
+    Va = m128_ror(tt, 1);
+    sum = _mm_mul_ps(Va, r1);
+    Vb = m128_ror(tt, 2);
+    sum = _mm_add_ps(sum, _mm_mul_ps(Vb, r2));
+    Vc = m128_ror(tt, 3);
+    sum = _mm_add_ps(sum, _mm_mul_ps(Vc, r3));
 
-    result.m20 = t13 * idet;
-    result.m21 = (n14 * n23 * n41 - n13 * n24 * n41 - n14 * n21 * n43 + n11 * n24 * n43 + n13 * n21 * n44 - n11 * n23 * n44) * idet;
-    result.m22 = (n12 * n24 * n41 - n14 * n22 * n41 + n14 * n21 * n42 - n11 * n24 * n42 - n12 * n21 * n44 + n11 * n22 * n44) * idet;
-    result.m23 = (n13 * n22 * n41 - n12 * n23 * n41 - n13 * n21 * n42 + n11 * n23 * n42 + n12 * n21 * n43 - n11 * n22 * n43) * idet;
+    // Calculating the determinant.
+    Det = _mm_mul_ps(sum, _L1);
+    Det = _mm_add_ps(Det, _mm_movehl_ps(Det, Det));
 
-    result.m30 = t14 * idet;
-    result.m31 = (n13 * n24 * n31 - n14 * n23 * n31 + n14 * n21 * n33 - n11 * n24 * n33 - n13 * n21 * n34 + n11 * n23 * n34) * idet;
-    result.m32 = (n14 * n22 * n31 - n12 * n24 * n31 - n14 * n21 * n32 + n11 * n24 * n32 + n12 * n21 * n34 - n11 * n22 * n34) * idet;
-    result.m33 = (n12 * n23 * n31 - n13 * n22 * n31 + n13 * n21 * n32 - n11 * n23 * n32 - n12 * n21 * n33 + n11 * n22 * n33) * idet;
-    return result;
+    const __m128 Sign_PNPN = _mm_load_ps((float *)PNPN);
+    const __m128 Sign_NPNP = _mm_load_ps((float *)NPNP);
+
+    __m128 mtL1 = _mm_xor_ps(sum, Sign_PNPN);
+
+    // Calculating the minterms of the second line (using previous results).
+    tt = m128_ror(_L1, 1);
+    sum = _mm_mul_ps(tt, r1);
+    tt = m128_ror(tt, 1);
+    sum = _mm_add_ps(sum, _mm_mul_ps(tt, r2));
+    tt = m128_ror(tt, 1);
+    sum = _mm_add_ps(sum, _mm_mul_ps(tt, r3));
+    __m128 mtL2 = _mm_xor_ps(sum, Sign_NPNP);
+
+    // Testing the determinant.
+    Det = _mm_sub_ss(Det, _mm_shuffle_ps(Det, Det, 1));
+
+    // Calculating the minterms of the third line.
+    tt = m128_ror(_L1, 1);
+    Va = _mm_mul_ps(tt, Vb);  // V1'�V2"
+    Vb = _mm_mul_ps(tt, Vc);  // V1'�V2^
+    Vc = _mm_mul_ps(tt, _L2); // V1'�V2
+
+    r1 = _mm_sub_ps(m128_ror(Va, 1), m128_ror(Vc, 2)); // V1"�V2^ - V1^�V2"
+    r2 = _mm_sub_ps(m128_ror(Vb, 2), m128_ror(Vb, 0)); // V1^�V2' - V1'�V2^
+    r3 = _mm_sub_ps(m128_ror(Va, 0), m128_ror(Vc, 1)); // V1'�V2" - V1"�V2'
+
+    tt = m128_ror(_L4, 1);
+    sum = _mm_mul_ps(tt, r1);
+    tt = m128_ror(tt, 1);
+    sum = _mm_add_ps(sum, _mm_mul_ps(tt, r2));
+    tt = m128_ror(tt, 1);
+    sum = _mm_add_ps(sum, _mm_mul_ps(tt, r3));
+    __m128 mtL3 = _mm_xor_ps(sum, Sign_PNPN);
+
+    // Dividing is FASTER than rcp_nr! (Because rcp_nr causes many register-memory RWs).
+    RDet = _mm_div_ss(_mm_load_ss((float *)&X1_YZ0_W1), Det);
+    RDet = _mm_shuffle_ps(RDet, RDet, 0x00);
+
+    // Devide the first 12 minterms with the determinant.
+    mtL1 = _mm_mul_ps(mtL1, RDet);
+    mtL2 = _mm_mul_ps(mtL2, RDet);
+    mtL3 = _mm_mul_ps(mtL3, RDet);
+
+    // Calculate the minterms of the forth line and devide by the determinant.
+    tt = m128_ror(_L3, 1);
+    sum = _mm_mul_ps(tt, r1);
+    tt = m128_ror(tt, 1);
+    sum = _mm_add_ps(sum, _mm_mul_ps(tt, r2));
+    tt = m128_ror(tt, 1);
+    sum = _mm_add_ps(sum, _mm_mul_ps(tt, r3));
+    __m128 mtL4 = _mm_xor_ps(sum, Sign_NPNP);
+    mtL4 = _mm_mul_ps(mtL4, RDet);
+
+    // Now we just have to transpose the minterms matrix.
+    trns0 = _mm_unpacklo_ps(mtL1, mtL2);
+    trns1 = _mm_unpacklo_ps(mtL3, mtL4);
+    trns2 = _mm_unpackhi_ps(mtL1, mtL2);
+    trns3 = _mm_unpackhi_ps(mtL3, mtL4);
+    _L1 = _mm_movelh_ps(trns0, trns1);
+    _L2 = _mm_movehl_ps(trns1, trns0);
+    _L3 = _mm_movelh_ps(trns2, trns3);
+    _L4 = _mm_movehl_ps(trns3, trns2);
+
+    return mat4_new(vec4_from_m128(_L1), vec4_from_m128(_L2), vec4_from_m128(_L3), vec4_from_m128(_L4));
+}
+
+__forceinline float mat4_determinant(mat4 mat)
+{
+    __m128 Va, Vb, Vc;
+    __m128 r1, r2, r3, tt, tt2;
+    __m128 sum, det;
+
+    __m128 _L1 = (__m128)mat.row0;
+    __m128 _L2 = (__m128)mat.row1;
+    __m128 _L3 = (__m128)mat.row2;
+    __m128 _L4 = (__m128)mat.row3;
+    // Calculating the minterms for the first line.
+
+    // sseRor is just a macro using _mm_shuffle_ps().
+    tt = _L4;
+    tt2 = m128_ror(_L3, 1);
+    Vc = _mm_mul_ps(tt2, m128_ror(tt, 0)); // V3'�V4
+    Va = _mm_mul_ps(tt2, m128_ror(tt, 2)); // V3'�V4"
+    Vb = _mm_mul_ps(tt2, m128_ror(tt, 3)); // V3'�V4^
+
+    r1 = _mm_sub_ps(m128_ror(Va, 1), m128_ror(Vc, 2)); // V3"�V4^ - V3^�V4"
+    r2 = _mm_sub_ps(m128_ror(Vb, 2), m128_ror(Vb, 0)); // V3^�V4' - V3'�V4^
+    r3 = _mm_sub_ps(m128_ror(Va, 0), m128_ror(Vc, 1)); // V3'�V4" - V3"�V4'
+
+    tt = _L2;
+    Va = m128_ror(tt, 1);
+    sum = _mm_mul_ps(Va, r1);
+    Vb = m128_ror(tt, 2);
+    sum = _mm_add_ps(sum, _mm_mul_ps(Vb, r2));
+    Vc = m128_ror(tt, 3);
+    sum = _mm_add_ps(sum, _mm_mul_ps(Vc, r3));
+
+    // Calculating the determinant.
+    det = _mm_mul_ps(sum, _L1);
+    det = _mm_add_ps(det, _mm_movehl_ps(det, det));
+
+    // Calculating the minterms of the second line (using previous results).
+    tt = m128_ror(_L1, 1);
+    sum = _mm_mul_ps(tt, r1);
+    tt = m128_ror(tt, 1);
+    sum = _mm_add_ps(sum, _mm_mul_ps(tt, r2));
+    tt = m128_ror(tt, 1);
+    sum = _mm_add_ps(sum, _mm_mul_ps(tt, r3));
+
+    // Testing the determinant.
+    det = _mm_sub_ss(det, _mm_shuffle_ps(det, det, 1));
+    return vec4_from_m128(det).x;
 }
 
 __forceinline mat4 mat4_identity()
 {
-    return mat4_new_f16(
-        1, 0, 0, 0,
-        0, 1, 0, 0,
-        0, 0, 1, 0,
-        0, 0, 0, 1
+    return mat4_new(
+        vec4_new(1, 0, 0, 0),
+        vec4_new(0, 1, 0, 0),
+        vec4_new(0, 0, 1, 0),
+        vec4_new(0, 0, 0, 1)
     );
 }
 
-__forceinline mat4 mat4_ortho(float left, float right, float bottom, float top, float zNear, float zFar)
+__forceinline mat4 mat4_ortho(float left, float right, float bottom, float top, float near, float far)
 {
-    const float sum_rl = (right + left);
-    const float sum_tb = (top + bottom);
-    const float sum_nf = (zNear + zFar);
-    const float inv_rl = (1.0f / (right - left));
-    const float inv_tb = (1.0f / (top - bottom));
-    const float inv_nf = (1.0f / (zFar - zNear));
+    const __m128 zero           = _mm_set_ps1(0.0f);
+    const __m128 l              = _mm_set_ps1(left);
+    const __m128 f              = _mm_set_ps1(far);
+    const __m128 r              = _mm_set_ps1(right);
+    const __m128 n              = _mm_set_ps1(near);
+    const __m128 b              = _mm_set_ps1(bottom);
+    const __m128 t              = _mm_set_ps1(top);
+    const __m128 lbn            = m128_merge_hi(m128_merge_hi(l, n), b);
+    const __m128 rtf            = m128_merge_hi(m128_merge_hi(r, f), t);
+    const __m128 diff           = _mm_sub_ps(rtf, lbn);
+    const __m128 inv_diff       = _mm_rcp_ps(diff);
+    const __m128 neg_inv_diff   = m128_negatef(inv_diff);
+    
+    const __m128 select_x       = _mm_castsi128_ps(_mm_setr_epi32(0xFFFFFFFF, 0, 0, 0));
+    const __m128 select_y       = _mm_castsi128_ps(_mm_setr_epi32(0, 0xFFFFFFFF, 0, 0));
+    const __m128 select_z       = _mm_castsi128_ps(_mm_setr_epi32(0, 0, 0xFFFFFFFF, 0));
+    const __m128 select_w       = _mm_castsi128_ps(_mm_setr_epi32(0, 0, 0, 0xFFFFFFFF));
 
-    return mat4_new_f16(
-         (inv_rl + inv_rl),               0.0f,               0.0f, 0.0f,
-                      0.0f,  (inv_tb + inv_tb),               0.0f, 0.0f,
-                      0.0f,               0.0f,  (inv_nf + inv_nf), 0.0f,
-        -(sum_rl * inv_rl), -(sum_tb * inv_tb), -(sum_nf * inv_nf), 1.0f
-    );
-}
-
-__forceinline mat4 mat4_frustum(float l, float r, float b, float t, float n, float f)
-{
-    const float x = 1.0f / (r - l);
-    const float y = 1.0f / (t - b);
-    const float z = 1.0f / (f - n);
-
-    return mat4_new_f16(
-        2.0f * x, 0, 0, 0,
-        0, 2.0f * y, 0, 0,
-        x * (l + r), y * (b + t), z * (n + f), 1.0f,
-        0, 0, 2.0f * z, 0
-    );
-}
-
-__forceinline mat4 mat4_perspective(float fovRadians, float aspect, float znear, float zfar)
-{
-    const float zoomX = 1.0f / tanf(fovRadians * 0.5f);
-    const float zoomY = zoomX * aspect;
-
-    const float rangeInv   = 1.0f / (znear - zfar);
-    const float zClipBias0 = (znear + zfar) * rangeInv;
-    const float zClipBias1 = (2.0f * znear * zfar) * rangeInv;
+    const __m128 sum            = _mm_add_ps(rtf, m128_select(lbn, _mm_sub_ps(n, f), select_z));
+    const __m128 diagonal       = _mm_add_ps(inv_diff, m128_select(inv_diff, zero, select_z));
+    const __m128 column         = _mm_mul_ps(sum, neg_inv_diff);
 
     return mat4_new(
-        vec4_new(zoomX,  0.0f,       0.0f,  0.0f),
-        vec4_new( 0.0f, zoomY,       0.0f,  0.0f),
-        vec4_new( 0.0f,  0.0f, zClipBias0, -1.0f),
-        vec4_new( 0.0f,  0.0f, zClipBias1,  0.0f)
+        vec4_from_m128(m128_select(zero, diagonal, select_x)),
+        vec4_from_m128(m128_select(zero, diagonal, select_y)),
+        vec4_from_m128(m128_select(zero, diagonal, select_z)),
+        vec4_from_m128(m128_select(column, _mm_set1_ps(1.0f), select_w))
     );
 }
 
-__forceinline mat4 mat4_look_at(vec3 eye, vec3 target, vec3 up)
+__forceinline mat4 mat4_frustum(float left, float right, float bottom, float top, float near, float far)
+{
+    const __m128 zero       = _mm_setzero_ps();
+
+    const __m128 l          = _mm_set_ps(left, 0.0f, 0.0f, 0.0f);
+    const __m128 f          = _mm_set_ps(far, 0.0f, 0.0f, 0.0f);
+    const __m128 r          = _mm_set_ps(right, 0.0f, 0.0f, 0.0f);
+    const __m128 n          = _mm_set_ps(near, 0.0f, 0.0f, 0.0f);
+    const __m128 b          = _mm_set_ps(bottom, 0.0f, 0.0f, 0.0f);
+    const __m128 t          = _mm_set_ps(top, 0.0f, 0.0f, 0.0f);
+
+    const __m128 lbf        = m128_merge_hi(m128_merge_hi(l, f), b);
+    const __m128 rtn        = m128_merge_hi(m128_merge_hi(r, n), t);
+    const __m128 diff       = _mm_sub_ps(rtn, lbf);
+    const __m128 sum        = _mm_add_ps(rtn, lbf);
+    const __m128 inv_diff   = _mm_rcp_ps(diff);
+    const __m128 near2      = _mm_add_ps(m128_splat(n, 0), m128_splat(n, 0));
+    const __m128 diagonal   = _mm_mul_ps(near2, inv_diff);
+    const __m128 column     = _mm_mul_ps(sum, inv_diff);
+
+    const __m128 select_x   = _mm_castsi128_ps(_mm_setr_epi32(0xFFFFFFFF, 0, 0, 0));
+    const __m128 select_y   = _mm_castsi128_ps(_mm_setr_epi32(0, 0xFFFFFFFF, 0, 0));
+    const __m128 select_z   = _mm_castsi128_ps(_mm_setr_epi32(0, 0, 0xFFFFFFFF, 0));
+    const __m128 select_w   = _mm_castsi128_ps(_mm_setr_epi32(0, 0, 0, 0xFFFFFFFF));
+
+    return mat4_new(
+        vec4_from_m128(m128_select(zero, diagonal, select_x)),
+        vec4_from_m128(m128_select(zero, diagonal, select_y)),
+        vec4_from_m128(m128_select(column, _mm_set1_ps(-1.0f), select_w)),
+        vec4_from_m128(m128_select(zero, _mm_mul_ps(diagonal, m128_splat(f, 0)), select_z))
+    );
+}
+
+__forceinline mat4 mat4_perspective(float fov, float aspect, float near, float far)
+{
+    const float zoomX = 1.0f / tanf(fov * 0.5f);
+    const float zoomY = zoomX * aspect;
+
+    const float zClipBias0 = (near + far) / (near - far);
+    const float zClipBias1 = (2.0f * near * far) / (near - far);
+
+    mat4 result;
+    result.row0 = vec4_new(zoomX,  0.0f,       0.0f,  0.0f);
+    result.row1 = vec4_new( 0.0f, zoomY,       0.0f,  0.0f);
+    result.row2 = vec4_new( 0.0f,  0.0f, zClipBias0, -1.0f);
+    result.row3 = vec4_new( 0.0f,  0.0f, zClipBias1,  1.0f);
+    return result;
+}
+
+__forceinline mat4 mat4_lookat(vec3 eye, vec3 target, vec3 up)
 {
     const vec3 z = vec3_normalize(vec3_sub(eye, target));
-    const vec3 x = vec3_normalize(vec3_cross(vec3_normalize(up), z));
+    const vec3 x = vec3_normalize(vec3_cross(up, z));
     const vec3 y = vec3_normalize(vec3_cross(z, x));
 
-    return mat4_new_f16(
-         x.x,  y.x,  z.x, -vec3_dot(x, eye),
-         x.y,  y.y,  z.y, -vec3_dot(y, eye),
-         x.z,  y.z,  z.z, -vec3_dot(z, eye),
-        0.0f, 0.0f, 0.0f,              1.0f
-    );
+    mat4 result;
+    result.row0 = vec4_new(         x.x,          y.x,          z.x, 0.0f);
+    result.row1 = vec4_new(         x.y,          y.y,          z.y, 0.0f);
+    result.row2 = vec4_new(         x.z,          y.z,          z.z, 0.0f);
+    result.row3 = vec4_new(-vec3_dot(x, eye), -vec3_dot(y, eye), -vec3_dot(z, eye), 1.0f);
+    return result;
 }
 
 __forceinline mat4 mat4_scalation(float x, float y, float z)
 {
-    return mat4_new_f16(
-        x, 0, 0, 0,
-        0, y, 0, 0,
-        0, 0, z, 0,
-        0, 0, 0, 1
+    return mat4_new(
+        vec4_new(x, 0, 0, 0),
+        vec4_new(0, y, 0, 0),
+        vec4_new(0, 0, z, 0),
+        vec4_new(0, 0, 0, 1)
     );
 }
 
@@ -1979,11 +2387,11 @@ __forceinline mat4 mat4_scalation_vec3(vec3 v)
 
 __forceinline mat4 mat4_translation(float x, float y, float z)
 {
-    return mat4_new_f16(
-        1, 0, 0, 0,
-        0, 1, 0, 0,
-        0, 0, 1, 0,
-        x, y, z, 1
+    return mat4_new(
+        vec4_new(1, 0, 0, 0),
+        vec4_new(0, 1, 0, 0),
+        vec4_new(0, 0, 1, 0),
+        vec4_new(x, y, z, 1)
     );
 }
 
@@ -1997,34 +2405,37 @@ __forceinline mat4 mat4_translation_vec3(vec3 v)
     return mat4_translation(v.x, v.y, v.z);
 }
 
-__forceinline mat4 mat4_rotation(float x, float y, float z, float radians)
+__forceinline mat4 mat4_rotation(float x, float y, float z, float angle)
 {
-    const float c = cosf(-radians);
-    const float s = sinf(-radians);
+    const float c = cosf(-angle);
+    const float s = sinf(-angle);
     const float t = 1.0f - c;
 
-    return mat4_new_f16(
-        /* Row 0 */
+    mat4 result;
+    /* Row 1 */
+    result.row0 = vec4_new(
         t * x * x + c,
         t * x * y - s * z,
         t * x * z + s * y,
-        0.0f,
+        0.0f);
 
-        /* Row 1 */
-        t* x* y + s * z,
-        t* y* y + c,
-        t* y* z - s * x,
-        0.0f,
+    /* Row 2 */
+    result.row1 = vec4_new(
+        t * x * y + s * z,
+        t * y * y + c,
+        t * y * z - s * x,
+        0.0f);
 
-        /* Row 2 */
-        t* x* z - s * y,
-        t* y* z + s * x,
-        t* z* z + c,
-        0.0f,
+    /* Row 3 */
+    result.row2 = vec4_new(
+        t * x * z - s * y,
+        t * y * z + s * x,
+        t * z * z + c,
+        0.0f);
 
-        /* Row 3 */
-        0, 0, 0, 1.0f
-    );
+    /* Row 4 */
+    result.row3 = vec4_new(0, 0, 0, 1.0f);
+    return result;
 }
 
 __forceinline mat4 mat4_rotation_axis_angle(vec3 axis, float angle)
@@ -2037,11 +2448,11 @@ __forceinline mat4 mat4_rotation_x(float angle)
     const float s = sinf(angle);
     const float c = cosf(angle);
 
-    return mat4_new_f16(
-        1,  0, 0, 0,
-        0,  c, s, 0,
-        0, -s, c, 0,
-        0,  0, 0, 1
+    return mat4_new(
+        vec4_new(1,  0, 0, 0),
+        vec4_new(0,  c, s, 0),
+        vec4_new(0, -s, c, 0),
+        vec4_new(0,  0, 0, 1)
     );
 }
 
@@ -2050,24 +2461,24 @@ __forceinline mat4 mat4_rotation_y(float angle)
     const float s = sinf(angle);
     const float c = cosf(angle);
 
-    return mat4_new_f16(
-         c, 0, s, 0,
-         0, 1, 0, 0,
-        -s, 0, c, 0,
-         0, 0, 0, 1
+    return mat4_new(
+        vec4_new( c, 0, s, 0),
+        vec4_new( 0, 1, 0, 0),
+        vec4_new(-s, 0, c, 0),
+        vec4_new( 0, 0, 0, 1)
     );
 }
 
-__forceinline mat4 mat4_rotation_z(float radians)
+__forceinline mat4 mat4_rotation_z(float angle)
 {
-    const float s = sinf(radians);
-    const float c = cosf(radians);
+    const float s = sinf(angle);
+    const float c = cosf(angle);
 
-    return mat4_new_f16(
-         c, s, 0, 0,
-        -s, c, 0, 0,
-         0, 0, 1, 0,
-         0, 0, 0, 1
+    return mat4_new(
+        vec4_new( c, s, 0, 0),
+        vec4_new(-s, c, 0, 0),
+        vec4_new( 0, 0, 1, 0),
+        vec4_new( 0, 0, 0, 1)
     );
 }
 
@@ -2099,7 +2510,7 @@ __forceinline void mat4_decompose(mat4 m, vec3* scalation, vec4* quaternion, vec
 {
     if (translation)
     {
-        *translation = m.row3.xyz;
+        *translation = vec3_from_vec4(m.row3);
     }
 
     if (!scalation && !quaternion)
@@ -2107,13 +2518,9 @@ __forceinline void mat4_decompose(mat4 m, vec3* scalation, vec4* quaternion, vec
         return;
     }
 
-    vec3 xaxis = m.row0.xyz;
-    vec3 yaxis = m.row1.xyz;
-    vec3 zaxis = m.row2.xyz;
-
-    float scale_x = vec3_length(xaxis);
-    float scale_y = vec3_length(yaxis);
-    float scale_z = vec3_length(zaxis);
+    vec3 xaxis = vec3_from_vec4(m.row0);
+    vec3 yaxis = vec3_from_vec4(m.row1);
+    vec3 zaxis = vec3_from_vec4(m.row2);
 
     const float n11 = m.m00, n12 = m.m10, n13 = m.m20, n14 = m.m30;
     const float n21 = m.m01, n22 = m.m11, n23 = m.m21, n24 = m.m31;
@@ -2126,7 +2533,10 @@ __forceinline void mat4_decompose(mat4 m, vec3* scalation, vec4* quaternion, vec
     const float t14 = n14 * n23 * n32 - n13 * n24 * n32 - n14 * n22 * n33 + n12 * n24 * n33 + n13 * n22 * n34 - n12 * n23 * n34;
 
     const float det = n11 * t11 + n21 * t12 + n31 * t13 + n41 * t14;
-    if (det < 0) scale_z = -scale_z;
+
+    const float scale_x = vec3_length(xaxis);
+    const float scale_y = vec3_length(yaxis);
+    const float scale_z = float_sign(det) * vec3_length(zaxis);
 
     if (scalation)
     {
@@ -2138,30 +2548,16 @@ __forceinline void mat4_decompose(mat4 m, vec3* scalation, vec4* quaternion, vec
         return;
     }
 
-    float rn;
-
     // Factor the scale out of the matrix axes.
-    rn = 1.0f / scale_x;
-    xaxis.x *= rn;
-    xaxis.y *= rn;
-    xaxis.z *= rn;
-
-    rn = 1.0f / scale_y;
-    yaxis.x *= rn;
-    yaxis.y *= rn;
-    yaxis.z *= rn;
-
-    rn = 1.0f / scale_z;
-    zaxis.x *= rn;
-    zaxis.y *= rn;
-    zaxis.z *= rn;
+    xaxis = vec3_mul1(xaxis, 1.0f / scale_x);
+    yaxis = vec3_mul1(yaxis, 1.0f / scale_y);
+    zaxis = vec3_mul1(zaxis, 1.0f / scale_z);
 
     // Now calculate the rotation from the resulting matrix (axes).
-    float trace = xaxis.x + yaxis.y + zaxis.z + 1.0f;
-
+    const float trace = xaxis.x + yaxis.y + zaxis.z + 1.0f;
     if (trace > 0.0001f)
     {
-        float s = 0.5f / sqrtf(trace);
+        const float s = 0.5f / sqrtf(trace);
         quaternion->w = 0.25f / s;
         quaternion->x = (yaxis.z - zaxis.y) * s;
         quaternion->y = (zaxis.x - xaxis.z) * s;
@@ -2173,7 +2569,7 @@ __forceinline void mat4_decompose(mat4 m, vec3* scalation, vec4* quaternion, vec
         // we will never divide by zero in the code below.
         if (xaxis.x > yaxis.y && xaxis.x > zaxis.z)
         {
-            float s = 0.5f / sqrtf(1.0f + xaxis.x - yaxis.y - zaxis.z);
+            const float s = 0.5f / sqrtf(1.0f + xaxis.x - yaxis.y - zaxis.z);
             quaternion->w = (yaxis.z - zaxis.y) * s;
             quaternion->x = 0.25f / s;
             quaternion->y = (yaxis.x + xaxis.y) * s;
@@ -2181,7 +2577,7 @@ __forceinline void mat4_decompose(mat4 m, vec3* scalation, vec4* quaternion, vec
         }
         else if (yaxis.y > zaxis.z)
         {
-            float s = 0.5f / sqrtf(1.0f + yaxis.y - xaxis.x - zaxis.z);
+            const float s = 0.5f / sqrtf(1.0f + yaxis.y - xaxis.x - zaxis.z);
             quaternion->w = (zaxis.x - xaxis.z) * s;
             quaternion->x = (yaxis.x + xaxis.y) * s;
             quaternion->y = 0.25f / s;
@@ -2189,7 +2585,7 @@ __forceinline void mat4_decompose(mat4 m, vec3* scalation, vec4* quaternion, vec
         }
         else
         {
-            float s = 0.5f / sqrtf(1.0f + zaxis.z - xaxis.x - yaxis.y);
+            const float s = 0.5f / sqrtf(1.0f + zaxis.z - xaxis.x - yaxis.y);
             quaternion->w = (xaxis.y - yaxis.x) * s;
             quaternion->x = (zaxis.x + xaxis.z) * s;
             quaternion->y = (zaxis.y + yaxis.z) * s;
@@ -2198,7 +2594,7 @@ __forceinline void mat4_decompose(mat4 m, vec3* scalation, vec4* quaternion, vec
     }
 }
 
-__forceinline void mat4_decompose(mat4 m, vec3* scalation, vec3* axis, float* angle, vec3* translation)
+__forceinline void mat4_decompose_axis_angle(mat4 m, vec3* scalation, vec3* axis, float* angle, vec3* translation)
 {
     if (axis || angle)
     {
