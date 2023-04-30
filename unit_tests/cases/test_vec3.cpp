@@ -1,17 +1,49 @@
 #include "../test_framework.h"
 
-DEFINE_UNIT_TEST("Test vec3 assigment")
+DEFINE_UNIT_TEST("vec3 assigment")
 {
     const vec3 a = vec3_new(0.0f, 0.0f, 1.0f);
     const vec3 b = a;
     TEST(a.x == b.x && a.y == b.y && a.z == b.z);
 }
 
-DEFINE_UNIT_TEST("Test vec3 operator neg")
+DEFINE_UNIT_TEST("vec3 operator-(vec3 v)")
 {
     const vec3 a = vec3_new(1.0f, 2.0f, 3.0f);
     const vec3 b = -a;
     TEST(a.x == -b.x && a.y == -b.y && a.z == -b.z);
+}
+
+DEFINE_UNIT_TEST("vec3 operator++(vec3 v)")
+{
+    vec3 a = vec3_new(1.0f, 2.0f, 3.0f);
+    vec3 b = a++;
+    TEST(a.x == b.x + 1.0f && a.y == b.y + 1.0f && a.z == b.z + 1.0f);
+    TEST(a.x == 2.0f && a.y == 3.0f && a.z == 4.0f);
+}
+
+DEFINE_UNIT_TEST("vec3 operator++(vec3 v, int)")
+{
+    vec3 a = vec3_new(1.0f, 2.0f, 3.0f);
+    vec3 b = ++a;
+    TEST(a.x == b.x && a.y == b.y && a.z == b.z);
+    TEST(a.x == 2.0f && a.y == 3.0f && a.z == 4.0f);
+}
+
+DEFINE_UNIT_TEST("vec3 operator--(vec3 v)")
+{
+    vec3 a = vec3_new(1.0f, 2.0f, 3.0f);
+    vec3 b = a--;
+    TEST(a.x == b.x - 1.0f && a.y == b.y - 1.0f && a.z == b.z - 1.0f);
+    TEST(a.x == 0.0f && a.y == 1.0f && a.z == 2.0f);
+}
+
+DEFINE_UNIT_TEST("vec3 operator--(vec3 v, int)")
+{
+    vec3 a = vec3_new(1.0f, 2.0f, 3.0f);
+    vec3 b = --a;
+    TEST(a.x == b.x && a.y == b.y && a.z == b.z);
+    TEST(a.x == 0.0f && a.y == 1.0f && a.z == 2.0f);
 }
 
 DEFINE_UNIT_TEST("Test vec3 operator+")
