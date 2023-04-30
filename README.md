@@ -20,6 +20,6 @@
 - Where the functions docs, and tutorials? WIP.
 
 ## Meta
-- Version: v0.1.2-dev
+- Version: v0.1.3-dev
 - License: UNLICENSED
 - Copyright: MaiHD @ 2022
