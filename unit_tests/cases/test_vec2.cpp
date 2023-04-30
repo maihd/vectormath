@@ -14,6 +14,38 @@ DEFINE_UNIT_TEST("vec2 operator-(vec2 v)")
     TEST(a.x == -b.x && a.y == -b.y);
 }
 
+DEFINE_UNIT_TEST("vec2 operator++(vec2 v)")
+{
+    vec2 a = vec2_new(1.0f, 2.0f);
+    vec2 b = a++; 
+    TEST(a.x == b.x + 1.0f && a.y == b.y + 1.0f);
+    TEST(a.x == 2.0f && a.y == 3.0f);
+}
+
+DEFINE_UNIT_TEST("vec2 operator++(vec2 v, int)")
+{
+    vec2 a = vec2_new(1.0f, 2.0f);
+    vec2 b = ++a;
+    TEST(a.x == b.x && a.y == b.y);
+    TEST(a.x == 2.0f && a.y == 3.0f);
+}
+
+DEFINE_UNIT_TEST("vec2 operator--(vec2 v)")
+{
+    vec2 a = vec2_new(1.0f, 2.0f);
+    vec2 b = a--;
+    TEST(a.x == b.x - 1.0f && a.y == b.y - 1.0f);
+    TEST(a.x == 0.0f && a.y == 1.0f);
+}
+
+DEFINE_UNIT_TEST("vec2 operator--(vec2 v, int)")
+{
+    vec2 a = vec2_new(1.0f, 2.0f);
+    vec2 b = --a;
+    TEST(a.x == b.x && a.y == b.y);
+    TEST(a.x == 0.0f && a.y == 1.0f);
+}
+
 DEFINE_UNIT_TEST("vec2 operator+(vec2 a, vec2 b)")
 {
     const vec2 a = vec2_new(1.0f, 2.0f);
