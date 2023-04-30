@@ -1,5 +1,7 @@
 #include "../test_framework.h"
 
+#if VECTORMATH_ENABLE_CLANG_EXT
+
 DEFINE_UNIT_TEST("vec4.xxxx")
 {
 	const vec4 a = vec4_new(1.0f, 2.0f, 3.0f, 4.0f);
@@ -2309,5 +2311,7 @@ DEFINE_UNIT_TEST("vec4.wwww")
     TEST(a.w == c.x && a.w == c.y && a.w == c.z && a.w == c.w);
     TEST(b.x == c.x && b.y == c.y && b.z == c.z && b.w == c.w);
 }
+
+#endif // VECTORMATH_ENABLE_CLANG_EXT
 
 //! LEAVE AN EMPTY LINE HERE, REQUIRE BY GCC/G++

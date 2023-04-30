@@ -4,7 +4,12 @@
 // Operators overloading, only support on C++
 // -------------------------------------------------------------
 
-#if !defined(VECTORMATH_OPERATORS_DISABLED) && defined(__cplusplus) && !defined(VECTORMATH_USE_CLANG_EXT)
+#if !defined(VECTORMATH_OPERATORS_DISABLED) && defined(__cplusplus) && !VECTORMATH_ENABLE_CLANG_EXT
+
+// Make sure we have vector_math types
+#ifndef VECTORMATH_TYPES_DEFINED
+#error Missing vector_math types, make sure you include it!
+#endif
 
 // Make sure we have vector_math functions
 #ifndef VECTORMATH_FUNCTIONS_DEFINED

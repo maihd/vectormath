@@ -1,5 +1,7 @@
 #include "../test_framework.h"
 
+#if VECTORMATH_ENABLE_CLANG_EXT
+
 DEFINE_UNIT_TEST("clang: vec2.xx")
 {
 	const vec2 a = vec2_new(1.0f, 2.0f);
@@ -30,5 +32,7 @@ DEFINE_UNIT_TEST("vec2_yz(vec2 v)")
 	TEST(a.x == c.y && a.y == c.x);
 	TEST(b.x == c.x && b.y == c.y);
 }
+
+#endif // VECTORMATH_ENABLE_CLANG_EXT
 
 //! LEAVE AN EMPTY LINE HERE, REQUIRE BY GCC/G++
