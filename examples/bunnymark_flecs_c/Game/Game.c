@@ -65,6 +65,7 @@ float RandomFloat(float min, float max)
     return (max - min) * range + min;
 }
 
+void Game_OnRender(ecs_iter_t* it);
 void Game_Setup(struct SpriteBatch* spriteBatch, int entityCount)
 {
 	srand((unsigned int)time(NULL));
@@ -78,6 +79,7 @@ void Game_Setup(struct SpriteBatch* spriteBatch, int entityCount)
 
     ECS_SYSTEM(gWorld, Game_MoveEntity, EcsOnUpdate, PositionComponent, MoveComponent);
     ECS_SYSTEM(gWorld, Game_FadeEntity, EcsOnUpdate, SpriteComponent, FadeComponent);
+    ECS_SYSTEM(gWorld, Game_OnRender, EcsOnUpdate, PositionComponent, SpriteComponent);
 
 #if defined(__EMSCRIPTEN__)
 	const float worldWidth = 1280;
@@ -108,7 +110,7 @@ void Game_Setup(struct SpriteBatch* spriteBatch, int entityCount)
         FadeComponent fade;
         fade.alpha = Random();
 
-        ecs_entity_t e = ecs_new(gWorld, 0);
+        ecs_entity_t e = ecs_new_id(gWorld);
         ecs_set(gWorld, e, PositionComponent, { vec2_new(Random() * worldWidth, Random() * worldHeight) });
         ecs_set(gWorld, e, SpriteComponent, {
             .scale = vec2_new(1.0f, 1.0f),
@@ -137,13 +139,20 @@ void Game_Update(float time, float deltaTime)
 
 void Game_Render()
 {
-    ecs_query_t* query = ecs_query_new(gWorld, "PositionComponent, SpriteComponent");
+    //ecs_query_t* query = ecs_query_new(gWorld, "PositionComponent, SpriteComponent");
+    //
+    //ecs_iter_t it = ecs_query_iter(gWorld, query);
+    //while (ecs_query_next(&it))
+    //{
+    //    const PositionComponent* position = ecs_term(&it, PositionComponent, 1);
+    //    const SpriteComponent* sprite = ecs_term(&it, SpriteComponent, 2);
+    //    Game_DrawEntity(position, sprite);
+    //}
+}
 
-    ecs_iter_t it = ecs_query_iter(gWorld, query);
-    while (ecs_query_next(&it))
-    {
-        const PositionComponent* position = ecs_term(&it, PositionComponent, 1);
-        const SpriteComponent* sprite = ecs_term(&it, SpriteComponent, 2);
-        Game_DrawEntity(position, sprite);
-    }
+void Game_OnRender(ecs_iter_t* it)
+{
+    const PositionComponent* position = ecs_term(it, PositionComponent, 1);
+    const SpriteComponent* sprite = ecs_term(it, SpriteComponent, 2);
+    Game_DrawEntity(position, sprite);
 }
