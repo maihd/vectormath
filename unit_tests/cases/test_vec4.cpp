@@ -14,6 +14,38 @@ DEFINE_UNIT_TEST("Test vec4 operator neg")
     TEST(a.x == -b.x && a.y == -b.y && a.z == -b.z);
 }
 
+DEFINE_UNIT_TEST("vec4 operator++(vec4 v)")
+{
+    vec4 a = vec4_new(1.0f, 2.0f, 3.0f, 4.0f);
+    vec4 b = a++;
+    TEST(a.x == b.x + 1.0f && a.y == b.y + 1.0f && a.z == b.z + 1.0f && a.w == b.w + 1.0f);
+    TEST(a.x == 2.0f && a.y == 3.0f && a.z == 4.0f && a.w == 5.0f);
+}
+
+DEFINE_UNIT_TEST("vec4 operator++(vec4 v, int)")
+{
+    vec4 a = vec4_new(1.0f, 2.0f, 3.0f, 4.0f);
+    vec4 b = ++a;
+    TEST(a.x == b.x && a.y == b.y && a.z == b.z && a.w == b.w);
+    TEST(a.x == 2.0f && a.y == 3.0f && a.z == 4.0f && b.w == 5.0f);
+}
+
+DEFINE_UNIT_TEST("vec4 operator--(vec4 v)")
+{
+    vec4 a = vec4_new(1.0f, 2.0f, 3.0f, 4.0f);
+    vec4 b = a--;
+    TEST(a.x == b.x - 1.0f && a.y == b.y - 1.0f && a.z == b.z - 1.0f && a.w == b.w - 1.0f);
+    TEST(a.x == 0.0f && a.y == 1.0f && a.z == 2.0f && a.w == 3.0f);
+}
+
+DEFINE_UNIT_TEST("vec4 operator--(vec4 v, int)")
+{
+    vec4 a = vec4_new(1.0f, 2.0f, 3.0f, 4.0f);
+    vec4 b = --a;
+    TEST(a.x == b.x && a.y == b.y && a.z == b.z && a.w == b.w);
+    TEST(a.x == 0.0f && a.y == 1.0f && a.z == 2.0f && a.w == 3.0f);
+}
+
 DEFINE_UNIT_TEST("Test vec4 operator+")
 {
     const vec4 a = vec4_new(1.0f, 2.0f, 3.0f, 4.0f);
