@@ -22,4 +22,4 @@
 ## Meta
 - Version: v0.1.3-dev
 - License: UNLICENSED
-- Copyright: MaiHD @ 2022
+- Copyright: MaiHD @ 2022 - 2023
