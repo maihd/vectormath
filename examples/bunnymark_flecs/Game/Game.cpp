@@ -11,6 +11,10 @@
 
 #include "flecs/flecs.h"
 
+#if !defined(__EMSCRIPTEN__)
+#include "Native/Window.h"
+#endif
+
 static flecs::world					gWorld;
 
 static WorldBoundsComponent			gWorldBounds;

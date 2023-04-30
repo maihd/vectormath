@@ -150,7 +150,7 @@ typedef uint32_t uvec4 __attribute__((ext_vector_type(4)));
 /// 2D floating-point vector
 /// Components are 32 bit fixed-size floating-point number
 /// Struct Layout: [float x][float y]
-typedef struct vec2
+typedef struct VECTORMATH_ALIGNAS(vec2, 4)
 {
     float                       x;
     float                       y;
@@ -222,14 +222,14 @@ typedef union VECTORMATH_VECTORTYPE(vec4, 16)
 
     // Internal
     __m128                      m128;
-    float                       data[4];
+    //float                       data[4];
 } vec4;
 
 /// ivec2
 /// 2D integer vector
 /// Components are 32 bit fixed-size signed integer
 /// Struct Layout: [int32_t x][int32_t y]
-typedef struct ivec2
+typedef struct VECTORMATH_ALIGNAS(ivec2, 4)
 {
     int32_t                     x, y;
 } ivec2;
@@ -270,7 +270,7 @@ typedef union VECTORMATH_VECTORTYPE(ivec4, 16)
 /// 2D integer vector
 /// Components are 32 bit fixed-size unsigned integer
 /// Struct Layout: [uint32_t x][uint32_t y]
-typedef struct uvec2
+typedef struct VECTORMATH_ALIGNAS(uvec2, 4)
 {
     uint32_t                    x, y;
 } uvec2;
@@ -416,6 +416,14 @@ static_assert(sizeof(uvec4) == 16, "sizeof(uvec4) must be 16 bytes");
 static_assert(sizeof(mat2)  == 16, "sizeof(mat2) must be 16 bytes");
 static_assert(sizeof(mat3)  == 48, "sizeof(mat3) must be 48 bytes");
 static_assert(sizeof(mat4)  == 64, "sizeof(mat4) must be 64 bytes");
+
+#if !defined(__cplusplus) && !defined(alignof)
+#if defined(_MSC_VER)
+#define alignof __alignof
+#else
+#define alignof __alignof__
+#endif
+#endif
 
 static_assert(alignof(vec2)  ==  4, "alignof(vec2) must be 4 bytes");
 static_assert(alignof(vec3)  == 16, "alignof(vec3) must be 16 bytes");

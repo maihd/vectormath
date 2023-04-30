@@ -168,4 +168,5 @@ if _OPTIONS["examples"] then
     end
 
     vectormathexample("bunnymark_flecs")
+    vectormathexample("bunnymark_flecs_c")
 end
