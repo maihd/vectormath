@@ -365,17 +365,17 @@ __forceinline vec4& operator++(vec4& v)
 #if VECTORMATH_SIMD_ENABLE
     v.m128 = _mm_add_ps(v.m128, _mm_set_ps1(1.0f));
 #else
-    v.x--;
-    v.y--;
-    v.z--;
-    v.w--;
+    v.x++;
+    v.y++;
+    v.z++;
+    v.w++;
 #endif
     return v;
 }
 
 __forceinline vec4 operator--(vec4& v, int)
 {
-    const vec4 result = v;
+    vec4 result = v;
 
     --v;
 
@@ -384,7 +384,7 @@ __forceinline vec4 operator--(vec4& v, int)
 
 __forceinline vec4 operator++(vec4& v, int)
 {
-    const vec4 result = v;
+    vec4 result = v;
 
     ++v;
 

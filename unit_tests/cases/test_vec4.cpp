@@ -27,7 +27,7 @@ DEFINE_UNIT_TEST("vec4 operator++(vec4 v, int)")
     vec4 a = vec4_new(1.0f, 2.0f, 3.0f, 4.0f);
     vec4 b = ++a;
     TEST(a.x == b.x && a.y == b.y && a.z == b.z && a.w == b.w);
-    TEST(a.x == 2.0f && a.y == 3.0f && a.z == 4.0f && b.w == 5.0f);
+    TEST(a.x == 2.0f && a.y == 3.0f && a.z == 4.0f && a.w == 5.0f);
 }
 
 DEFINE_UNIT_TEST("vec4 operator--(vec4 v)")

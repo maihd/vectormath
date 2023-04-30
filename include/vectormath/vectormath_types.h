@@ -47,7 +47,7 @@
 #endif
 
 #ifndef VECTORMATH_VECTORTYPE
-#   if defined(_MSC_VER)
+#   if defined(_MSC_VER) && !defined(__clang__)
 #       define VECTORMATH_VECTORTYPE(TYPE_NAME, ALIGNMENT) __declspec(intrin_type) VECTORMATH_ALIGNAS(TYPE_NAME, ALIGNMENT)
 #   else
 #       define VECTORMATH_VECTORTYPE(TYPE_NAME, ALIGNMENT) VECTORMATH_ALIGNAS(TYPE_NAME, ALIGNMENT)
