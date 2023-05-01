@@ -25,10 +25,10 @@
 #endif
 
 // Only Visual Studio 2022 support clang vector extensions (maybe only it work well with clang)
-#if VECTORMATH_ENABLE_CLANG_EXT && defined(_MSC_VER) && _MSC_VER < 1930
-#undef  VECTORMATH_ENABLE_CLANG_EXT
-#define VECTORMATH_ENABLE_CLANG_EXT 0
-#endif
+// #if VECTORMATH_ENABLE_CLANG_EXT && defined(_MSC_VER) && _MSC_VER < 1930
+// #undef  VECTORMATH_ENABLE_CLANG_EXT
+// #define VECTORMATH_ENABLE_CLANG_EXT 0
+// #endif
 
 // -------------------------------------------------------------
 // Data structure alignment
@@ -134,17 +134,17 @@
 // -------------------------------------------------------------
 
 #if VECTORMATH_ENABLE_CLANG_EXT
-typedef float vec2 __attribute__((ext_vector_type(2)));
-typedef float vec3 __attribute__((ext_vector_type(3)));
-typedef float vec4 __attribute__((ext_vector_type(4)));
+typedef float vec2 __attribute__((ext_vector_type(2), aligned(4)));
+typedef float vec3 __attribute__((ext_vector_type(3), aligned(16)));
+typedef float vec4 __attribute__((ext_vector_type(4), aligned(16)));
 
-typedef int32_t ivec2 __attribute__((ext_vector_type(2)));
-typedef int32_t ivec3 __attribute__((ext_vector_type(3)));
-typedef int32_t ivec4 __attribute__((ext_vector_type(4)));
+typedef int32_t ivec2 __attribute__((ext_vector_type(2), aligned(4)));
+typedef int32_t ivec3 __attribute__((ext_vector_type(3), aligned(16)));
+typedef int32_t ivec4 __attribute__((ext_vector_type(4), aligned(16)));
 
-typedef uint32_t uvec2 __attribute__((ext_vector_type(2)));
-typedef uint32_t uvec3 __attribute__((ext_vector_type(3)));
-typedef uint32_t uvec4 __attribute__((ext_vector_type(4)));
+typedef uint32_t uvec2 __attribute__((ext_vector_type(2), aligned(4)));
+typedef uint32_t uvec3 __attribute__((ext_vector_type(3), aligned(16)));
+typedef uint32_t uvec4 __attribute__((ext_vector_type(4), aligned(16)));
 #else
 /// vec2
 /// 2D floating-point vector

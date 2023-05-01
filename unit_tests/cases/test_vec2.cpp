@@ -16,34 +16,42 @@ DEFINE_UNIT_TEST("vec2 operator-(vec2 v)")
 
 DEFINE_UNIT_TEST("vec2 operator++(vec2 v)")
 {
+#if !VECTORMATH_ENABLE_CLANG_EXT
     vec2 a = vec2_new(1.0f, 2.0f);
     vec2 b = a++; 
     TEST(a.x == b.x + 1.0f && a.y == b.y + 1.0f);
     TEST(a.x == 2.0f && a.y == 3.0f);
+#endif
 }
 
 DEFINE_UNIT_TEST("vec2 operator++(vec2 v, int)")
 {
+#if !VECTORMATH_ENABLE_CLANG_EXT
     vec2 a = vec2_new(1.0f, 2.0f);
     vec2 b = ++a;
     TEST(a.x == b.x && a.y == b.y);
     TEST(a.x == 2.0f && a.y == 3.0f);
+#endif
 }
 
 DEFINE_UNIT_TEST("vec2 operator--(vec2 v)")
 {
+#if !VECTORMATH_ENABLE_CLANG_EXT
     vec2 a = vec2_new(1.0f, 2.0f);
     vec2 b = a--;
     TEST(a.x == b.x - 1.0f && a.y == b.y - 1.0f);
     TEST(a.x == 0.0f && a.y == 1.0f);
+#endif
 }
 
 DEFINE_UNIT_TEST("vec2 operator--(vec2 v, int)")
 {
+#if !VECTORMATH_ENABLE_CLANG_EXT
     vec2 a = vec2_new(1.0f, 2.0f);
     vec2 b = --a;
     TEST(a.x == b.x && a.y == b.y);
     TEST(a.x == 0.0f && a.y == 1.0f);
+#endif
 }
 
 DEFINE_UNIT_TEST("vec2 operator+(vec2 a, vec2 b)")

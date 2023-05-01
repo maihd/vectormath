@@ -31,40 +31,6 @@ __forceinline vec2 operator+(vec2 v)
     return v;
 }
 
-__forceinline vec2& operator--(vec2& v)
-{
-    --v.x;
-    --v.y;
-    return v;
-}
-
-__forceinline vec2& operator++(vec2& v)
-{
-    ++v.x;
-    ++v.y;
-    return v;
-}
-
-__forceinline vec2 operator--(vec2& v, int)
-{
-    const vec2 result = v;
-
-    v.x--;
-    v.y--;
-
-    return result;
-}
-
-__forceinline vec2 operator++(vec2& v, int)
-{
-    const vec2 result = v;
-
-    v.x++;
-    v.y++;
-
-    return result;
-}
-
 __forceinline vec2 operator+(vec2 a, vec2 b)
 {
     return vec2_add(a, b);
@@ -183,48 +149,6 @@ __forceinline vec3 operator-(vec3 v)
 __forceinline vec3 operator+(vec3 v)
 {
     return v;
-}
-
-__forceinline vec3& operator--(vec3& v)
-{
-#if VECTORMATH_SIMD_ENABLE
-    v.m128 = _mm_sub_ps(v.m128, _mm_set_ps1(1.0f));
-#else
-    v.x--;
-    v.y--;
-    v.z--;
-#endif
-    return v;
-}
-
-__forceinline vec3& operator++(vec3& v)
-{
-#if VECTORMATH_SIMD_ENABLE
-    v.m128 = _mm_add_ps(v.m128, _mm_set_ps1(1.0f));
-#else
-    v.x++;
-    v.y++;
-    v.z++;
-#endif
-    return v;
-}
-
-__forceinline vec3 operator--(vec3& v, int)
-{
-    const vec3 result = v;
-
-    --v;
-
-    return result;
-}
-
-__forceinline vec3 operator++(vec3& v, int)
-{
-    const vec3 result = v;
-
-    ++v;
-
-    return result;
 }
 
 __forceinline vec3 operator+(vec3 a, vec3 b)
@@ -347,50 +271,6 @@ __forceinline vec4 operator+(vec4 v)
     return v;
 }
 
-__forceinline vec4& operator--(vec4& v)
-{
-#if VECTORMATH_SIMD_ENABLE
-    v.m128 = _mm_sub_ps(v.m128, _mm_set_ps1(1.0f));
-#else
-    v.x--;
-    v.y--;
-    v.z--;
-    v.w--;
-#endif
-    return v;
-}
-
-__forceinline vec4& operator++(vec4& v)
-{
-#if VECTORMATH_SIMD_ENABLE
-    v.m128 = _mm_add_ps(v.m128, _mm_set_ps1(1.0f));
-#else
-    v.x++;
-    v.y++;
-    v.z++;
-    v.w++;
-#endif
-    return v;
-}
-
-__forceinline vec4 operator--(vec4& v, int)
-{
-    vec4 result = v;
-
-    --v;
-
-    return result;
-}
-
-__forceinline vec4 operator++(vec4& v, int)
-{
-    vec4 result = v;
-
-    ++v;
-
-    return result;
-}
-
 __forceinline vec4 operator+(vec4 a, vec4 b)
 {
     return vec4_add(a, b);
@@ -499,6 +379,126 @@ __forceinline bool operator==(vec4 a, vec4 b)
 __forceinline bool operator!=(vec4 a, vec4 b)
 {
     return vec4_not_equal(a, b);
+}
+
+__forceinline vec2& operator--(vec2& v)
+{
+    --v.x;
+    --v.y;
+    return v;
+}
+
+__forceinline vec2& operator++(vec2& v)
+{
+    ++v.x;
+    ++v.y;
+    return v;
+}
+
+__forceinline vec2 operator--(vec2& v, int)
+{
+    const vec2 result = v;
+
+    v.x--;
+    v.y--;
+
+    return result;
+}
+
+__forceinline vec2 operator++(vec2& v, int)
+{
+    const vec2 result = v;
+
+    v.x++;
+    v.y++;
+
+    return result;
+}
+
+__forceinline vec3& operator--(vec3& v)
+{
+#if VECTORMATH_SIMD_ENABLE
+    v.m128 = _mm_sub_ps(v.m128, _mm_set_ps1(1.0f));
+#else
+    v.x--;
+    v.y--;
+    v.z--;
+#endif
+    return v;
+}
+
+__forceinline vec3& operator++(vec3& v)
+{
+#if VECTORMATH_SIMD_ENABLE
+    v.m128 = _mm_add_ps(v.m128, _mm_set_ps1(1.0f));
+#else
+    v.x++;
+    v.y++;
+    v.z++;
+#endif
+    return v;
+}
+
+__forceinline vec3 operator--(vec3& v, int)
+{
+    const vec3 result = v;
+
+    --v;
+
+    return result;
+}
+
+__forceinline vec3 operator++(vec3& v, int)
+{
+    const vec3 result = v;
+
+    ++v;
+
+    return result;
+}
+
+__forceinline vec4& operator--(vec4& v)
+{
+#if VECTORMATH_SIMD_ENABLE
+    v.m128 = _mm_sub_ps(v.m128, _mm_set_ps1(1.0f));
+#else
+    v.x--;
+    v.y--;
+    v.z--;
+    v.w--;
+#endif
+    return v;
+}
+
+__forceinline vec4& operator++(vec4& v)
+{
+#if VECTORMATH_SIMD_ENABLE
+    v.m128 = _mm_add_ps(v.m128, _mm_set_ps1(1.0f));
+#else
+    v.x++;
+    v.y++;
+    v.z++;
+    v.w++;
+#endif
+    return v;
+}
+
+__forceinline vec4 operator--(vec4& v, int)
+{
+    vec4 result = v;
+
+    --v;
+
+    return result;
+}
+
+__forceinline vec4 operator++(vec4& v, int)
+{
+    vec4 result = v;
+
+    ++v;
+
+    return result;
 }
 
 __forceinline mat4 operator-(mat4 m)
