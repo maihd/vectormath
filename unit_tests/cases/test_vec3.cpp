@@ -18,8 +18,8 @@ DEFINE_UNIT_TEST("vec3 operator++(vec3 v)")
 {
 #if !VECTORMATH_ENABLE_CLANG_EXT
     vec3 a = vec3_new(1.0f, 2.0f, 3.0f);
-    vec3 b = a++;
-    TEST(a.x == b.x + 1.0f && a.y == b.y + 1.0f && a.z == b.z + 1.0f);
+    vec3 b = ++a;
+    TEST(a.x == b.x && a.y == b.y && a.z == b.z);
     TEST(a.x == 2.0f && a.y == 3.0f && a.z == 4.0f);
 #endif
 }
@@ -28,8 +28,8 @@ DEFINE_UNIT_TEST("vec3 operator++(vec3 v, int)")
 {
 #if !VECTORMATH_ENABLE_CLANG_EXT
     vec3 a = vec3_new(1.0f, 2.0f, 3.0f);
-    vec3 b = ++a;
-    TEST(a.x == b.x && a.y == b.y && a.z == b.z);
+    vec3 b = a++;
+    TEST(a.x == b.x + 1.0f && a.y == b.y + 1.0f && a.z == b.z + 1.0f);
     TEST(a.x == 2.0f && a.y == 3.0f && a.z == 4.0f);
 #endif
 }
@@ -38,8 +38,8 @@ DEFINE_UNIT_TEST("vec3 operator--(vec3 v)")
 {
 #if !VECTORMATH_ENABLE_CLANG_EXT
     vec3 a = vec3_new(1.0f, 2.0f, 3.0f);
-    vec3 b = a--;
-    TEST(a.x == b.x - 1.0f && a.y == b.y - 1.0f && a.z == b.z - 1.0f);
+    vec3 b = --a;
+    TEST(a.x == b.x && a.y == b.y && a.z == b.z);
     TEST(a.x == 0.0f && a.y == 1.0f && a.z == 2.0f);
 #endif
 }
@@ -48,8 +48,8 @@ DEFINE_UNIT_TEST("vec3 operator--(vec3 v, int)")
 {
 #if !VECTORMATH_ENABLE_CLANG_EXT
     vec3 a = vec3_new(1.0f, 2.0f, 3.0f);
-    vec3 b = --a;
-    TEST(a.x == b.x && a.y == b.y && a.z == b.z);
+    vec3 b = a--;
+    TEST(a.x == b.x - 1.0f && a.y == b.y - 1.0f && a.z == b.z - 1.0f);
     TEST(a.x == 0.0f && a.y == 1.0f && a.z == 2.0f);
 #endif
 }
