@@ -1,0 +1,25 @@
+{
+    "quat": {
+        "haxeName": "Quat",
+        "kind": "Vector",
+        "length": 4,
+        "componentType": "Float32",
+        "constantsPrefix": "",
+        "swizzle": false,
+        "operator": true,
+        "hasConstructor": true,
+        "skipFunctions": [
+            "new",
+            "new1",
+            "neg",
+            "add",
+            "sub",
+            "mul",
+            "div",
+            "add1",
+            "sub1",
+            "mul1",
+            "div1"
+        ]
+    }
+}

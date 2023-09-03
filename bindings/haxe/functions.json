@@ -1,0 +1,3627 @@
+{
+    "vec2": [
+        {
+            "name": "vec2_new",
+            "signature": "vec2 (float, float)",
+            "returnType": "vec2",
+            "params": [
+                {
+                    "name": "x",
+                    "type": "float"
+                },
+                {
+                    "name": "y",
+                    "type": "float"
+                }
+            ]
+        },
+        {
+            "name": "vec2_new1",
+            "signature": "vec2 (float)",
+            "returnType": "vec2",
+            "params": [
+                {
+                    "name": "s",
+                    "type": "float"
+                }
+            ]
+        },
+        {
+            "name": "vec2_from_vec3",
+            "signature": "vec2 (vec3)",
+            "returnType": "vec2",
+            "params": [
+                {
+                    "name": "v",
+                    "type": "vec3"
+                }
+            ]
+        },
+        {
+            "name": "vec2_neg",
+            "signature": "vec2 (vec2)",
+            "returnType": "vec2",
+            "params": [
+                {
+                    "name": "v",
+                    "type": "vec2"
+                }
+            ]
+        },
+        {
+            "name": "vec2_add",
+            "signature": "vec2 (vec2, vec2)",
+            "returnType": "vec2",
+            "params": [
+                {
+                    "name": "a",
+                    "type": "vec2"
+                },
+                {
+                    "name": "b",
+                    "type": "vec2"
+                }
+            ]
+        },
+        {
+            "name": "vec2_sub",
+            "signature": "vec2 (vec2, vec2)",
+            "returnType": "vec2",
+            "params": [
+                {
+                    "name": "a",
+                    "type": "vec2"
+                },
+                {
+                    "name": "b",
+                    "type": "vec2"
+                }
+            ]
+        },
+        {
+            "name": "vec2_mul",
+            "signature": "vec2 (vec2, vec2)",
+            "returnType": "vec2",
+            "params": [
+                {
+                    "name": "a",
+                    "type": "vec2"
+                },
+                {
+                    "name": "b",
+                    "type": "vec2"
+                }
+            ]
+        },
+        {
+            "name": "vec2_div",
+            "signature": "vec2 (vec2, vec2)",
+            "returnType": "vec2",
+            "params": [
+                {
+                    "name": "a",
+                    "type": "vec2"
+                },
+                {
+                    "name": "b",
+                    "type": "vec2"
+                }
+            ]
+        },
+        {
+            "name": "vec2_add1",
+            "signature": "vec2 (vec2, float)",
+            "returnType": "vec2",
+            "params": [
+                {
+                    "name": "a",
+                    "type": "vec2"
+                },
+                {
+                    "name": "b",
+                    "type": "float"
+                }
+            ]
+        },
+        {
+            "name": "vec2_sub1",
+            "signature": "vec2 (vec2, float)",
+            "returnType": "vec2",
+            "params": [
+                {
+                    "name": "a",
+                    "type": "vec2"
+                },
+                {
+                    "name": "b",
+                    "type": "float"
+                }
+            ]
+        },
+        {
+            "name": "vec2_mul1",
+            "signature": "vec2 (vec2, float)",
+            "returnType": "vec2",
+            "params": [
+                {
+                    "name": "a",
+                    "type": "vec2"
+                },
+                {
+                    "name": "b",
+                    "type": "float"
+                }
+            ]
+        },
+        {
+            "name": "vec2_div1",
+            "signature": "vec2 (vec2, float)",
+            "returnType": "vec2",
+            "params": [
+                {
+                    "name": "a",
+                    "type": "vec2"
+                },
+                {
+                    "name": "b",
+                    "type": "float"
+                }
+            ]
+        },
+        {
+            "name": "vec2_mul_add",
+            "signature": "vec2 (vec2, vec2, vec2)",
+            "returnType": "vec2",
+            "params": [
+                {
+                    "name": "a",
+                    "type": "vec2"
+                },
+                {
+                    "name": "b",
+                    "type": "vec2"
+                },
+                {
+                    "name": "c",
+                    "type": "vec2"
+                }
+            ]
+        },
+        {
+            "name": "vec2_mul_sub",
+            "signature": "vec2 (vec2, vec2, vec2)",
+            "returnType": "vec2",
+            "params": [
+                {
+                    "name": "a",
+                    "type": "vec2"
+                },
+                {
+                    "name": "b",
+                    "type": "vec2"
+                },
+                {
+                    "name": "c",
+                    "type": "vec2"
+                }
+            ]
+        },
+        {
+            "name": "vec2_equal",
+            "signature": "bool (vec2, vec2)",
+            "returnType": "bool",
+            "params": [
+                {
+                    "name": "a",
+                    "type": "vec2"
+                },
+                {
+                    "name": "b",
+                    "type": "vec2"
+                }
+            ]
+        },
+        {
+            "name": "vec2_not_equal",
+            "signature": "bool (vec2, vec2)",
+            "returnType": "bool",
+            "params": [
+                {
+                    "name": "a",
+                    "type": "vec2"
+                },
+                {
+                    "name": "b",
+                    "type": "vec2"
+                }
+            ]
+        },
+        {
+            "name": "vec2_isclose",
+            "signature": "bool (vec2, vec2)",
+            "returnType": "bool",
+            "params": [
+                {
+                    "name": "a",
+                    "type": "vec2"
+                },
+                {
+                    "name": "b",
+                    "type": "vec2"
+                }
+            ]
+        },
+        {
+            "name": "vec2_sign",
+            "signature": "ivec2 (vec2)",
+            "returnType": "ivec2",
+            "params": [
+                {
+                    "name": "v",
+                    "type": "vec2"
+                }
+            ]
+        },
+        {
+            "name": "vec2_abs",
+            "signature": "vec2 (vec2)",
+            "returnType": "vec2",
+            "params": [
+                {
+                    "name": "v",
+                    "type": "vec2"
+                }
+            ]
+        },
+        {
+            "name": "vec2_cos",
+            "signature": "vec2 (vec2)",
+            "returnType": "vec2",
+            "params": [
+                {
+                    "name": "v",
+                    "type": "vec2"
+                }
+            ]
+        },
+        {
+            "name": "vec2_sin",
+            "signature": "vec2 (vec2)",
+            "returnType": "vec2",
+            "params": [
+                {
+                    "name": "v",
+                    "type": "vec2"
+                }
+            ]
+        },
+        {
+            "name": "vec2_tan",
+            "signature": "vec2 (vec2)",
+            "returnType": "vec2",
+            "params": [
+                {
+                    "name": "v",
+                    "type": "vec2"
+                }
+            ]
+        },
+        {
+            "name": "vec2_cosh",
+            "signature": "vec2 (vec2)",
+            "returnType": "vec2",
+            "params": [
+                {
+                    "name": "v",
+                    "type": "vec2"
+                }
+            ]
+        },
+        {
+            "name": "vec2_sinh",
+            "signature": "vec2 (vec2)",
+            "returnType": "vec2",
+            "params": [
+                {
+                    "name": "v",
+                    "type": "vec2"
+                }
+            ]
+        },
+        {
+            "name": "vec2_tanh",
+            "signature": "vec2 (vec2)",
+            "returnType": "vec2",
+            "params": [
+                {
+                    "name": "v",
+                    "type": "vec2"
+                }
+            ]
+        },
+        {
+            "name": "vec2_acos",
+            "signature": "vec2 (vec2)",
+            "returnType": "vec2",
+            "params": [
+                {
+                    "name": "v",
+                    "type": "vec2"
+                }
+            ]
+        },
+        {
+            "name": "vec2_asin",
+            "signature": "vec2 (vec2)",
+            "returnType": "vec2",
+            "params": [
+                {
+                    "name": "v",
+                    "type": "vec2"
+                }
+            ]
+        },
+        {
+            "name": "vec2_atan",
+            "signature": "vec2 (vec2)",
+            "returnType": "vec2",
+            "params": [
+                {
+                    "name": "v",
+                    "type": "vec2"
+                }
+            ]
+        },
+        {
+            "name": "vec2_atan2",
+            "signature": "vec2 (vec2, vec2)",
+            "returnType": "vec2",
+            "params": [
+                {
+                    "name": "a",
+                    "type": "vec2"
+                },
+                {
+                    "name": "b",
+                    "type": "vec2"
+                }
+            ]
+        },
+        {
+            "name": "vec2_exp",
+            "signature": "vec2 (vec2)",
+            "returnType": "vec2",
+            "params": [
+                {
+                    "name": "v",
+                    "type": "vec2"
+                }
+            ]
+        },
+        {
+            "name": "vec2_exp2",
+            "signature": "vec2 (vec2)",
+            "returnType": "vec2",
+            "params": [
+                {
+                    "name": "v",
+                    "type": "vec2"
+                }
+            ]
+        },
+        {
+            "name": "vec2_log",
+            "signature": "vec2 (vec2)",
+            "returnType": "vec2",
+            "params": [
+                {
+                    "name": "v",
+                    "type": "vec2"
+                }
+            ]
+        },
+        {
+            "name": "vec2_log2",
+            "signature": "vec2 (vec2)",
+            "returnType": "vec2",
+            "params": [
+                {
+                    "name": "v",
+                    "type": "vec2"
+                }
+            ]
+        },
+        {
+            "name": "vec2_log10",
+            "signature": "vec2 (vec2)",
+            "returnType": "vec2",
+            "params": [
+                {
+                    "name": "v",
+                    "type": "vec2"
+                }
+            ]
+        },
+        {
+            "name": "vec2_pow",
+            "signature": "vec2 (vec2, vec2)",
+            "returnType": "vec2",
+            "params": [
+                {
+                    "name": "a",
+                    "type": "vec2"
+                },
+                {
+                    "name": "b",
+                    "type": "vec2"
+                }
+            ]
+        },
+        {
+            "name": "vec2_frac",
+            "signature": "vec2 (vec2)",
+            "returnType": "vec2",
+            "params": [
+                {
+                    "name": "v",
+                    "type": "vec2"
+                }
+            ]
+        },
+        {
+            "name": "vec2_fmod",
+            "signature": "vec2 (vec2, vec2)",
+            "returnType": "vec2",
+            "params": [
+                {
+                    "name": "a",
+                    "type": "vec2"
+                },
+                {
+                    "name": "b",
+                    "type": "vec2"
+                }
+            ]
+        },
+        {
+            "name": "vec2_ceil",
+            "signature": "vec2 (vec2)",
+            "returnType": "vec2",
+            "params": [
+                {
+                    "name": "v",
+                    "type": "vec2"
+                }
+            ]
+        },
+        {
+            "name": "vec2_floor",
+            "signature": "vec2 (vec2)",
+            "returnType": "vec2",
+            "params": [
+                {
+                    "name": "v",
+                    "type": "vec2"
+                }
+            ]
+        },
+        {
+            "name": "vec2_round",
+            "signature": "vec2 (vec2)",
+            "returnType": "vec2",
+            "params": [
+                {
+                    "name": "v",
+                    "type": "vec2"
+                }
+            ]
+        },
+        {
+            "name": "vec2_trunc",
+            "signature": "vec2 (vec2)",
+            "returnType": "vec2",
+            "params": [
+                {
+                    "name": "v",
+                    "type": "vec2"
+                }
+            ]
+        },
+        {
+            "name": "vec2_min",
+            "signature": "vec2 (vec2, vec2)",
+            "returnType": "vec2",
+            "params": [
+                {
+                    "name": "a",
+                    "type": "vec2"
+                },
+                {
+                    "name": "b",
+                    "type": "vec2"
+                }
+            ]
+        },
+        {
+            "name": "vec2_max",
+            "signature": "vec2 (vec2, vec2)",
+            "returnType": "vec2",
+            "params": [
+                {
+                    "name": "a",
+                    "type": "vec2"
+                },
+                {
+                    "name": "b",
+                    "type": "vec2"
+                }
+            ]
+        },
+        {
+            "name": "vec2_clamp",
+            "signature": "vec2 (vec2, vec2, vec2)",
+            "returnType": "vec2",
+            "params": [
+                {
+                    "name": "v",
+                    "type": "vec2"
+                },
+                {
+                    "name": "min",
+                    "type": "vec2"
+                },
+                {
+                    "name": "max",
+                    "type": "vec2"
+                }
+            ]
+        },
+        {
+            "name": "vec2_saturate",
+            "signature": "vec2 (vec2)",
+            "returnType": "vec2",
+            "params": [
+                {
+                    "name": "v",
+                    "type": "vec2"
+                }
+            ]
+        },
+        {
+            "name": "vec2_step",
+            "signature": "vec2 (vec2, vec2)",
+            "returnType": "vec2",
+            "params": [
+                {
+                    "name": "a",
+                    "type": "vec2"
+                },
+                {
+                    "name": "b",
+                    "type": "vec2"
+                }
+            ]
+        },
+        {
+            "name": "vec2_lerp",
+            "signature": "vec2 (vec2, vec2, vec2)",
+            "returnType": "vec2",
+            "params": [
+                {
+                    "name": "a",
+                    "type": "vec2"
+                },
+                {
+                    "name": "b",
+                    "type": "vec2"
+                },
+                {
+                    "name": "t",
+                    "type": "vec2"
+                }
+            ]
+        },
+        {
+            "name": "vec2_lerp1",
+            "signature": "vec2 (vec2, vec2, float)",
+            "returnType": "vec2",
+            "params": [
+                {
+                    "name": "a",
+                    "type": "vec2"
+                },
+                {
+                    "name": "b",
+                    "type": "vec2"
+                },
+                {
+                    "name": "t",
+                    "type": "float"
+                }
+            ]
+        },
+        {
+            "name": "vec2_smoothstep",
+            "signature": "vec2 (vec2, vec2, vec2)",
+            "returnType": "vec2",
+            "params": [
+                {
+                    "name": "a",
+                    "type": "vec2"
+                },
+                {
+                    "name": "b",
+                    "type": "vec2"
+                },
+                {
+                    "name": "t",
+                    "type": "vec2"
+                }
+            ]
+        },
+        {
+            "name": "vec2_sqrt",
+            "signature": "vec2 (vec2)",
+            "returnType": "vec2",
+            "params": [
+                {
+                    "name": "v",
+                    "type": "vec2"
+                }
+            ]
+        },
+        {
+            "name": "vec2_rsqrt",
+            "signature": "vec2 (vec2)",
+            "returnType": "vec2",
+            "params": [
+                {
+                    "name": "v",
+                    "type": "vec2"
+                }
+            ]
+        },
+        {
+            "name": "vec2_dot",
+            "signature": "float (vec2, vec2)",
+            "returnType": "float",
+            "params": [
+                {
+                    "name": "a",
+                    "type": "vec2"
+                },
+                {
+                    "name": "b",
+                    "type": "vec2"
+                }
+            ]
+        },
+        {
+            "name": "vec2_lensqr",
+            "signature": "float (vec2)",
+            "returnType": "float",
+            "params": [
+                {
+                    "name": "v",
+                    "type": "vec2"
+                }
+            ]
+        },
+        {
+            "name": "vec2_length",
+            "signature": "float (vec2)",
+            "returnType": "float",
+            "params": [
+                {
+                    "name": "v",
+                    "type": "vec2"
+                }
+            ]
+        },
+        {
+            "name": "vec2_distance",
+            "signature": "float (vec2, vec2)",
+            "returnType": "float",
+            "params": [
+                {
+                    "name": "a",
+                    "type": "vec2"
+                },
+                {
+                    "name": "b",
+                    "type": "vec2"
+                }
+            ]
+        },
+        {
+            "name": "vec2_distsqr",
+            "signature": "float (vec2, vec2)",
+            "returnType": "float",
+            "params": [
+                {
+                    "name": "a",
+                    "type": "vec2"
+                },
+                {
+                    "name": "b",
+                    "type": "vec2"
+                }
+            ]
+        },
+        {
+            "name": "vec2_normalize",
+            "signature": "vec2 (vec2)",
+            "returnType": "vec2",
+            "params": [
+                {
+                    "name": "v",
+                    "type": "vec2"
+                }
+            ]
+        },
+        {
+            "name": "vec2_reflect",
+            "signature": "vec2 (vec2, vec2)",
+            "returnType": "vec2",
+            "params": [
+                {
+                    "name": "v",
+                    "type": "vec2"
+                },
+                {
+                    "name": "n",
+                    "type": "vec2"
+                }
+            ]
+        },
+        {
+            "name": "vec2_refract",
+            "signature": "vec2 (vec2, vec2, float)",
+            "returnType": "vec2",
+            "params": [
+                {
+                    "name": "v",
+                    "type": "vec2"
+                },
+                {
+                    "name": "n",
+                    "type": "vec2"
+                },
+                {
+                    "name": "eta",
+                    "type": "float"
+                }
+            ]
+        },
+        {
+            "name": "vec2_faceforward",
+            "signature": "vec2 (vec2, vec2, vec2)",
+            "returnType": "vec2",
+            "params": [
+                {
+                    "name": "n",
+                    "type": "vec2"
+                },
+                {
+                    "name": "i",
+                    "type": "vec2"
+                },
+                {
+                    "name": "nref",
+                    "type": "vec2"
+                }
+            ]
+        },
+        {
+            "name": "vec2_angle",
+            "signature": "float (vec2)",
+            "returnType": "float",
+            "params": [
+                {
+                    "name": "v",
+                    "type": "vec2"
+                }
+            ]
+        },
+        {
+            "name": "vec2_angle_deg",
+            "signature": "float (vec2)",
+            "returnType": "float",
+            "params": [
+                {
+                    "name": "v",
+                    "type": "vec2"
+                }
+            ]
+        },
+        {
+            "name": "vec2_from_angle",
+            "signature": "vec2 (float, float)",
+            "returnType": "vec2",
+            "params": [
+                {
+                    "name": "angle",
+                    "type": "float"
+                },
+                {
+                    "name": "length",
+                    "type": "float"
+                }
+            ]
+        },
+        {
+            "name": "vec2_from_angle_deg",
+            "signature": "vec2 (float, float)",
+            "returnType": "vec2",
+            "params": [
+                {
+                    "name": "angle",
+                    "type": "float"
+                },
+                {
+                    "name": "length",
+                    "type": "float"
+                }
+            ]
+        }
+    ],
+    "vec3": [
+        {
+            "name": "vec3_new",
+            "signature": "vec3 (float, float, float)",
+            "returnType": "vec3",
+            "params": [
+                {
+                    "name": "x",
+                    "type": "float"
+                },
+                {
+                    "name": "y",
+                    "type": "float"
+                },
+                {
+                    "name": "z",
+                    "type": "float"
+                }
+            ]
+        },
+        {
+            "name": "vec3_new1",
+            "signature": "vec3 (float)",
+            "returnType": "vec3",
+            "params": [
+                {
+                    "name": "s",
+                    "type": "float"
+                }
+            ]
+        },
+        {
+            "name": "vec3_from_vec2",
+            "signature": "vec3 (vec2)",
+            "returnType": "vec3",
+            "params": [
+                {
+                    "name": "v",
+                    "type": "vec2"
+                }
+            ]
+        },
+        {
+            "name": "vec3_from_vec4",
+            "signature": "vec3 (vec4)",
+            "returnType": "vec3",
+            "params": [
+                {
+                    "name": "v",
+                    "type": "vec4"
+                }
+            ]
+        },
+        {
+            "name": "vec3_load",
+            "signature": "vec3 (const float *)",
+            "returnType": "vec3",
+            "params": [
+                {
+                    "name": "ptr",
+                    "type": "const float *"
+                }
+            ]
+        },
+        {
+            "name": "vec3_neg",
+            "signature": "vec3 (vec3)",
+            "returnType": "vec3",
+            "params": [
+                {
+                    "name": "v",
+                    "type": "vec3"
+                }
+            ]
+        },
+        {
+            "name": "vec3_add",
+            "signature": "vec3 (vec3, vec3)",
+            "returnType": "vec3",
+            "params": [
+                {
+                    "name": "a",
+                    "type": "vec3"
+                },
+                {
+                    "name": "b",
+                    "type": "vec3"
+                }
+            ]
+        },
+        {
+            "name": "vec3_sub",
+            "signature": "vec3 (vec3, vec3)",
+            "returnType": "vec3",
+            "params": [
+                {
+                    "name": "a",
+                    "type": "vec3"
+                },
+                {
+                    "name": "b",
+                    "type": "vec3"
+                }
+            ]
+        },
+        {
+            "name": "vec3_mul",
+            "signature": "vec3 (vec3, vec3)",
+            "returnType": "vec3",
+            "params": [
+                {
+                    "name": "a",
+                    "type": "vec3"
+                },
+                {
+                    "name": "b",
+                    "type": "vec3"
+                }
+            ]
+        },
+        {
+            "name": "vec3_div",
+            "signature": "vec3 (vec3, vec3)",
+            "returnType": "vec3",
+            "params": [
+                {
+                    "name": "a",
+                    "type": "vec3"
+                },
+                {
+                    "name": "b",
+                    "type": "vec3"
+                }
+            ]
+        },
+        {
+            "name": "vec3_add1",
+            "signature": "vec3 (vec3, float)",
+            "returnType": "vec3",
+            "params": [
+                {
+                    "name": "a",
+                    "type": "vec3"
+                },
+                {
+                    "name": "b",
+                    "type": "float"
+                }
+            ]
+        },
+        {
+            "name": "vec3_sub1",
+            "signature": "vec3 (vec3, float)",
+            "returnType": "vec3",
+            "params": [
+                {
+                    "name": "a",
+                    "type": "vec3"
+                },
+                {
+                    "name": "b",
+                    "type": "float"
+                }
+            ]
+        },
+        {
+            "name": "vec3_mul1",
+            "signature": "vec3 (vec3, float)",
+            "returnType": "vec3",
+            "params": [
+                {
+                    "name": "a",
+                    "type": "vec3"
+                },
+                {
+                    "name": "b",
+                    "type": "float"
+                }
+            ]
+        },
+        {
+            "name": "vec3_div1",
+            "signature": "vec3 (vec3, float)",
+            "returnType": "vec3",
+            "params": [
+                {
+                    "name": "a",
+                    "type": "vec3"
+                },
+                {
+                    "name": "b",
+                    "type": "float"
+                }
+            ]
+        },
+        {
+            "name": "vec3_mul_add",
+            "signature": "vec3 (vec3, vec3, vec3)",
+            "returnType": "vec3",
+            "params": [
+                {
+                    "name": "a",
+                    "type": "vec3"
+                },
+                {
+                    "name": "b",
+                    "type": "vec3"
+                },
+                {
+                    "name": "c",
+                    "type": "vec3"
+                }
+            ]
+        },
+        {
+            "name": "vec3_mul_sub",
+            "signature": "vec3 (vec3, vec3, vec3)",
+            "returnType": "vec3",
+            "params": [
+                {
+                    "name": "a",
+                    "type": "vec3"
+                },
+                {
+                    "name": "b",
+                    "type": "vec3"
+                },
+                {
+                    "name": "c",
+                    "type": "vec3"
+                }
+            ]
+        },
+        {
+            "name": "vec3_equal",
+            "signature": "bool (vec3, vec3)",
+            "returnType": "bool",
+            "params": [
+                {
+                    "name": "a",
+                    "type": "vec3"
+                },
+                {
+                    "name": "b",
+                    "type": "vec3"
+                }
+            ]
+        },
+        {
+            "name": "vec3_not_equal",
+            "signature": "bool (vec3, vec3)",
+            "returnType": "bool",
+            "params": [
+                {
+                    "name": "a",
+                    "type": "vec3"
+                },
+                {
+                    "name": "b",
+                    "type": "vec3"
+                }
+            ]
+        },
+        {
+            "name": "vec3_isclose",
+            "signature": "bool (vec3, vec3)",
+            "returnType": "bool",
+            "params": [
+                {
+                    "name": "a",
+                    "type": "vec3"
+                },
+                {
+                    "name": "b",
+                    "type": "vec3"
+                }
+            ]
+        },
+        {
+            "name": "vec3_sign",
+            "signature": "ivec3 (vec3)",
+            "returnType": "ivec3",
+            "params": [
+                {
+                    "name": "v",
+                    "type": "vec3"
+                }
+            ]
+        },
+        {
+            "name": "vec3_abs",
+            "signature": "vec3 (vec3)",
+            "returnType": "vec3",
+            "params": [
+                {
+                    "name": "v",
+                    "type": "vec3"
+                }
+            ]
+        },
+        {
+            "name": "vec3_cos",
+            "signature": "vec3 (vec3)",
+            "returnType": "vec3",
+            "params": [
+                {
+                    "name": "v",
+                    "type": "vec3"
+                }
+            ]
+        },
+        {
+            "name": "vec3_sin",
+            "signature": "vec3 (vec3)",
+            "returnType": "vec3",
+            "params": [
+                {
+                    "name": "v",
+                    "type": "vec3"
+                }
+            ]
+        },
+        {
+            "name": "vec3_tan",
+            "signature": "vec3 (vec3)",
+            "returnType": "vec3",
+            "params": [
+                {
+                    "name": "v",
+                    "type": "vec3"
+                }
+            ]
+        },
+        {
+            "name": "vec3_cosh",
+            "signature": "vec3 (vec3)",
+            "returnType": "vec3",
+            "params": [
+                {
+                    "name": "v",
+                    "type": "vec3"
+                }
+            ]
+        },
+        {
+            "name": "vec3_sinh",
+            "signature": "vec3 (vec3)",
+            "returnType": "vec3",
+            "params": [
+                {
+                    "name": "v",
+                    "type": "vec3"
+                }
+            ]
+        },
+        {
+            "name": "vec3_tanh",
+            "signature": "vec3 (vec3)",
+            "returnType": "vec3",
+            "params": [
+                {
+                    "name": "v",
+                    "type": "vec3"
+                }
+            ]
+        },
+        {
+            "name": "vec3_acos",
+            "signature": "vec3 (vec3)",
+            "returnType": "vec3",
+            "params": [
+                {
+                    "name": "v",
+                    "type": "vec3"
+                }
+            ]
+        },
+        {
+            "name": "vec3_asin",
+            "signature": "vec3 (vec3)",
+            "returnType": "vec3",
+            "params": [
+                {
+                    "name": "v",
+                    "type": "vec3"
+                }
+            ]
+        },
+        {
+            "name": "vec3_atan",
+            "signature": "vec3 (vec3)",
+            "returnType": "vec3",
+            "params": [
+                {
+                    "name": "v",
+                    "type": "vec3"
+                }
+            ]
+        },
+        {
+            "name": "vec3_atan2",
+            "signature": "vec3 (vec3, vec3)",
+            "returnType": "vec3",
+            "params": [
+                {
+                    "name": "a",
+                    "type": "vec3"
+                },
+                {
+                    "name": "b",
+                    "type": "vec3"
+                }
+            ]
+        },
+        {
+            "name": "vec3_exp",
+            "signature": "vec3 (vec3)",
+            "returnType": "vec3",
+            "params": [
+                {
+                    "name": "v",
+                    "type": "vec3"
+                }
+            ]
+        },
+        {
+            "name": "vec3_exp2",
+            "signature": "vec3 (vec3)",
+            "returnType": "vec3",
+            "params": [
+                {
+                    "name": "v",
+                    "type": "vec3"
+                }
+            ]
+        },
+        {
+            "name": "vec3_log",
+            "signature": "vec3 (vec3)",
+            "returnType": "vec3",
+            "params": [
+                {
+                    "name": "v",
+                    "type": "vec3"
+                }
+            ]
+        },
+        {
+            "name": "vec3_log2",
+            "signature": "vec3 (vec3)",
+            "returnType": "vec3",
+            "params": [
+                {
+                    "name": "v",
+                    "type": "vec3"
+                }
+            ]
+        },
+        {
+            "name": "vec3_log10",
+            "signature": "vec3 (vec3)",
+            "returnType": "vec3",
+            "params": [
+                {
+                    "name": "v",
+                    "type": "vec3"
+                }
+            ]
+        },
+        {
+            "name": "vec3_pow",
+            "signature": "vec3 (vec3, vec3)",
+            "returnType": "vec3",
+            "params": [
+                {
+                    "name": "a",
+                    "type": "vec3"
+                },
+                {
+                    "name": "b",
+                    "type": "vec3"
+                }
+            ]
+        },
+        {
+            "name": "vec3_frac",
+            "signature": "vec3 (vec3)",
+            "returnType": "vec3",
+            "params": [
+                {
+                    "name": "v",
+                    "type": "vec3"
+                }
+            ]
+        },
+        {
+            "name": "vec3_fmod",
+            "signature": "vec3 (vec3, vec3)",
+            "returnType": "vec3",
+            "params": [
+                {
+                    "name": "a",
+                    "type": "vec3"
+                },
+                {
+                    "name": "b",
+                    "type": "vec3"
+                }
+            ]
+        },
+        {
+            "name": "vec3_ceil",
+            "signature": "vec3 (vec3)",
+            "returnType": "vec3",
+            "params": [
+                {
+                    "name": "v",
+                    "type": "vec3"
+                }
+            ]
+        },
+        {
+            "name": "vec3_floor",
+            "signature": "vec3 (vec3)",
+            "returnType": "vec3",
+            "params": [
+                {
+                    "name": "v",
+                    "type": "vec3"
+                }
+            ]
+        },
+        {
+            "name": "vec3_round",
+            "signature": "vec3 (vec3)",
+            "returnType": "vec3",
+            "params": [
+                {
+                    "name": "v",
+                    "type": "vec3"
+                }
+            ]
+        },
+        {
+            "name": "vec3_trunc",
+            "signature": "vec3 (vec3)",
+            "returnType": "vec3",
+            "params": [
+                {
+                    "name": "v",
+                    "type": "vec3"
+                }
+            ]
+        },
+        {
+            "name": "vec3_min",
+            "signature": "vec3 (vec3, vec3)",
+            "returnType": "vec3",
+            "params": [
+                {
+                    "name": "a",
+                    "type": "vec3"
+                },
+                {
+                    "name": "b",
+                    "type": "vec3"
+                }
+            ]
+        },
+        {
+            "name": "vec3_max",
+            "signature": "vec3 (vec3, vec3)",
+            "returnType": "vec3",
+            "params": [
+                {
+                    "name": "a",
+                    "type": "vec3"
+                },
+                {
+                    "name": "b",
+                    "type": "vec3"
+                }
+            ]
+        },
+        {
+            "name": "vec3_clamp",
+            "signature": "vec3 (vec3, vec3, vec3)",
+            "returnType": "vec3",
+            "params": [
+                {
+                    "name": "v",
+                    "type": "vec3"
+                },
+                {
+                    "name": "min",
+                    "type": "vec3"
+                },
+                {
+                    "name": "max",
+                    "type": "vec3"
+                }
+            ]
+        },
+        {
+            "name": "vec3_saturate",
+            "signature": "vec3 (vec3)",
+            "returnType": "vec3",
+            "params": [
+                {
+                    "name": "v",
+                    "type": "vec3"
+                }
+            ]
+        },
+        {
+            "name": "vec3_step",
+            "signature": "vec3 (vec3, vec3)",
+            "returnType": "vec3",
+            "params": [
+                {
+                    "name": "a",
+                    "type": "vec3"
+                },
+                {
+                    "name": "b",
+                    "type": "vec3"
+                }
+            ]
+        },
+        {
+            "name": "vec3_lerp",
+            "signature": "vec3 (vec3, vec3, vec3)",
+            "returnType": "vec3",
+            "params": [
+                {
+                    "name": "a",
+                    "type": "vec3"
+                },
+                {
+                    "name": "b",
+                    "type": "vec3"
+                },
+                {
+                    "name": "t",
+                    "type": "vec3"
+                }
+            ]
+        },
+        {
+            "name": "vec3_lerp1",
+            "signature": "vec3 (vec3, vec3, float)",
+            "returnType": "vec3",
+            "params": [
+                {
+                    "name": "a",
+                    "type": "vec3"
+                },
+                {
+                    "name": "b",
+                    "type": "vec3"
+                },
+                {
+                    "name": "t",
+                    "type": "float"
+                }
+            ]
+        },
+        {
+            "name": "vec3_smoothstep",
+            "signature": "vec3 (vec3, vec3, vec3)",
+            "returnType": "vec3",
+            "params": [
+                {
+                    "name": "a",
+                    "type": "vec3"
+                },
+                {
+                    "name": "b",
+                    "type": "vec3"
+                },
+                {
+                    "name": "t",
+                    "type": "vec3"
+                }
+            ]
+        },
+        {
+            "name": "vec3_sqrt",
+            "signature": "vec3 (vec3)",
+            "returnType": "vec3",
+            "params": [
+                {
+                    "name": "v",
+                    "type": "vec3"
+                }
+            ]
+        },
+        {
+            "name": "vec3_rsqrt",
+            "signature": "vec3 (vec3)",
+            "returnType": "vec3",
+            "params": [
+                {
+                    "name": "v",
+                    "type": "vec3"
+                }
+            ]
+        },
+        {
+            "name": "vec3_cross",
+            "signature": "vec3 (vec3, vec3)",
+            "returnType": "vec3",
+            "params": [
+                {
+                    "name": "a",
+                    "type": "vec3"
+                },
+                {
+                    "name": "b",
+                    "type": "vec3"
+                }
+            ]
+        },
+        {
+            "name": "vec3_dot",
+            "signature": "float (vec3, vec3)",
+            "returnType": "float",
+            "params": [
+                {
+                    "name": "a",
+                    "type": "vec3"
+                },
+                {
+                    "name": "b",
+                    "type": "vec3"
+                }
+            ]
+        },
+        {
+            "name": "vec3_lensqr",
+            "signature": "float (vec3)",
+            "returnType": "float",
+            "params": [
+                {
+                    "name": "v",
+                    "type": "vec3"
+                }
+            ]
+        },
+        {
+            "name": "vec3_length",
+            "signature": "float (vec3)",
+            "returnType": "float",
+            "params": [
+                {
+                    "name": "v",
+                    "type": "vec3"
+                }
+            ]
+        },
+        {
+            "name": "vec3_distance",
+            "signature": "float (vec3, vec3)",
+            "returnType": "float",
+            "params": [
+                {
+                    "name": "a",
+                    "type": "vec3"
+                },
+                {
+                    "name": "b",
+                    "type": "vec3"
+                }
+            ]
+        },
+        {
+            "name": "vec3_distsqr",
+            "signature": "float (vec3, vec3)",
+            "returnType": "float",
+            "params": [
+                {
+                    "name": "a",
+                    "type": "vec3"
+                },
+                {
+                    "name": "b",
+                    "type": "vec3"
+                }
+            ]
+        },
+        {
+            "name": "vec3_normalize",
+            "signature": "vec3 (vec3)",
+            "returnType": "vec3",
+            "params": [
+                {
+                    "name": "v",
+                    "type": "vec3"
+                }
+            ]
+        },
+        {
+            "name": "vec3_reflect",
+            "signature": "vec3 (vec3, vec3)",
+            "returnType": "vec3",
+            "params": [
+                {
+                    "name": "v",
+                    "type": "vec3"
+                },
+                {
+                    "name": "n",
+                    "type": "vec3"
+                }
+            ]
+        },
+        {
+            "name": "vec3_refract",
+            "signature": "vec3 (vec3, vec3, float)",
+            "returnType": "vec3",
+            "params": [
+                {
+                    "name": "v",
+                    "type": "vec3"
+                },
+                {
+                    "name": "n",
+                    "type": "vec3"
+                },
+                {
+                    "name": "eta",
+                    "type": "float"
+                }
+            ]
+        },
+        {
+            "name": "vec3_faceforward",
+            "signature": "vec3 (vec3, vec3, vec3)",
+            "returnType": "vec3",
+            "params": [
+                {
+                    "name": "n",
+                    "type": "vec3"
+                },
+                {
+                    "name": "i",
+                    "type": "vec3"
+                },
+                {
+                    "name": "nref",
+                    "type": "vec3"
+                }
+            ]
+        },
+        {
+            "name": "vec3_mul_mat4",
+            "signature": "vec3 (vec3, mat4)",
+            "returnType": "vec3",
+            "params": [
+                {
+                    "name": "a",
+                    "type": "vec3"
+                },
+                {
+                    "name": "b",
+                    "type": "mat4"
+                }
+            ]
+        }
+    ],
+    "vec4": [
+        {
+            "name": "vec4_new",
+            "signature": "vec4 (float, float, float, float)",
+            "returnType": "vec4",
+            "params": [
+                {
+                    "name": "x",
+                    "type": "float"
+                },
+                {
+                    "name": "y",
+                    "type": "float"
+                },
+                {
+                    "name": "z",
+                    "type": "float"
+                },
+                {
+                    "name": "w",
+                    "type": "float"
+                }
+            ]
+        },
+        {
+            "name": "vec4_new1",
+            "signature": "vec4 (float)",
+            "returnType": "vec4",
+            "params": [
+                {
+                    "name": "s",
+                    "type": "float"
+                }
+            ]
+        },
+        {
+            "name": "vec4_load",
+            "signature": "vec4 (const float *)",
+            "returnType": "vec4",
+            "params": [
+                {
+                    "name": "ptr",
+                    "type": "const float *"
+                }
+            ]
+        },
+        {
+            "name": "vec4_neg",
+            "signature": "vec4 (vec4)",
+            "returnType": "vec4",
+            "params": [
+                {
+                    "name": "v",
+                    "type": "vec4"
+                }
+            ]
+        },
+        {
+            "name": "vec4_add",
+            "signature": "vec4 (vec4, vec4)",
+            "returnType": "vec4",
+            "params": [
+                {
+                    "name": "a",
+                    "type": "vec4"
+                },
+                {
+                    "name": "b",
+                    "type": "vec4"
+                }
+            ]
+        },
+        {
+            "name": "vec4_sub",
+            "signature": "vec4 (vec4, vec4)",
+            "returnType": "vec4",
+            "params": [
+                {
+                    "name": "a",
+                    "type": "vec4"
+                },
+                {
+                    "name": "b",
+                    "type": "vec4"
+                }
+            ]
+        },
+        {
+            "name": "vec4_mul",
+            "signature": "vec4 (vec4, vec4)",
+            "returnType": "vec4",
+            "params": [
+                {
+                    "name": "a",
+                    "type": "vec4"
+                },
+                {
+                    "name": "b",
+                    "type": "vec4"
+                }
+            ]
+        },
+        {
+            "name": "vec4_div",
+            "signature": "vec4 (vec4, vec4)",
+            "returnType": "vec4",
+            "params": [
+                {
+                    "name": "a",
+                    "type": "vec4"
+                },
+                {
+                    "name": "b",
+                    "type": "vec4"
+                }
+            ]
+        },
+        {
+            "name": "vec4_add1",
+            "signature": "vec4 (vec4, float)",
+            "returnType": "vec4",
+            "params": [
+                {
+                    "name": "a",
+                    "type": "vec4"
+                },
+                {
+                    "name": "b",
+                    "type": "float"
+                }
+            ]
+        },
+        {
+            "name": "vec4_sub1",
+            "signature": "vec4 (vec4, float)",
+            "returnType": "vec4",
+            "params": [
+                {
+                    "name": "a",
+                    "type": "vec4"
+                },
+                {
+                    "name": "b",
+                    "type": "float"
+                }
+            ]
+        },
+        {
+            "name": "vec4_mul1",
+            "signature": "vec4 (vec4, float)",
+            "returnType": "vec4",
+            "params": [
+                {
+                    "name": "a",
+                    "type": "vec4"
+                },
+                {
+                    "name": "b",
+                    "type": "float"
+                }
+            ]
+        },
+        {
+            "name": "vec4_div1",
+            "signature": "vec4 (vec4, float)",
+            "returnType": "vec4",
+            "params": [
+                {
+                    "name": "a",
+                    "type": "vec4"
+                },
+                {
+                    "name": "b",
+                    "type": "float"
+                }
+            ]
+        },
+        {
+            "name": "vec4_mul_add",
+            "signature": "vec4 (vec4, vec4, vec4)",
+            "returnType": "vec4",
+            "params": [
+                {
+                    "name": "a",
+                    "type": "vec4"
+                },
+                {
+                    "name": "b",
+                    "type": "vec4"
+                },
+                {
+                    "name": "c",
+                    "type": "vec4"
+                }
+            ]
+        },
+        {
+            "name": "vec4_mul_sub",
+            "signature": "vec4 (vec4, vec4, vec4)",
+            "returnType": "vec4",
+            "params": [
+                {
+                    "name": "a",
+                    "type": "vec4"
+                },
+                {
+                    "name": "b",
+                    "type": "vec4"
+                },
+                {
+                    "name": "c",
+                    "type": "vec4"
+                }
+            ]
+        },
+        {
+            "name": "vec4_equal",
+            "signature": "bool (vec4, vec4)",
+            "returnType": "bool",
+            "params": [
+                {
+                    "name": "a",
+                    "type": "vec4"
+                },
+                {
+                    "name": "b",
+                    "type": "vec4"
+                }
+            ]
+        },
+        {
+            "name": "vec4_not_equal",
+            "signature": "bool (vec4, vec4)",
+            "returnType": "bool",
+            "params": [
+                {
+                    "name": "a",
+                    "type": "vec4"
+                },
+                {
+                    "name": "b",
+                    "type": "vec4"
+                }
+            ]
+        },
+        {
+            "name": "vec4_isclose",
+            "signature": "bool (vec4, vec4)",
+            "returnType": "bool",
+            "params": [
+                {
+                    "name": "a",
+                    "type": "vec4"
+                },
+                {
+                    "name": "b",
+                    "type": "vec4"
+                }
+            ]
+        },
+        {
+            "name": "vec4_sign",
+            "signature": "ivec4 (vec4)",
+            "returnType": "ivec4",
+            "params": [
+                {
+                    "name": "v",
+                    "type": "vec4"
+                }
+            ]
+        },
+        {
+            "name": "vec4_abs",
+            "signature": "vec4 (vec4)",
+            "returnType": "vec4",
+            "params": [
+                {
+                    "name": "v",
+                    "type": "vec4"
+                }
+            ]
+        },
+        {
+            "name": "vec4_cos",
+            "signature": "vec4 (vec4)",
+            "returnType": "vec4",
+            "params": [
+                {
+                    "name": "v",
+                    "type": "vec4"
+                }
+            ]
+        },
+        {
+            "name": "vec4_sin",
+            "signature": "vec4 (vec4)",
+            "returnType": "vec4",
+            "params": [
+                {
+                    "name": "v",
+                    "type": "vec4"
+                }
+            ]
+        },
+        {
+            "name": "vec4_tan",
+            "signature": "vec4 (vec4)",
+            "returnType": "vec4",
+            "params": [
+                {
+                    "name": "v",
+                    "type": "vec4"
+                }
+            ]
+        },
+        {
+            "name": "vec4_cosh",
+            "signature": "vec4 (vec4)",
+            "returnType": "vec4",
+            "params": [
+                {
+                    "name": "v",
+                    "type": "vec4"
+                }
+            ]
+        },
+        {
+            "name": "vec4_sinh",
+            "signature": "vec4 (vec4)",
+            "returnType": "vec4",
+            "params": [
+                {
+                    "name": "v",
+                    "type": "vec4"
+                }
+            ]
+        },
+        {
+            "name": "vec4_tanh",
+            "signature": "vec4 (vec4)",
+            "returnType": "vec4",
+            "params": [
+                {
+                    "name": "v",
+                    "type": "vec4"
+                }
+            ]
+        },
+        {
+            "name": "vec4_acos",
+            "signature": "vec4 (vec4)",
+            "returnType": "vec4",
+            "params": [
+                {
+                    "name": "v",
+                    "type": "vec4"
+                }
+            ]
+        },
+        {
+            "name": "vec4_asin",
+            "signature": "vec4 (vec4)",
+            "returnType": "vec4",
+            "params": [
+                {
+                    "name": "v",
+                    "type": "vec4"
+                }
+            ]
+        },
+        {
+            "name": "vec4_atan",
+            "signature": "vec4 (vec4)",
+            "returnType": "vec4",
+            "params": [
+                {
+                    "name": "v",
+                    "type": "vec4"
+                }
+            ]
+        },
+        {
+            "name": "vec4_atan2",
+            "signature": "vec4 (vec4, vec4)",
+            "returnType": "vec4",
+            "params": [
+                {
+                    "name": "a",
+                    "type": "vec4"
+                },
+                {
+                    "name": "b",
+                    "type": "vec4"
+                }
+            ]
+        },
+        {
+            "name": "vec4_exp",
+            "signature": "vec4 (vec4)",
+            "returnType": "vec4",
+            "params": [
+                {
+                    "name": "v",
+                    "type": "vec4"
+                }
+            ]
+        },
+        {
+            "name": "vec4_exp2",
+            "signature": "vec4 (vec4)",
+            "returnType": "vec4",
+            "params": [
+                {
+                    "name": "v",
+                    "type": "vec4"
+                }
+            ]
+        },
+        {
+            "name": "vec4_log",
+            "signature": "vec4 (vec4)",
+            "returnType": "vec4",
+            "params": [
+                {
+                    "name": "v",
+                    "type": "vec4"
+                }
+            ]
+        },
+        {
+            "name": "vec4_log2",
+            "signature": "vec4 (vec4)",
+            "returnType": "vec4",
+            "params": [
+                {
+                    "name": "v",
+                    "type": "vec4"
+                }
+            ]
+        },
+        {
+            "name": "vec4_log10",
+            "signature": "vec4 (vec4)",
+            "returnType": "vec4",
+            "params": [
+                {
+                    "name": "v",
+                    "type": "vec4"
+                }
+            ]
+        },
+        {
+            "name": "vec4_pow",
+            "signature": "vec4 (vec4, vec4)",
+            "returnType": "vec4",
+            "params": [
+                {
+                    "name": "a",
+                    "type": "vec4"
+                },
+                {
+                    "name": "b",
+                    "type": "vec4"
+                }
+            ]
+        },
+        {
+            "name": "vec4_frac",
+            "signature": "vec4 (vec4)",
+            "returnType": "vec4",
+            "params": [
+                {
+                    "name": "v",
+                    "type": "vec4"
+                }
+            ]
+        },
+        {
+            "name": "vec4_fmod",
+            "signature": "vec4 (vec4, vec4)",
+            "returnType": "vec4",
+            "params": [
+                {
+                    "name": "a",
+                    "type": "vec4"
+                },
+                {
+                    "name": "b",
+                    "type": "vec4"
+                }
+            ]
+        },
+        {
+            "name": "vec4_ceil",
+            "signature": "vec4 (vec4)",
+            "returnType": "vec4",
+            "params": [
+                {
+                    "name": "v",
+                    "type": "vec4"
+                }
+            ]
+        },
+        {
+            "name": "vec4_floor",
+            "signature": "vec4 (vec4)",
+            "returnType": "vec4",
+            "params": [
+                {
+                    "name": "v",
+                    "type": "vec4"
+                }
+            ]
+        },
+        {
+            "name": "vec4_round",
+            "signature": "vec4 (vec4)",
+            "returnType": "vec4",
+            "params": [
+                {
+                    "name": "v",
+                    "type": "vec4"
+                }
+            ]
+        },
+        {
+            "name": "vec4_trunc",
+            "signature": "vec4 (vec4)",
+            "returnType": "vec4",
+            "params": [
+                {
+                    "name": "v",
+                    "type": "vec4"
+                }
+            ]
+        },
+        {
+            "name": "vec4_min",
+            "signature": "vec4 (vec4, vec4)",
+            "returnType": "vec4",
+            "params": [
+                {
+                    "name": "a",
+                    "type": "vec4"
+                },
+                {
+                    "name": "b",
+                    "type": "vec4"
+                }
+            ]
+        },
+        {
+            "name": "vec4_max",
+            "signature": "vec4 (vec4, vec4)",
+            "returnType": "vec4",
+            "params": [
+                {
+                    "name": "a",
+                    "type": "vec4"
+                },
+                {
+                    "name": "b",
+                    "type": "vec4"
+                }
+            ]
+        },
+        {
+            "name": "vec4_clamp",
+            "signature": "vec4 (vec4, vec4, vec4)",
+            "returnType": "vec4",
+            "params": [
+                {
+                    "name": "v",
+                    "type": "vec4"
+                },
+                {
+                    "name": "min",
+                    "type": "vec4"
+                },
+                {
+                    "name": "max",
+                    "type": "vec4"
+                }
+            ]
+        },
+        {
+            "name": "vec4_saturate",
+            "signature": "vec4 (vec4)",
+            "returnType": "vec4",
+            "params": [
+                {
+                    "name": "v",
+                    "type": "vec4"
+                }
+            ]
+        },
+        {
+            "name": "vec4_step",
+            "signature": "vec4 (vec4, vec4)",
+            "returnType": "vec4",
+            "params": [
+                {
+                    "name": "a",
+                    "type": "vec4"
+                },
+                {
+                    "name": "b",
+                    "type": "vec4"
+                }
+            ]
+        },
+        {
+            "name": "vec4_lerp",
+            "signature": "vec4 (vec4, vec4, vec4)",
+            "returnType": "vec4",
+            "params": [
+                {
+                    "name": "a",
+                    "type": "vec4"
+                },
+                {
+                    "name": "b",
+                    "type": "vec4"
+                },
+                {
+                    "name": "t",
+                    "type": "vec4"
+                }
+            ]
+        },
+        {
+            "name": "vec4_lerp1",
+            "signature": "vec4 (vec4, vec4, float)",
+            "returnType": "vec4",
+            "params": [
+                {
+                    "name": "a",
+                    "type": "vec4"
+                },
+                {
+                    "name": "b",
+                    "type": "vec4"
+                },
+                {
+                    "name": "t",
+                    "type": "float"
+                }
+            ]
+        },
+        {
+            "name": "vec4_smoothstep",
+            "signature": "vec4 (vec4, vec4, vec4)",
+            "returnType": "vec4",
+            "params": [
+                {
+                    "name": "a",
+                    "type": "vec4"
+                },
+                {
+                    "name": "b",
+                    "type": "vec4"
+                },
+                {
+                    "name": "t",
+                    "type": "vec4"
+                }
+            ]
+        },
+        {
+            "name": "vec4_sqrt",
+            "signature": "vec4 (vec4)",
+            "returnType": "vec4",
+            "params": [
+                {
+                    "name": "v",
+                    "type": "vec4"
+                }
+            ]
+        },
+        {
+            "name": "vec4_rsqrt",
+            "signature": "vec4 (vec4)",
+            "returnType": "vec4",
+            "params": [
+                {
+                    "name": "v",
+                    "type": "vec4"
+                }
+            ]
+        },
+        {
+            "name": "vec4_dot",
+            "signature": "float (vec4, vec4)",
+            "returnType": "float",
+            "params": [
+                {
+                    "name": "a",
+                    "type": "vec4"
+                },
+                {
+                    "name": "b",
+                    "type": "vec4"
+                }
+            ]
+        },
+        {
+            "name": "vec4_lensqr",
+            "signature": "float (vec4)",
+            "returnType": "float",
+            "params": [
+                {
+                    "name": "v",
+                    "type": "vec4"
+                }
+            ]
+        },
+        {
+            "name": "vec4_length",
+            "signature": "float (vec4)",
+            "returnType": "float",
+            "params": [
+                {
+                    "name": "v",
+                    "type": "vec4"
+                }
+            ]
+        },
+        {
+            "name": "vec4_distsqr",
+            "signature": "float (vec4, vec4)",
+            "returnType": "float",
+            "params": [
+                {
+                    "name": "a",
+                    "type": "vec4"
+                },
+                {
+                    "name": "b",
+                    "type": "vec4"
+                }
+            ]
+        },
+        {
+            "name": "vec4_normalize",
+            "signature": "vec4 (vec4)",
+            "returnType": "vec4",
+            "params": [
+                {
+                    "name": "v",
+                    "type": "vec4"
+                }
+            ]
+        },
+        {
+            "name": "vec4_reflect",
+            "signature": "vec4 (vec4, vec4)",
+            "returnType": "vec4",
+            "params": [
+                {
+                    "name": "v",
+                    "type": "vec4"
+                },
+                {
+                    "name": "n",
+                    "type": "vec4"
+                }
+            ]
+        },
+        {
+            "name": "vec4_refract",
+            "signature": "vec4 (vec4, vec4, float)",
+            "returnType": "vec4",
+            "params": [
+                {
+                    "name": "v",
+                    "type": "vec4"
+                },
+                {
+                    "name": "n",
+                    "type": "vec4"
+                },
+                {
+                    "name": "eta",
+                    "type": "float"
+                }
+            ]
+        },
+        {
+            "name": "vec4_faceforward",
+            "signature": "vec4 (vec4, vec4, vec4)",
+            "returnType": "vec4",
+            "params": [
+                {
+                    "name": "n",
+                    "type": "vec4"
+                },
+                {
+                    "name": "i",
+                    "type": "vec4"
+                },
+                {
+                    "name": "nref",
+                    "type": "vec4"
+                }
+            ]
+        },
+        {
+            "name": "vec4_mul_mat4",
+            "signature": "vec4 (vec4, mat4)",
+            "returnType": "vec4",
+            "params": [
+                {
+                    "name": "v",
+                    "type": "vec4"
+                },
+                {
+                    "name": "m",
+                    "type": "mat4"
+                }
+            ]
+        }
+    ],
+    "mat4": [
+        {
+            "name": "mat4_new",
+            "signature": "mat4 (vec4, vec4, vec4, vec4)",
+            "returnType": "mat4",
+            "params": [
+                {
+                    "name": "row0",
+                    "type": "vec4"
+                },
+                {
+                    "name": "row1",
+                    "type": "vec4"
+                },
+                {
+                    "name": "row2",
+                    "type": "vec4"
+                },
+                {
+                    "name": "row3",
+                    "type": "vec4"
+                }
+            ]
+        },
+        {
+            "name": "mat4_new_f16",
+            "signature": "mat4 (float, float, float, float, float, float, float, float, float, float, float, float, float, float, float, float)",
+            "returnType": "mat4",
+            "params": [
+                {
+                    "name": "m00",
+                    "type": "float"
+                },
+                {
+                    "name": "m01",
+                    "type": "float"
+                },
+                {
+                    "name": "m02",
+                    "type": "float"
+                },
+                {
+                    "name": "m03",
+                    "type": "float"
+                },
+                {
+                    "name": "m10",
+                    "type": "float"
+                },
+                {
+                    "name": "m11",
+                    "type": "float"
+                },
+                {
+                    "name": "m12",
+                    "type": "float"
+                },
+                {
+                    "name": "m13",
+                    "type": "float"
+                },
+                {
+                    "name": "m20",
+                    "type": "float"
+                },
+                {
+                    "name": "m21",
+                    "type": "float"
+                },
+                {
+                    "name": "m22",
+                    "type": "float"
+                },
+                {
+                    "name": "m23",
+                    "type": "float"
+                },
+                {
+                    "name": "m30",
+                    "type": "float"
+                },
+                {
+                    "name": "m31",
+                    "type": "float"
+                },
+                {
+                    "name": "m32",
+                    "type": "float"
+                },
+                {
+                    "name": "m33",
+                    "type": "float"
+                }
+            ]
+        },
+        {
+            "name": "mat4_load",
+            "signature": "mat4 (const float *)",
+            "returnType": "mat4",
+            "params": [
+                {
+                    "name": "ptr",
+                    "type": "const float *"
+                }
+            ]
+        },
+        {
+            "name": "mat4_neg",
+            "signature": "mat4 (mat4)",
+            "returnType": "mat4",
+            "params": [
+                {
+                    "name": "m",
+                    "type": "mat4"
+                }
+            ]
+        },
+        {
+            "name": "mat4_add",
+            "signature": "mat4 (mat4, mat4)",
+            "returnType": "mat4",
+            "params": [
+                {
+                    "name": "a",
+                    "type": "mat4"
+                },
+                {
+                    "name": "b",
+                    "type": "mat4"
+                }
+            ]
+        },
+        {
+            "name": "mat4_sub",
+            "signature": "mat4 (mat4, mat4)",
+            "returnType": "mat4",
+            "params": [
+                {
+                    "name": "a",
+                    "type": "mat4"
+                },
+                {
+                    "name": "b",
+                    "type": "mat4"
+                }
+            ]
+        },
+        {
+            "name": "mat4_equal",
+            "signature": "bool (mat4, mat4)",
+            "returnType": "bool",
+            "params": [
+                {
+                    "name": "a",
+                    "type": "mat4"
+                },
+                {
+                    "name": "b",
+                    "type": "mat4"
+                }
+            ]
+        },
+        {
+            "name": "mat4_not_equal",
+            "signature": "bool (mat4, mat4)",
+            "returnType": "bool",
+            "params": [
+                {
+                    "name": "a",
+                    "type": "mat4"
+                },
+                {
+                    "name": "b",
+                    "type": "mat4"
+                }
+            ]
+        },
+        {
+            "name": "mat4_abs",
+            "signature": "mat4 (mat4)",
+            "returnType": "mat4",
+            "params": [
+                {
+                    "name": "m",
+                    "type": "mat4"
+                }
+            ]
+        },
+        {
+            "name": "mat4_cos",
+            "signature": "mat4 (mat4)",
+            "returnType": "mat4",
+            "params": [
+                {
+                    "name": "m",
+                    "type": "mat4"
+                }
+            ]
+        },
+        {
+            "name": "mat4_sin",
+            "signature": "mat4 (mat4)",
+            "returnType": "mat4",
+            "params": [
+                {
+                    "name": "m",
+                    "type": "mat4"
+                }
+            ]
+        },
+        {
+            "name": "mat4_tan",
+            "signature": "mat4 (mat4)",
+            "returnType": "mat4",
+            "params": [
+                {
+                    "name": "m",
+                    "type": "mat4"
+                }
+            ]
+        },
+        {
+            "name": "mat4_cosh",
+            "signature": "mat4 (mat4)",
+            "returnType": "mat4",
+            "params": [
+                {
+                    "name": "m",
+                    "type": "mat4"
+                }
+            ]
+        },
+        {
+            "name": "mat4_sinh",
+            "signature": "mat4 (mat4)",
+            "returnType": "mat4",
+            "params": [
+                {
+                    "name": "m",
+                    "type": "mat4"
+                }
+            ]
+        },
+        {
+            "name": "mat4_tanh",
+            "signature": "mat4 (mat4)",
+            "returnType": "mat4",
+            "params": [
+                {
+                    "name": "m",
+                    "type": "mat4"
+                }
+            ]
+        },
+        {
+            "name": "mat4_acos",
+            "signature": "mat4 (mat4)",
+            "returnType": "mat4",
+            "params": [
+                {
+                    "name": "m",
+                    "type": "mat4"
+                }
+            ]
+        },
+        {
+            "name": "mat4_asin",
+            "signature": "mat4 (mat4)",
+            "returnType": "mat4",
+            "params": [
+                {
+                    "name": "m",
+                    "type": "mat4"
+                }
+            ]
+        },
+        {
+            "name": "mat4_atan",
+            "signature": "mat4 (mat4)",
+            "returnType": "mat4",
+            "params": [
+                {
+                    "name": "m",
+                    "type": "mat4"
+                }
+            ]
+        },
+        {
+            "name": "mat4_atan2",
+            "signature": "mat4 (mat4, mat4)",
+            "returnType": "mat4",
+            "params": [
+                {
+                    "name": "a",
+                    "type": "mat4"
+                },
+                {
+                    "name": "b",
+                    "type": "mat4"
+                }
+            ]
+        },
+        {
+            "name": "mat4_exp",
+            "signature": "mat4 (mat4)",
+            "returnType": "mat4",
+            "params": [
+                {
+                    "name": "m",
+                    "type": "mat4"
+                }
+            ]
+        },
+        {
+            "name": "mat4_exp2",
+            "signature": "mat4 (mat4)",
+            "returnType": "mat4",
+            "params": [
+                {
+                    "name": "m",
+                    "type": "mat4"
+                }
+            ]
+        },
+        {
+            "name": "mat4_log",
+            "signature": "mat4 (mat4)",
+            "returnType": "mat4",
+            "params": [
+                {
+                    "name": "m",
+                    "type": "mat4"
+                }
+            ]
+        },
+        {
+            "name": "mat4_log2",
+            "signature": "mat4 (mat4)",
+            "returnType": "mat4",
+            "params": [
+                {
+                    "name": "m",
+                    "type": "mat4"
+                }
+            ]
+        },
+        {
+            "name": "mat4_log10",
+            "signature": "mat4 (mat4)",
+            "returnType": "mat4",
+            "params": [
+                {
+                    "name": "m",
+                    "type": "mat4"
+                }
+            ]
+        },
+        {
+            "name": "mat4_pow",
+            "signature": "mat4 (mat4, mat4)",
+            "returnType": "mat4",
+            "params": [
+                {
+                    "name": "a",
+                    "type": "mat4"
+                },
+                {
+                    "name": "b",
+                    "type": "mat4"
+                }
+            ]
+        },
+        {
+            "name": "mat4_frac",
+            "signature": "mat4 (mat4)",
+            "returnType": "mat4",
+            "params": [
+                {
+                    "name": "m",
+                    "type": "mat4"
+                }
+            ]
+        },
+        {
+            "name": "mat4_fmod",
+            "signature": "mat4 (mat4, mat4)",
+            "returnType": "mat4",
+            "params": [
+                {
+                    "name": "a",
+                    "type": "mat4"
+                },
+                {
+                    "name": "b",
+                    "type": "mat4"
+                }
+            ]
+        },
+        {
+            "name": "mat4_ceil",
+            "signature": "mat4 (mat4)",
+            "returnType": "mat4",
+            "params": [
+                {
+                    "name": "m",
+                    "type": "mat4"
+                }
+            ]
+        },
+        {
+            "name": "mat4_floor",
+            "signature": "mat4 (mat4)",
+            "returnType": "mat4",
+            "params": [
+                {
+                    "name": "m",
+                    "type": "mat4"
+                }
+            ]
+        },
+        {
+            "name": "mat4_round",
+            "signature": "mat4 (mat4)",
+            "returnType": "mat4",
+            "params": [
+                {
+                    "name": "m",
+                    "type": "mat4"
+                }
+            ]
+        },
+        {
+            "name": "mat4_trunc",
+            "signature": "mat4 (mat4)",
+            "returnType": "mat4",
+            "params": [
+                {
+                    "name": "m",
+                    "type": "mat4"
+                }
+            ]
+        },
+        {
+            "name": "mat4_min",
+            "signature": "mat4 (mat4, mat4)",
+            "returnType": "mat4",
+            "params": [
+                {
+                    "name": "a",
+                    "type": "mat4"
+                },
+                {
+                    "name": "b",
+                    "type": "mat4"
+                }
+            ]
+        },
+        {
+            "name": "mat4_max",
+            "signature": "mat4 (mat4, mat4)",
+            "returnType": "mat4",
+            "params": [
+                {
+                    "name": "a",
+                    "type": "mat4"
+                },
+                {
+                    "name": "b",
+                    "type": "mat4"
+                }
+            ]
+        },
+        {
+            "name": "mat4_clamp",
+            "signature": "mat4 (mat4, mat4, mat4)",
+            "returnType": "mat4",
+            "params": [
+                {
+                    "name": "v",
+                    "type": "mat4"
+                },
+                {
+                    "name": "min",
+                    "type": "mat4"
+                },
+                {
+                    "name": "max",
+                    "type": "mat4"
+                }
+            ]
+        },
+        {
+            "name": "mat4_saturate",
+            "signature": "mat4 (mat4)",
+            "returnType": "mat4",
+            "params": [
+                {
+                    "name": "m",
+                    "type": "mat4"
+                }
+            ]
+        },
+        {
+            "name": "mat4_step",
+            "signature": "mat4 (mat4, mat4)",
+            "returnType": "mat4",
+            "params": [
+                {
+                    "name": "a",
+                    "type": "mat4"
+                },
+                {
+                    "name": "b",
+                    "type": "mat4"
+                }
+            ]
+        },
+        {
+            "name": "mat4_lerp",
+            "signature": "mat4 (mat4, mat4, mat4)",
+            "returnType": "mat4",
+            "params": [
+                {
+                    "name": "a",
+                    "type": "mat4"
+                },
+                {
+                    "name": "b",
+                    "type": "mat4"
+                },
+                {
+                    "name": "t",
+                    "type": "mat4"
+                }
+            ]
+        },
+        {
+            "name": "mat4_lerp1",
+            "signature": "mat4 (mat4, mat4, float)",
+            "returnType": "mat4",
+            "params": [
+                {
+                    "name": "a",
+                    "type": "mat4"
+                },
+                {
+                    "name": "b",
+                    "type": "mat4"
+                },
+                {
+                    "name": "t",
+                    "type": "float"
+                }
+            ]
+        },
+        {
+            "name": "mat4_smoothstep",
+            "signature": "mat4 (mat4, mat4, mat4)",
+            "returnType": "mat4",
+            "params": [
+                {
+                    "name": "a",
+                    "type": "mat4"
+                },
+                {
+                    "name": "b",
+                    "type": "mat4"
+                },
+                {
+                    "name": "t",
+                    "type": "mat4"
+                }
+            ]
+        },
+        {
+            "name": "mat4_sqrt",
+            "signature": "mat4 (mat4)",
+            "returnType": "mat4",
+            "params": [
+                {
+                    "name": "m",
+                    "type": "mat4"
+                }
+            ]
+        },
+        {
+            "name": "mat4_rsqrt",
+            "signature": "mat4 (mat4)",
+            "returnType": "mat4",
+            "params": [
+                {
+                    "name": "m",
+                    "type": "mat4"
+                }
+            ]
+        },
+        {
+            "name": "mat4_mul_vec4",
+            "signature": "vec4 (mat4, vec4)",
+            "returnType": "vec4",
+            "params": [
+                {
+                    "name": "m",
+                    "type": "mat4"
+                },
+                {
+                    "name": "v",
+                    "type": "vec4"
+                }
+            ]
+        },
+        {
+            "name": "mat4_mul_vec3",
+            "signature": "vec3 (mat4, vec3)",
+            "returnType": "vec3",
+            "params": [
+                {
+                    "name": "a",
+                    "type": "mat4"
+                },
+                {
+                    "name": "b",
+                    "type": "vec3"
+                }
+            ]
+        },
+        {
+            "name": "mat4_mul_vec2",
+            "signature": "vec2 (mat4, vec2)",
+            "returnType": "vec2",
+            "params": [
+                {
+                    "name": "a",
+                    "type": "mat4"
+                },
+                {
+                    "name": "b",
+                    "type": "vec2"
+                }
+            ]
+        },
+        {
+            "name": "mat4_mul",
+            "signature": "mat4 (mat4, mat4)",
+            "returnType": "mat4",
+            "params": [
+                {
+                    "name": "a",
+                    "type": "mat4"
+                },
+                {
+                    "name": "b",
+                    "type": "mat4"
+                }
+            ]
+        },
+        {
+            "name": "mat4_mul1",
+            "signature": "mat4 (mat4, float)",
+            "returnType": "mat4",
+            "params": [
+                {
+                    "name": "a",
+                    "type": "mat4"
+                },
+                {
+                    "name": "b",
+                    "type": "float"
+                }
+            ]
+        },
+        {
+            "name": "mat4_transpose",
+            "signature": "mat4 (mat4)",
+            "returnType": "mat4",
+            "params": [
+                {
+                    "name": "m",
+                    "type": "mat4"
+                }
+            ]
+        },
+        {
+            "name": "mat4_inverse",
+            "signature": "mat4 (mat4)",
+            "returnType": "mat4",
+            "params": [
+                {
+                    "name": "m",
+                    "type": "mat4"
+                }
+            ]
+        },
+        {
+            "name": "mat4_identity",
+            "signature": "mat4 ()",
+            "returnType": "mat4",
+            "params": []
+        },
+        {
+            "name": "mat4_ortho",
+            "signature": "mat4 (float, float, float, float, float, float)",
+            "returnType": "mat4",
+            "params": [
+                {
+                    "name": "left",
+                    "type": "float"
+                },
+                {
+                    "name": "right",
+                    "type": "float"
+                },
+                {
+                    "name": "bottom",
+                    "type": "float"
+                },
+                {
+                    "name": "top",
+                    "type": "float"
+                },
+                {
+                    "name": "zNear",
+                    "type": "float"
+                },
+                {
+                    "name": "zFar",
+                    "type": "float"
+                }
+            ]
+        },
+        {
+            "name": "mat4_frustum",
+            "signature": "mat4 (float, float, float, float, float, float)",
+            "returnType": "mat4",
+            "params": [
+                {
+                    "name": "l",
+                    "type": "float"
+                },
+                {
+                    "name": "r",
+                    "type": "float"
+                },
+                {
+                    "name": "b",
+                    "type": "float"
+                },
+                {
+                    "name": "t",
+                    "type": "float"
+                },
+                {
+                    "name": "n",
+                    "type": "float"
+                },
+                {
+                    "name": "f",
+                    "type": "float"
+                }
+            ]
+        },
+        {
+            "name": "mat4_perspective",
+            "signature": "mat4 (float, float, float, float)",
+            "returnType": "mat4",
+            "params": [
+                {
+                    "name": "fovRadians",
+                    "type": "float"
+                },
+                {
+                    "name": "aspect",
+                    "type": "float"
+                },
+                {
+                    "name": "znear",
+                    "type": "float"
+                },
+                {
+                    "name": "zfar",
+                    "type": "float"
+                }
+            ]
+        },
+        {
+            "name": "mat4_lookat",
+            "signature": "mat4 (vec3, vec3, vec3)",
+            "returnType": "mat4",
+            "params": [
+                {
+                    "name": "eye",
+                    "type": "vec3"
+                },
+                {
+                    "name": "target",
+                    "type": "vec3"
+                },
+                {
+                    "name": "up",
+                    "type": "vec3"
+                }
+            ]
+        },
+        {
+            "name": "mat4_scalation",
+            "signature": "mat4 (float, float, float)",
+            "returnType": "mat4",
+            "params": [
+                {
+                    "name": "x",
+                    "type": "float"
+                },
+                {
+                    "name": "y",
+                    "type": "float"
+                },
+                {
+                    "name": "z",
+                    "type": "float"
+                }
+            ]
+        },
+        {
+            "name": "mat4_scalation1",
+            "signature": "mat4 (float)",
+            "returnType": "mat4",
+            "params": [
+                {
+                    "name": "s",
+                    "type": "float"
+                }
+            ]
+        },
+        {
+            "name": "mat4_scalation_vec2",
+            "signature": "mat4 (vec2)",
+            "returnType": "mat4",
+            "params": [
+                {
+                    "name": "v",
+                    "type": "vec2"
+                }
+            ]
+        },
+        {
+            "name": "mat4_scalation_vec3",
+            "signature": "mat4 (vec3)",
+            "returnType": "mat4",
+            "params": [
+                {
+                    "name": "v",
+                    "type": "vec3"
+                }
+            ]
+        },
+        {
+            "name": "mat4_translation",
+            "signature": "mat4 (float, float, float)",
+            "returnType": "mat4",
+            "params": [
+                {
+                    "name": "x",
+                    "type": "float"
+                },
+                {
+                    "name": "y",
+                    "type": "float"
+                },
+                {
+                    "name": "z",
+                    "type": "float"
+                }
+            ]
+        },
+        {
+            "name": "mat4_translation_vec2",
+            "signature": "mat4 (vec2)",
+            "returnType": "mat4",
+            "params": [
+                {
+                    "name": "v",
+                    "type": "vec2"
+                }
+            ]
+        },
+        {
+            "name": "mat4_translation_vec3",
+            "signature": "mat4 (vec3)",
+            "returnType": "mat4",
+            "params": [
+                {
+                    "name": "v",
+                    "type": "vec3"
+                }
+            ]
+        },
+        {
+            "name": "mat4_rotation",
+            "signature": "mat4 (float, float, float, float)",
+            "returnType": "mat4",
+            "params": [
+                {
+                    "name": "x",
+                    "type": "float"
+                },
+                {
+                    "name": "y",
+                    "type": "float"
+                },
+                {
+                    "name": "z",
+                    "type": "float"
+                },
+                {
+                    "name": "radians",
+                    "type": "float"
+                }
+            ]
+        },
+        {
+            "name": "mat4_rotation_axis_angle",
+            "signature": "mat4 (vec3, float)",
+            "returnType": "mat4",
+            "params": [
+                {
+                    "name": "axis",
+                    "type": "vec3"
+                },
+                {
+                    "name": "angle",
+                    "type": "float"
+                }
+            ]
+        },
+        {
+            "name": "mat4_rotation_x",
+            "signature": "mat4 (float)",
+            "returnType": "mat4",
+            "params": [
+                {
+                    "name": "angle",
+                    "type": "float"
+                }
+            ]
+        },
+        {
+            "name": "mat4_rotation_y",
+            "signature": "mat4 (float)",
+            "returnType": "mat4",
+            "params": [
+                {
+                    "name": "angle",
+                    "type": "float"
+                }
+            ]
+        },
+        {
+            "name": "mat4_rotation_z",
+            "signature": "mat4 (float)",
+            "returnType": "mat4",
+            "params": [
+                {
+                    "name": "radians",
+                    "type": "float"
+                }
+            ]
+        },
+        {
+            "name": "mat4_rotation_quat",
+            "signature": "mat4 (vec4)",
+            "returnType": "mat4",
+            "params": [
+                {
+                    "name": "quaternion",
+                    "type": "vec4"
+                }
+            ]
+        },
+        {
+            "name": "mat4_transform2",
+            "signature": "mat4 (vec2, float, vec2)",
+            "returnType": "mat4",
+            "params": [
+                {
+                    "name": "position",
+                    "type": "vec2"
+                },
+                {
+                    "name": "angle",
+                    "type": "float"
+                },
+                {
+                    "name": "scale",
+                    "type": "vec2"
+                }
+            ]
+        },
+        {
+            "name": "mat4_transform3",
+            "signature": "mat4 (vec3, vec4, vec3)",
+            "returnType": "mat4",
+            "params": [
+                {
+                    "name": "position",
+                    "type": "vec3"
+                },
+                {
+                    "name": "quat",
+                    "type": "vec4"
+                },
+                {
+                    "name": "scale",
+                    "type": "vec3"
+                }
+            ]
+        },
+        {
+            "name": "mat4_decompose",
+            "signature": "void (mat4, vec3 *, vec4 *, vec3 *)",
+            "returnType": "void",
+            "params": [
+                {
+                    "name": "m",
+                    "type": "mat4"
+                },
+                {
+                    "name": "scalation",
+                    "type": "vec3 *"
+                },
+                {
+                    "name": "quaternion",
+                    "type": "vec4 *"
+                },
+                {
+                    "name": "translation",
+                    "type": "vec3 *"
+                }
+            ]
+        },
+        {
+            "name": "mat4_decompose_axis_angle",
+            "signature": "void (mat4, vec3 *, vec3 *, float *, vec3 *)",
+            "returnType": "void",
+            "params": [
+                {
+                    "name": "m",
+                    "type": "mat4"
+                },
+                {
+                    "name": "scalation",
+                    "type": "vec3 *"
+                },
+                {
+                    "name": "axis",
+                    "type": "vec3 *"
+                },
+                {
+                    "name": "angle",
+                    "type": "float *"
+                },
+                {
+                    "name": "translation",
+                    "type": "vec3 *"
+                }
+            ]
+        }
+    ]
+}

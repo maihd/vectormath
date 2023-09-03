@@ -1,0 +1,214 @@
+{
+    "vec2": {
+        "haxeName": "Vec2",
+        "kind": "Vector",
+        "length": 2,
+        "componentType": "Float32",
+        "swizzle": true,
+        "operator": true,
+        "hasConstructor": true,
+        "constantsPrefix": "",
+        "skipFunctions": [
+            "new",
+            "new1",
+            "load",
+            "neg",
+            "add",
+            "sub",
+            "mul",
+            "div",
+            "add1",
+            "sub1",
+            "mul1",
+            "div1",
+            "equal",
+            "not_equal"
+        ]
+    },
+    "vec3": {
+        "haxeName": "Vec3",
+        "kind": "Vector",
+        "length": 3,
+        "componentType": "Float32",
+        "swizzle": true,
+        "operator": true,
+        "hasConstructor": true,
+        "constantsPrefix": "",
+        "skipFunctions": [
+            "new",
+            "new1",
+            "load",
+            "neg",
+            "add",
+            "sub",
+            "mul",
+            "div",
+            "add1",
+            "sub1",
+            "mul1",
+            "div1",
+            "equal",
+            "not_equal"
+        ]
+    },
+    "vec4": {
+        "haxeName": "Vec4",
+        "kind": "Vector",
+        "length": 4,
+        "componentType": "Float32",
+        "swizzle": true,
+        "operator": true,
+        "hasConstructor": true,
+        "constantsPrefix": "",
+        "skipFunctions": [
+            "new",
+            "new1",
+            "load",
+            "neg",
+            "add",
+            "sub",
+            "mul",
+            "div",
+            "add1",
+            "sub1",
+            "mul1",
+            "div1",
+            "equal",
+            "not_equal"
+        ]
+    },
+    "ivec2": {
+        "haxeName": "IVec2",
+        "kind": "Vector",
+        "length": 2,
+        "componentType": "Int32",
+        "swizzle": false,
+        "skipFunctions": [
+            "new",
+            "new1",
+            "neg",
+            "add",
+            "sub",
+            "mul",
+            "div"
+        ]
+    },
+    "ivec3": {
+        "haxeName": "IVec3",
+        "kind": "Vector",
+        "length": 3,
+        "componentType": "Int32",
+        "swizzle": false,
+        "skipFunctions": [
+            "new",
+            "new1",
+            "neg",
+            "add",
+            "sub",
+            "mul",
+            "div"
+        ]
+    },
+    "ivec4": {
+        "haxeName": "IVec4",
+        "kind": "Vector",
+        "length": 4,
+        "componentType": "Int32",
+        "swizzle": false,
+        "skipFunctions": [
+            "new",
+            "new1",
+            "neg",
+            "add",
+            "sub",
+            "mul",
+            "div"
+        ]
+    },
+    "uvec2": {
+        "haxeName": "UVec2",
+        "kind": "Vector",
+        "length": 2,
+        "componentType": "UInt32",
+        "swizzle": false,
+        "skipFunctions": [
+            "new",
+            "new1",
+            "neg",
+            "add",
+            "sub",
+            "mul",
+            "div"
+        ]
+    },
+    "uvec3": {
+        "haxeName": "UVec3",
+        "kind": "Vector",
+        "length": 3,
+        "componentType": "UInt32",
+        "swizzle": false,
+        "skipFunctions": [
+            "new",
+            "new1",
+            "neg",
+            "add",
+            "sub",
+            "mul",
+            "div"
+        ]
+    },
+    "uvec4": {
+        "haxeName": "UVec4",
+        "kind": "Vector",
+        "length": 4,
+        "componentType": "UInt32",
+        "swizzle": false,
+        "skipFunctions": [
+            "new",
+            "new1",
+            "neg",
+            "add",
+            "sub",
+            "mul",
+            "div"
+        ]
+    },
+    "mat2": {
+        "haxeName": "Mat2",
+        "kind": "Matrix",
+        "cols": 2,
+        "rows": 2,
+        "componentType": "Float32",
+        "skipFunctions": [
+            "new",
+            "new1"
+        ]
+    },
+    "mat3": {
+        "haxeName": "Mat3",
+        "kind": "Matrix",
+        "cols": 4,
+        "rows": 3,
+        "componentType": "Float32",
+        "skipFunctions": [
+            "new",
+            "new1"
+        ]
+    },
+    "mat4": {
+        "haxeName": "Mat4",
+        "kind": "Matrix",
+        "cols": 4,
+        "rows": 4,
+        "componentType": "Float32",
+        "hasConstructor": true,
+        "skipFunctions": [
+            "new",
+            "new1",
+            "new_f16",
+            "load",
+            "decompose",
+            "decompose_axis_angle"
+        ]
+    }
+}
