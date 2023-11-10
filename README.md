@@ -9,14 +9,14 @@
 - Use scripts/vectormath.genie.lua to import to projects that support GENie
 - Use scripts/vectormath.premake5.lua to import to projects that support premake5
 
-## Build instructions
+## Build instructions (examples and tests projects)
 - Run premake5 or GENie to generate projects
 - Build with your chosen build system
 
 ## FAQs
 - Why another math library? I'm a big fan of The-Forge renderer, when I read the source, discovered Sony's Math library. But the Sony's Math was support C++ only, then I write a port to support both C and C++ for learning purposes.
 
-- Why Unlicense? Mostly source codes were re-written from The-Forge's VectorMath library, so I don't own the code.
+- Why Unlicense? Mostly source codes were re-written from The-Forge's VectorMath library, so I don't own the code. (I found the code with the same design with this library, but older: https://github.com/zauonlok/renderer/blob/master/renderer/core/maths.h)
 - Where the functions docs, and tutorials? WIP.
 
 ## Meta
