@@ -12,6 +12,7 @@
 ## Build instructions (examples and tests projects)
 - Run premake5 or GENie to generate projects
 - Build with your chosen build system
+- (WIP) Planning to add cmake
 
 ## FAQs
 - Why another math library? I'm a big fan of The-Forge renderer, when I read the source, discovered Sony's Math library. But the Sony's Math was support C++ only, then I write a port to support both C and C++ for learning purposes.
