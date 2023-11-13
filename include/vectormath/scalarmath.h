@@ -158,13 +158,13 @@ __forceinline uint32_t uint32_clamp(uint32_t x, uint32_t min, uint32_t max)
 // -------------------------------------------------------------
 
 /// Convert degrees to radians
-__forceinline float float_rad2deg(float degrees)
+__forceinline float float_deg2rad(float degrees)
 {
     return degrees * FLOAT_PI / 180.0f;
 }
 
 /// Convert radians to degrees
-__forceinline float float_deg2rad(float radians)
+__forceinline float float_rad2deg(float radians)
 {
     return radians * 180.0f / FLOAT_PI;
 }
@@ -401,16 +401,17 @@ __forceinline bool float_isclose(float x, float y)
 // -------------------------------------------------------------
 
 /// Convert degrees to radians
-__forceinline float32_t float32_rad2deg(float32_t degrees)
+__forceinline float32_t float32_deg2rad(float32_t degrees)
 {
     return degrees * FLOAT32_PI / 180.0f;
 }
 
 /// Convert radians to degrees
-__forceinline float32_t float32_deg2rad(float32_t radians)
+__forceinline float32_t float32_rad2deg(float32_t radians)
 {
     return radians * 180.0f / FLOAT32_PI;
 }
+
 
 /// Computes sign of 'x'
 __forceinline int32_t float32_sign(float32_t x)
