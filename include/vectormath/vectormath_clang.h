@@ -5,12 +5,12 @@
 
 // Make sure clang extensions is enable
 #if !VECTORMATH_ENABLE_CLANG_EXT
-#error The vector_math support for clang vector extensions is not enable, please use vector_math_scalar.h or vector_math_simd instead
+#error The vectormath support for clang vector extensions is not enable, please use vectormath_scalar.h or vectormath_simd.h instead
 #endif
 
-// Should not use with other versions of vector_math together
+// Should not use with other versions of vectormath together
 #if defined(VECTORMATH_FUNCTIONS_DEFINED)
-#error another version of vector_math has been include, please remove that from your source if you attempt to use vector_math_simd.h
+#error another version of vectormath has been include, please remove that from your source if you attempt to use vectormath with Clang extensions
 #endif
 
 // Helper for extensions

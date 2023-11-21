@@ -5,7 +5,7 @@
 
 // Should not use both scalar & m128 versions of vector_math together
 #if defined(VECTORMATH_FUNCTIONS_DEFINED)
-#error vector_math_simd.h has been include, please remove this from your source if you attempt to use scalar version of vector_math_simd.h
+#error vectormath_simd.h has been include, please remove this from your source if you attempt to use scalar version of vector_math_simd.h
 #endif
 
 // Helper for extensions

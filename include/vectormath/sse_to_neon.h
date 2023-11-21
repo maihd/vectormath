@@ -2,7 +2,7 @@
 
 // Require CPU support neon
 #if !defined(VECTORMATH_SUPPORT_NEON) || !VECTORMATH_SUPPORT_NEON
-#error Your platform is not supporting Neon
+#error Your platform is not supporting Neon instructions set
 #endif
 
 #include <stdint.h>

@@ -8,12 +8,12 @@
 
 // Make sure we have vector_math types
 #ifndef VECTORMATH_TYPES_DEFINED
-#error Missing vector_math types, make sure you include it!
+#error Missing vectormath types, make sure you include it!
 #endif
 
 // Make sure we have vector_math functions
 #ifndef VECTORMATH_FUNCTIONS_DEFINED
-#error Missing vector_math functions, make sure you include it!
+#error Missing vectormath functions, make sure you include it!
 #endif
 
 // Helper for extensions
