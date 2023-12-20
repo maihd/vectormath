@@ -25,6 +25,8 @@
 - Please check folder `examples` to exploring
 
 ## Language bindings
+Language bindings only prefer transpiling language like Haxe (maybe only), that use C code to compile. 
+Other languages you should use the libraries written specifily for thoses languages. (Like Zig have zmath, Odin have native support for vector/matrix types)
 - Haxe Reflaxe.CPP (bindgen with nodejs script)
 
 ## FAQs
@@ -32,6 +34,7 @@
 
 - Why Unlicense? Mostly source codes were re-written from The-Forge's VectorMath library, so I don't own the code. (I found the code with the same design with this library, but older: https://github.com/zauonlok/renderer/blob/master/renderer/core/maths.h)
 - Where the functions docs, and tutorials? WIP.
+- More examples on some popular renderers (bgfx, The-Forge)? Learning.
 - Is it stable yet? No.
 
 ## Meta
