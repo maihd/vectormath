@@ -25,8 +25,8 @@
 - Please check folder `examples` to exploring
 
 ## Language bindings
-Language bindings only prefer transpiling language like Haxe (maybe only), that use C code to compile. 
-Other languages you should use the libraries written specifily for thoses languages. (Like Zig have zmath, Odin have native support for vector/matrix types)
+Language bindings only prefer transpiling language like Haxe (maybe only), that use C++ code to compile, which may using the advantages of inlining optimization. Other languages may need FFI, C ABI to call functions (not inlining), 
+so other languages you should use the libraries written specifily for thoses languages. (Like Zig have zmath, Odin have native support for vector/matrix types)
 - Haxe Reflaxe.CPP (bindgen with nodejs script)
 
 ## FAQs
