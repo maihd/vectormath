@@ -35,6 +35,7 @@ so other languages you should use the libraries written specifily for thoses lan
 - Why Unlicense? Mostly source codes were re-written from The-Forge's VectorMath library, so I don't own the code. (I found the code with the same design with this library, but older: https://github.com/zauonlok/renderer/blob/master/renderer/core/maths.h)
 - Where the functions docs, and tutorials? WIP.
 - More examples on some popular renderers (bgfx, The-Forge)? Learning.
+- More about performance? Not the fastest, but enough to use with small project.
 - Is it stable yet? No.
 
 ## Meta
