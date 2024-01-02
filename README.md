@@ -9,6 +9,7 @@
 - C++ operators overloading
 - (Only clang) vector-extensions, swizzle properties, operators overloading
 - Component-wise computing, specific computing for graphics math, only functions
+- Seperate data types and functions in headers, support better compile speed, only include what needed 
 - Find more in docs/coding_style.md
 
 ## Import/include instructions
