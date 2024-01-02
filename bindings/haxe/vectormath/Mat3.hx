@@ -1,5 +1,5 @@
 // This code is auto-generated, please avoid editting!
-// Date: Tue, 02 Jan 2024 03:50:55 GMT
+// Date: Tue, 02 Jan 2024 03:53:35 GMT
 
 package vectormath;
 
@@ -17,7 +17,7 @@ import cpp.Float32;
 @:structAccess
 @:include("vectormath.h")
 @:include("vectormath/vectormath_generics.h")
-@:native("::mat3")
+@:native("mat3")
 extern class Mat3Data
 {
     public var m00: Float32;

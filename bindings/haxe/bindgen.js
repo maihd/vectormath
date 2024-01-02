@@ -74,7 +74,7 @@ function generateHaxeCode(nativeName, typeDefine) {
     content += "@:structAccess\n";
     content += "@:include(\"vectormath.h\")\n";
     content += "@:include(\"vectormath/vectormath_generics.h\")\n";
-    content += "@:native(\"::" + nativeName + "\")\n";
+    content += "@:native(\"" + nativeName + "\")\n";
 
     // Class Declare
     content += "extern class " + typeDefine.haxeName + "Data\n";
