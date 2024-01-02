@@ -1,3 +1,6 @@
+// This code is auto-generated, please avoid editting!
+// Date: Tue, 02 Jan 2024 03:50:55 GMT
+
 package vectormath;
 
 #if cxx
@@ -13,7 +16,8 @@ import cpp.Float32;
 @:valueType
 @:structAccess
 @:include("vectormath.h")
-@:native("mat2")
+@:include("vectormath/vectormath_generics.h")
+@:native("::mat2")
 extern class Mat2Data
 {
     public var m00: Float32;
@@ -23,7 +27,7 @@ extern class Mat2Data
     public var m11: Float32;
 }
 
-@:foward
+@:forward
 extern abstract Mat2(Mat2Data)
 {
     // End

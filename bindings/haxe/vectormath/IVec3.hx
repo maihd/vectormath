@@ -1,3 +1,6 @@
+// This code is auto-generated, please avoid editting!
+// Date: Tue, 02 Jan 2024 03:50:55 GMT
+
 package vectormath;
 
 #if cxx
@@ -13,7 +16,8 @@ import cpp.Float32;
 @:valueType
 @:structAccess
 @:include("vectormath.h")
-@:native("ivec3")
+@:include("vectormath/vectormath_generics.h")
+@:native("::ivec3")
 extern class IVec3Data
 {
     public var x: Int32;
@@ -21,7 +25,7 @@ extern class IVec3Data
     public var z: Int32;
 }
 
-@:foward
+@:forward
 extern abstract IVec3(IVec3Data)
 {
     // End

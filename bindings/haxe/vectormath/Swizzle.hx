@@ -1,5 +1,4 @@
-package vectormath;
-
+//! This file is hand-written, DONOT delete!
 /**
 	Macros required by VectorMath
 
@@ -10,13 +9,15 @@ package vectormath;
     Copyright of https://github.com/haxiomic/vector-math
 **/
 
+package vectormath;
+
 import haxe.macro.Expr;
 import haxe.macro.Context;
 
 class Swizzle {
 
 	static public function generateFields(vectorLength: Int) {
-		var fields = Context.getBuildFields();
+		final fields = Context.getBuildFields();
 		// for vector length N, we generate all possible combinations of 4 (or less)
 		// for swizzles that do not repeat, we also add a setter
 

@@ -1,0 +1,6 @@
+-cp unit_tests
+-main Main
+-cp .
+
+-lib reflaxe.cpp
+-D cpp-output=gencpp

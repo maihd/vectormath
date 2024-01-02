@@ -47,6 +47,9 @@ function generateHaxeCode(nativeName, typeDefine) {
     let content = "";
     
     // Headers
+    content += "// This code is auto-generated, please avoid editting!\n";
+    content += "// Date: " + (new Date()).toUTCString() + "\n\n";
+
     content += "package vectormath;\n\n";
 
     content += "#if cxx\n";
@@ -70,7 +73,8 @@ function generateHaxeCode(nativeName, typeDefine) {
     content += "@:valueType\n";
     content += "@:structAccess\n";
     content += "@:include(\"vectormath.h\")\n";
-    content += "@:native(\"" + nativeName + "\")\n";
+    content += "@:include(\"vectormath/vectormath_generics.h\")\n";
+    content += "@:native(\"::" + nativeName + "\")\n";
 
     // Class Declare
     content += "extern class " + typeDefine.haxeName + "Data\n";
@@ -102,7 +106,7 @@ function generateHaxeCode(nativeName, typeDefine) {
 
     // AbstractType
     // Metadata
-    content += "@:foward\n";
+    content += "@:forward\n";
     if (typeDefine.swizzle) {
         content += "@:build(vectormath.Swizzle.generateFields(" + typeDefine.length + "))\n";
     }
@@ -275,7 +279,6 @@ function generateHaxeCode(nativeName, typeDefine) {
                 { 
                     name: "div1",
                     haxeName: "A / B",
-                    commutative: true,
                     params: [
                         {
                             name: "a",

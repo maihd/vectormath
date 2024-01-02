@@ -1,3 +1,6 @@
+// This code is auto-generated, please avoid editting!
+// Date: Tue, 02 Jan 2024 03:50:55 GMT
+
 package vectormath;
 
 #if cxx
@@ -13,7 +16,8 @@ import cpp.Float32;
 @:valueType
 @:structAccess
 @:include("vectormath.h")
-@:native("vec4")
+@:include("vectormath/vectormath_generics.h")
+@:native("::vec4")
 extern class Vec4Data
 {
     public var x: Float32;
@@ -22,7 +26,7 @@ extern class Vec4Data
     public var w: Float32;
 }
 
-@:foward
+@:forward
 @:build(vectormath.Swizzle.generateFields(4))
 extern abstract Vec4(Vec4Data)
 {
@@ -75,7 +79,6 @@ extern abstract Vec4(Vec4Data)
     public extern static function mul1(a: Vec4, b: Float32) : Vec4;
 
     @:op(A / B)
-    @:commutative
     @:native("vec4_div1")
     public extern static function div1(a: Vec4, b: Float32) : Vec4;
 
