@@ -1,7 +1,7 @@
 # Vector Math library based on Sony's Math library (Write new, not mod)
 
 ## Features and Design philosophy
-- Scalar math for graphics/game: int32, uint32, float
+- Scalar math for graphics/game: int32_t, uint32_t, float32_t (typedef of float for *common* computers)
 - Vector math for graphics/game: vec2, vec3, vec4, ivec2, ivec3, ivec4, uvec2, uvec3, uvec4, quat, mat2, mat3, mat4
 - Data structure is PODs only (no constructors)
 - Parameter pass-by-value, return as value (only few functions use pass-by-pointer for multi-return purpose)
@@ -10,7 +10,7 @@
 - (Only clang) vector-extensions, swizzle properties, operators overloading
 - Component-wise computing, specific computing for graphics math, only functions
 - Seperate data types and functions in headers, support better compile speed, only include what needed 
-- Find more in docs/coding_style.md
+- Find more in docs/coding_standards.md
 
 ## TODOs
 - Make all code use float32_t instead of float, for clearer size of floating-point number type
