@@ -26,6 +26,12 @@ Function implementation philosophy
 - Parameters are immutable.
 - This is fixed-size vector and matrix library for graphics programming, so do not add pointer parameters to keep it simple and ease to use. There will be special case, otherwise. But now, we only have one for return multi values: `mat4_decompose`.
 
+Compiler and Language Standards
+-------------------------------
+- Use C99 and C++0x. C89 and >=C++11 should works. Does not force use C89, because pass-by-value may cause performance problems.
+- Treat warnings as errors.
+- Does not force to use C99 in examples, maybe using C++ is better purposing, show the code to the end-users. 
+
 Physically architecture for source files
 ----------------------------------------
 - Avoid and minimal include files.
