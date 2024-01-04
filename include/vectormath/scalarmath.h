@@ -375,10 +375,32 @@ __forceinline float float_lerp(float x, float y, float s)
     return x + (y - x) * s;
 }
 
+/// Computes square root of 'x'.
+__forceinline float float_sqrt(float x)
+{
+    return sqrtf(x);
+}
+
 /// Computes inverse square root of 'x'.
 __forceinline float float_rsqrt(float x)
 {
     return 1.0f / sqrtf(x);
+}
+
+/// Computes inverse square root of 'x', using FastInvSqrt algorithm.
+__forceinline float float_fast_rsqrt(float x)
+{
+    union
+    {
+        float f;
+        int   i;
+    } cvt;
+    float xhalf = 0.5f * x;
+    cvt.f = x;
+    cvt.i = 0x5f3759df - (cvt.i >> 1); 
+    cvt.f = cvt.f * (1.5f - xhalf * cvt.f * cvt.f); // first approximation
+    // cvt.f = cvt.f * (1.5f - xhalf * cvt.f * cvt.f); // second approximation
+    return cvt.f;
 }
 
 /// Compute x smooth Hermite interpolation
@@ -609,10 +631,22 @@ __forceinline float32_t float32_lerp(float32_t x, float32_t y, float32_t s)
     return x + (y - x) * s;
 }
 
+/// Computes square root of 'x'.
+__forceinline float32_t float32_sqrt(float32_t x)
+{
+    return sqrtf(x);
+}
+
 /// Computes inverse square root of 'x'.
 __forceinline float32_t float32_rsqrt(float32_t x)
 {
     return 1.0f / sqrtf(x);
+}
+
+/// Computes inverse square root of 'x', using FastInvSqrt algorithm.
+__forceinline float32_t float32_fast_rsqrt(float32_t x)
+{
+    return float_fast_rsqrt(x);
 }
 
 /// Compute x smooth Hermite interpolation

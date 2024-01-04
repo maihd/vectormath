@@ -899,8 +899,8 @@ __forceinline float vec2_lensqr(vec2 v)
 
 /// Compute length of vector
 __forceinline float vec2_length(vec2 v)
-{
-    return sqrtf(vec2_lensqr(v));
+{  
+    return float32_sqrt(vec2_lensqr(v));
 }
 
 /// Compute distance from 'a' to b
@@ -918,6 +918,9 @@ __forceinline float vec2_distsqr(vec2 a, vec2 b)
 /// Compute normalized vector
 __forceinline vec2 vec2_normalize(vec2 v)
 {
+#ifndef VECTORMATH_USE_EXACT_PRECISION
+    return vec2_mul1(v, float32_fast_rsqrt(vec2_lensqr(v)));
+#else
     const float lsqr = vec2_lensqr(v);
     if (lsqr > 0.0f)
     {
@@ -928,6 +931,7 @@ __forceinline vec2 vec2_normalize(vec2 v)
     {
         return v;
     }
+#endif
 }
 
 /// Compute reflection vector
@@ -1234,6 +1238,9 @@ __forceinline float vec3_distsqr(vec3 a, vec3 b)
 /// Compute normalized vector
 __forceinline vec3 vec3_normalize(vec3 v)
 {
+#ifndef VECTORMATH_USE_EXACT_PRECISION
+    return vec3_mul1(v, float32_fast_rsqrt(vec3_lensqr(v)));
+#else
     const float lsqr = vec3_lensqr(v);
     if (lsqr > 0.0f)
     {
@@ -1244,6 +1251,7 @@ __forceinline vec3 vec3_normalize(vec3 v)
     {
         return v;
     }
+#endif
 }
 
 /// Compute reflection vector
@@ -1554,6 +1562,9 @@ __forceinline float vec4_distsqr(vec4 a, vec4 b)
 /// Compute normalized vector
 __forceinline vec4 vec4_normalize(vec4 v)
 {
+#ifndef VECTORMATH_USE_EXACT_PRECISION
+    return vec4_mul1(v, float32_fast_rsqrt(vec4_lensqr(v)));
+#else
     const float lsqr = vec4_lensqr(v);
     if (lsqr > 0.0f)
     {
@@ -1564,6 +1575,7 @@ __forceinline vec4 vec4_normalize(vec4 v)
     {
         return v;
     }
+#endif
 }
 
 /// Compute reflection vector
