@@ -1,5 +1,5 @@
-Coding style for this library
------------------------------
+Coding standard for this library
+--------------------------------
 
 Naming convention
 -----------------
