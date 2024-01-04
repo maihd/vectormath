@@ -12,6 +12,15 @@
 - Seperate data types and functions in headers, support better compile speed, only include what needed 
 - Find more in docs/coding_style.md
 
+## TODOs
+- Make all code use float32_t instead of float, for clearer size of floating-point number type
+- Add project showcases
+- API docs and usage docs
+- Full clang extensions without deps on __m128 for portable (on clang implementation)
+- Benchmarking
+- Maybe pattern solution for common problem in game/graphics development
+- Make the first stable release
+
 ## Import/include instructions
 - This library is headers only, you can easily import to your projects
 - Use scripts/vectormath.genie.lua (WIP) to import to projects that support GENie
