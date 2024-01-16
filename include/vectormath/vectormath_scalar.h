@@ -1921,21 +1921,20 @@ __forceinline mat4 mat4_frustum(float l, float r, float b, float t, float n, flo
     );
 }
 
-__forceinline mat4 mat4_perspective(float fovRadians, float aspect, float znear, float zfar)
+__forceinline mat4 mat4_perspective(float fov_radians, float aspect, float z_near, float z_far)
 {
-    const float zoomX = 1.0f / tanf(fovRadians * 0.5f);
-    const float zoomY = zoomX * aspect;
+    const float zoom_x = 1.0f / tanf(fov_radians * 0.5f);
+    const float zoom_y = zoom_x * aspect;
 
-    const float rangeInv   = 1.0f / (znear - zfar);
-    const float zClipBias0 = (znear + zfar) * rangeInv;
-    const float zClipBias1 = (2.0f * znear * zfar) * rangeInv;
+    const float z_clip_bias_0 = (z_near + z_far) / (z_near - z_far);
+    const float z_clip_bias_1 = (2.0f * z_near * z_far) / (z_near - z_far);
 
-    return mat4_new(
-        vec4_new(zoomX,  0.0f,       0.0f,  0.0f),
-        vec4_new( 0.0f, zoomY,       0.0f,  0.0f),
-        vec4_new( 0.0f,  0.0f, zClipBias0, -1.0f),
-        vec4_new( 0.0f,  0.0f, zClipBias1,  0.0f)
-    );
+    mat4 result;
+    result.row0 = vec4_new(zoom_x,   0.0f,          0.0f,  0.0f);
+    result.row1 = vec4_new(  0.0f, zoom_y,          0.0f,  0.0f);
+    result.row2 = vec4_new(  0.0f,   0.0f, z_clip_bias_0, -1.0f);
+    result.row3 = vec4_new(  0.0f,   0.0f, z_clip_bias_1,  1.0f);
+    return result;
 }
 
 __forceinline mat4 mat4_lookat(vec3 eye, vec3 target, vec3 up)

@@ -2332,19 +2332,19 @@ __forceinline mat4 mat4_frustum(float left, float right, float bottom, float top
     );
 }
 
-__forceinline mat4 mat4_perspective(float fov, float aspect, float near, float far)
+__forceinline mat4 mat4_perspective(float fov_radians, float aspect, float z_near, float z_far)
 {
-    const float zoomX = 1.0f / tanf(fov * 0.5f);
-    const float zoomY = zoomX * aspect;
+    const float zoom_x = 1.0f / tanf(fov_radians * 0.5f);
+    const float zoom_y = zoom_x * aspect;
 
-    const float zClipBias0 = (near + far) / (near - far);
-    const float zClipBias1 = (2.0f * near * far) / (near - far);
+    const float z_clip_bias_0 = (z_near + z_far) / (z_near - z_far);
+    const float z_clip_bias_1 = (2.0f * z_near * z_far) / (z_near - z_far);
 
     mat4 result;
-    result.row0 = vec4_new(zoomX,  0.0f,       0.0f,  0.0f);
-    result.row1 = vec4_new( 0.0f, zoomY,       0.0f,  0.0f);
-    result.row2 = vec4_new( 0.0f,  0.0f, zClipBias0, -1.0f);
-    result.row3 = vec4_new( 0.0f,  0.0f, zClipBias1,  1.0f);
+    result.row0 = vec4_new(zoom_x,   0.0f,          0.0f,  0.0f);
+    result.row1 = vec4_new(  0.0f, zoom_y,          0.0f,  0.0f);
+    result.row2 = vec4_new(  0.0f,   0.0f, z_clip_bias_0, -1.0f);
+    result.row3 = vec4_new(  0.0f,   0.0f, z_clip_bias_1,  1.0f);
     return result;
 }
 
@@ -2355,9 +2355,9 @@ __forceinline mat4 mat4_lookat(vec3 eye, vec3 target, vec3 up)
     const vec3 y = vec3_normalize(vec3_cross(z, x));
 
     mat4 result;
-    result.row0 = vec4_new(         x.x,          y.x,          z.x, 0.0f);
-    result.row1 = vec4_new(         x.y,          y.y,          z.y, 0.0f);
-    result.row2 = vec4_new(         x.z,          y.z,          z.z, 0.0f);
+    result.row0 = vec4_new(              x.x,               y.x,               z.x, 0.0f);
+    result.row1 = vec4_new(              x.y,               y.y,               z.y, 0.0f);
+    result.row2 = vec4_new(              x.z,               y.z,               z.z, 0.0f);
     result.row3 = vec4_new(-vec3_dot(x, eye), -vec3_dot(y, eye), -vec3_dot(z, eye), 1.0f);
     return result;
 }
