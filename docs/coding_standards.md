@@ -7,11 +7,20 @@ Naming convention
 - SIMD should be `__m<size>` follow the SSE for all platforms, we have `sse_to_neon.h` as a wrapper for ARM target machine.
 - Variable names should be `snake_case`
 - Function names should be `snake_case` with module name (normally are typenames): `vec2_new`, `mat4_mul`, ...
-- Function names should be describe what they do, add params type names for multi version: `vec3_add_vec2`, `mat4_mul_vec3`, ...
+- Function names should be describing what they do, add params type names for multi version: `vec3_add_vec2`, `mat4_mul_vec3`, ...
 - Preprocessor names are `ALL_UPPER_CASES`, specially are `constexpr` and `__forceinline`
 - File names are `snake_case`, because each file is a module
 - Special case is standard math library extensions, which should be follow the standard style
 - Testing no need to follow the rules.
+
+Function naming semantics
+-------------------------
+- This section explain function naming semantics in more details than above sections
+- Function names should be `snake_case` with module name (normally are typenames): `vec2_new`, `mat4_mul`, ...
+- Function names should be describing what they do, add params type names for multi version: `vec3_add_vec2`, `mat4_mul_vec3`, ...
+- Use function names postfix for describe overloading functions.
+- Postfix should be describing type. Ex: `vec3_from_vec2` mean create new vec3 from 1 vec2
+- Postfix should be describing number of parameters of that type. Ex: `mat4_new_16f32` mean create new mat4 with 16 single-precision floating-point number (f32)
 
 Function implementation philosophy
 ----------------------------------
