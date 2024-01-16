@@ -35,10 +35,7 @@
 - Build with your chosen build system
 - (WIP) Planning to add cmake
 
-## Showcase examples
-- Please check folder `examples` to exploring
-
-## Simple taste
+## Small taste
 ```C
 vec3 position = vec3_new(100.0f, 200.0f, 10.0f);
 vec4 rotation = quat_from_euler(0.0f, 0.0f, 0.0f);
@@ -52,6 +49,9 @@ mat4 proj = mat4_perspective(float32_deg2rad(45), WIDTH / HEIGHT, 0.0f, 100.0f);
 
 ... apply matrix to render ...
 ```
+
+## Showcase examples
+- Please check folder `examples` to exploring
 
 ## Language bindings
 Language bindings only prefer transpiling language like Haxe (maybe only), that use C++ code to compile, which may using the advantages of inlining optimization. Other languages may need FFI, C ABI to call functions (not inlining), 
