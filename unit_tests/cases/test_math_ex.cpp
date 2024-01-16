@@ -2,15 +2,15 @@
 
 DEFINE_UNIT_TEST("float float_rad2deg(float)")
 {
-    const float a = float_rad2deg(180.0f);
-    const float b = FLOAT_PI;
+    const float a = float_rad2deg(FLOAT_PI);
+    const float b = 180.0f;
     TEST(a == b);
 }
 
 DEFINE_UNIT_TEST("float float_deg2rad(float)")
 {
-    const float a = float_deg2rad(FLOAT_PI);
-    const float b = 180.0f;
+    const float a = float_deg2rad(180.0f);
+    const float b = FLOAT_PI;
     TEST(a == b);
 }
 
