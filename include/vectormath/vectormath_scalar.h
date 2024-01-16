@@ -136,6 +136,22 @@ __forceinline mat4 mat4_new(vec4 row0, vec4 row1, vec4 row2, vec4 row3)
 }
 
 // Create a new matrix 4x4, specify the components with 16 scalars
+__forceinline mat4 mat4_new_16f(
+    float m00, float m01, float m02, float m03,
+    float m10, float m11, float m12, float m13,
+    float m20, float m21, float m22, float m23,
+    float m30, float m31, float m32, float m33)
+{
+    mat4 result;
+    result.row0 = vec4_new(m00, m01, m02, m03);
+    result.row1 = vec4_new(m10, m11, m12, m13);
+    result.row2 = vec4_new(m20, m21, m22, m23);
+    result.row3 = vec4_new(m30, m31, m32, m33);
+    return result;
+}
+
+// Create a new matrix 4x4, specify the components with 16 scalars
+__deprecated("mat4_new_16f")
 __forceinline mat4 mat4_new_f16(
     float m00, float m01, float m02, float m03,
     float m10, float m11, float m12, float m13,
@@ -1824,7 +1840,7 @@ __forceinline mat4 mat4_mul1(mat4 a, float b)
 
 __forceinline mat4 mat4_transpose(mat4 m)
 {
-    return mat4_new_f16(
+    return mat4_new_16f(
         m.m00, m.m10, m.m20, m.m30,
         m.m01, m.m11, m.m21, m.m31,
         m.m02, m.m12, m.m22, m.m32,
@@ -1882,7 +1898,7 @@ __forceinline mat4 mat4_inverse(mat4 m)
 
 __forceinline mat4 mat4_identity()
 {
-    return mat4_new_f16(
+    return mat4_new_16f(
         1, 0, 0, 0,
         0, 1, 0, 0,
         0, 0, 1, 0,
@@ -1899,7 +1915,7 @@ __forceinline mat4 mat4_ortho(float left, float right, float bottom, float top, 
     const float inv_tb = (1.0f / (top - bottom));
     const float inv_nf = (1.0f / (zFar - zNear));
 
-    return mat4_new_f16(
+    return mat4_new_16f(
          (inv_rl + inv_rl),               0.0f,               0.0f, 0.0f,
                       0.0f,  (inv_tb + inv_tb),               0.0f, 0.0f,
                       0.0f,               0.0f,  (inv_nf + inv_nf), 0.0f,
@@ -1913,7 +1929,7 @@ __forceinline mat4 mat4_frustum(float l, float r, float b, float t, float n, flo
     const float y = 1.0f / (t - b);
     const float z = 1.0f / (f - n);
 
-    return mat4_new_f16(
+    return mat4_new_16f(
         2.0f * x, 0, 0, 0,
         0, 2.0f * y, 0, 0,
         x * (l + r), y * (b + t), z * (n + f), 1.0f,
@@ -1943,7 +1959,7 @@ __forceinline mat4 mat4_lookat(vec3 eye, vec3 target, vec3 up)
     const vec3 x = vec3_normalize(vec3_cross(vec3_normalize(up), z));
     const vec3 y = vec3_normalize(vec3_cross(z, x));
 
-    return mat4_new_f16(
+    return mat4_new_16f(
          x.x,  y.x,  z.x, -vec3_dot(x, eye),
          x.y,  y.y,  z.y, -vec3_dot(y, eye),
          x.z,  y.z,  z.z, -vec3_dot(z, eye),
@@ -1953,7 +1969,7 @@ __forceinline mat4 mat4_lookat(vec3 eye, vec3 target, vec3 up)
 
 __forceinline mat4 mat4_scalation(float x, float y, float z)
 {
-    return mat4_new_f16(
+    return mat4_new_16f(
         x, 0, 0, 0,
         0, y, 0, 0,
         0, 0, z, 0,
@@ -1978,7 +1994,7 @@ __forceinline mat4 mat4_scalation_vec3(vec3 v)
 
 __forceinline mat4 mat4_translation(float x, float y, float z)
 {
-    return mat4_new_f16(
+    return mat4_new_16f(
         1, 0, 0, 0,
         0, 1, 0, 0,
         0, 0, 1, 0,
@@ -2002,7 +2018,7 @@ __forceinline mat4 mat4_rotation(float x, float y, float z, float radians)
     const float s = sinf(-radians);
     const float t = 1.0f - c;
 
-    return mat4_new_f16(
+    return mat4_new_16f(
         /* Row 0 */
         t * x * x + c,
         t * x * y - s * z,
@@ -2036,7 +2052,7 @@ __forceinline mat4 mat4_rotation_x(float angle)
     const float s = sinf(angle);
     const float c = cosf(angle);
 
-    return mat4_new_f16(
+    return mat4_new_16f(
         1,  0, 0, 0,
         0,  c, s, 0,
         0, -s, c, 0,
@@ -2049,7 +2065,7 @@ __forceinline mat4 mat4_rotation_y(float angle)
     const float s = sinf(angle);
     const float c = cosf(angle);
 
-    return mat4_new_f16(
+    return mat4_new_16f(
          c, 0, s, 0,
          0, 1, 0, 0,
         -s, 0, c, 0,
@@ -2062,7 +2078,7 @@ __forceinline mat4 mat4_rotation_z(float radians)
     const float s = sinf(radians);
     const float c = cosf(radians);
 
-    return mat4_new_f16(
+    return mat4_new_16f(
          c, s, 0, 0,
         -s, c, 0, 0,
          0, 0, 1, 0,

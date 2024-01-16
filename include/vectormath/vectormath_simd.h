@@ -394,6 +394,22 @@ __forceinline mat4 mat4_new(vec4 row0, vec4 row1, vec4 row2, vec4 row3)
 }
 
 // Create a new matrix 4x4, specify the components with 16 scalars
+__forceinline mat4 mat4_new_16f(
+    float m00, float m01, float m02, float m03,
+    float m10, float m11, float m12, float m13,
+    float m20, float m21, float m22, float m23,
+    float m30, float m31, float m32, float m33)
+{
+    mat4 result;
+    result.row0 = vec4_new(m00, m01, m02, m03);
+    result.row1 = vec4_new(m10, m11, m12, m13);
+    result.row2 = vec4_new(m20, m21, m22, m23);
+    result.row3 = vec4_new(m30, m31, m32, m33);
+    return result;
+}
+
+// Create a new matrix 4x4, specify the components with 16 scalars
+__deprecated("mat4_new_16f")
 __forceinline mat4 mat4_new_f16(
     float m00, float m01, float m02, float m03,
     float m10, float m11, float m12, float m13,

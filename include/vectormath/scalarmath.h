@@ -36,15 +36,34 @@
 #endif
 
 // constexpr is helpful
-#if !defined(__cplusplus) && !defined(constexpr)
+#if !defined(__cplusplus) && !defined(constexpr) && __STDC_VERSION__ <= 201710L
 #   define constexpr static const
 #endif
+
+// deprecated is helpful
+#if !defined(__deprecated)
+#   if defined(_MSC_VER)
+#      define __deprecated(alternative, ...) __declspec(deprecated("Please use " alternative " instead." ##__VA_ARGS__))
+#   elif defined(__GCC__)
+#      define __deprecated(alternative, ...) __deprecated_msg("Please use " alternative " instead." ##__VA_ARGS__)
+#   elif defined(__cplusplus) && __cplusplus >= 201402L
+#      define __deprecated(alternative, ...) [[deprecated("Please use " alternative " instead." ##__VA_ARGS__)]]
+#   else
+#      define __deprecated(alternative, ...)
+#   endif
+#endif
+
 
 // -------------------------------------------------------------
 // Types
 // -------------------------------------------------------------
 
+#ifndef __float32_t_defined
+#define __float32_t_defined
 typedef float float32_t;
+#endif
+
+static_assert(sizeof(float32_t) == 4, "Unexpected `float32_t` size");
 
 // -------------------------------------------------------------
 // Constants
