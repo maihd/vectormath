@@ -20,6 +20,7 @@
 - Benchmarking
 - Maybe pattern solution for common problem in game/graphics development
 - Make the first stable release
+- Support more systems: left/right handed, vertical/horizontal field of view
 - Choose namespace for primitives between: int32, i32, int (same with uint32, float32)
     - int32: Same name with type int32_t, but too long
     - i32: Short enough, not common in C, but maybe familiar for someones
