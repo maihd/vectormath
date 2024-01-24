@@ -71,6 +71,6 @@ so other languages you should use the libraries written specifily for thoses lan
 - Is it stable yet? No.
 
 ## Meta
-- Version: v0.1.4-dev
+- Version: v0.2.0-dev
 - License: UNLICENSED
-- Copyright: MaiHD @ 2022 - 2023
+- Copyright: MaiHD @ 2022 - 2024
