@@ -63,21 +63,22 @@
 #endif
 
 // Detect neon support & enable
-#define VECTORMATH_NEON_SUPPORT 0 // No neon support now
-//#if (defined(__ARM_NEON) || defined(__ARM_NEON__)) && (defined(VECTORMATH_SIMD_ENABLE) && VECTORMATH_SIMD_ENABLE)
-//#   if defined(__ARM_ARCH_7A__) && defined(__ANDROID__)
-//#       define VECTORMATH_NEON_SUPPORT 0 // NO SUPPORT for Android 32bit
-//#   else
-//#       define VECTORMATH_NEON_SUPPORT 1
-//#   endif
-//#else
-//#   define VECTORMATH_NEON_SUPPORT 0
-//#endif
+//#define VECTORMATH_NEON_SUPPORT 0 // No neon support now
+#if (defined(__ARM_NEON) || defined(__ARM_NEON__))
+#   if defined(__ARM_ARCH_7A__) && defined(__ANDROID__)
+#       define VECTORMATH_NEON_SUPPORT 0 // NO SUPPORT for Android 32bit
+#   else
+#       define VECTORMATH_NEON_SUPPORT 1
+#   endif
+#else
+#   define VECTORMATH_NEON_SUPPORT 0
+#endif
 
 // Detect SSE support & enable
 #define VECTORMATH_SSE_SUPPORT 0
 
 #if defined(__SSSE3__)
+#   undef  VECTORMATH_SSE_SUPPORT
 #   define VECTORMATH_SSE_SUPPORT 1
 #endif
 
@@ -117,11 +118,7 @@
 #   include <emmintrin.h>
     typedef __m128i		__m128u;
 #elif VECTORMATH_NEON_SUPPORT
-#   include <arm_neon.h>
-    typedef float32x2_t __m64;
-    typedef float32x4_t __m128;
-    typedef int32x4_t   __m128i;
-    typedef uint32x4_t  __m128u;
+#   include "sse_to_neon.h"
 #elif !VECTORMATH_ENABLE_CLANG_EXT
     typedef struct      __m64   { float      data[2]; } __m64;
     typedef struct      __m128  { float      data[4]; } __m128;

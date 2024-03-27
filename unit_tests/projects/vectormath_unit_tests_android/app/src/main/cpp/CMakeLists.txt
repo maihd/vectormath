@@ -78,4 +78,5 @@ target_compile_options(
 
         -DVECTORMATH_USE_EXACT_PRECISION
         -DVECTORMATH_USE_CLANG_EXT
+        -DVECTORMATH_SIMD_ENABLE=1
         )

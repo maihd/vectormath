@@ -1,11 +1,12 @@
 #pragma once
 
 // Require CPU support neon
-#if !defined(VECTORMATH_SUPPORT_NEON) || !VECTORMATH_SUPPORT_NEON
+#if !defined(VECTORMATH_NEON_SUPPORT) || !VECTORMATH_NEON_SUPPORT
 #error Your platform is not supporting Neon instructions set
 #endif
 
 #include <stdint.h>
+#include <arm_neon.h>
 
 // -------------------------------------------------------------
 // SSE2NEON
@@ -35,6 +36,148 @@
 #define __constrange(a,b) \
 	const
 
+// Use __forceinline for shorthand functions
+#if !defined(_MSC_VER) && !defined(__forceinline)
+#   if defined(__GNUC__)
+#       define __forceinline    static __attribute__((always_inline))
+#   elif defined(__cplusplus)
+#       define __forceinline    static inline
+#   else
+#       define __forceinline    inline
+#   endif
+#endif
+
+typedef float32x2_t __m64;
+typedef float32x4_t __m128;
+typedef int32x4_t   __m128i;
+typedef uint32x4_t  __m128u;
+
+// ******************************************
+// type-safe casting between types
+// ******************************************
+
+#define vreinterpretq_m128_f16(x) \
+	vreinterpretq_f32_f16(x)
+
+#define vreinterpretq_m128_f32(x) \
+	(x)
+
+#define vreinterpretq_m128_f64(x) \
+	vreinterpretq_f32_f64(x)
+
+
+#define vreinterpretq_m128_u8(x) \
+	vreinterpretq_f32_u8(x)
+
+#define vreinterpretq_m128_u16(x) \
+	vreinterpretq_f32_u16(x)
+
+#define vreinterpretq_m128_u32(x) \
+	vreinterpretq_f32_u32(x)
+
+#define vreinterpretq_m128_u64(x) \
+	vreinterpretq_f32_u64(x)
+
+
+#define vreinterpretq_m128_s8(x) \
+	vreinterpretq_f32_s8(x)
+
+#define vreinterpretq_m128_s16(x) \
+	vreinterpretq_f32_s16(x)
+
+#define vreinterpretq_m128_s32(x) \
+	vreinterpretq_f32_s32(x)
+
+#define vreinterpretq_m128_s64(x) \
+	vreinterpretq_f32_s64(x)
+
+
+#define vreinterpretq_f16_m128(x) \
+	vreinterpretq_f16_f32(x)
+
+#define vreinterpretq_f32_m128(x) \
+	(x)
+
+#define vreinterpretq_f64_m128(x) \
+	vreinterpretq_f64_f32(x)
+
+
+#define vreinterpretq_u8_m128(x) \
+	vreinterpretq_u8_f32(x)
+
+#define vreinterpretq_u16_m128(x) \
+	vreinterpretq_u16_f32(x)
+
+#define vreinterpretq_u32_m128(x) \
+	vreinterpretq_u32_f32(x)
+
+#define vreinterpretq_u64_m128(x) \
+	vreinterpretq_u64_f32(x)
+
+
+#define vreinterpretq_s8_m128(x) \
+	vreinterpretq_s8_f32(x)
+
+#define vreinterpretq_s16_m128(x) \
+	vreinterpretq_s16_f32(x)
+
+#define vreinterpretq_s32_m128(x) \
+	vreinterpretq_s32_f32(x)
+
+#define vreinterpretq_s64_m128(x) \
+	vreinterpretq_s64_f32(x)
+
+
+#define vreinterpretq_m128i_s8(x) \
+	vreinterpretq_s32_s8(x)
+
+#define vreinterpretq_m128i_s16(x) \
+	vreinterpretq_s32_s16(x)
+
+#define vreinterpretq_m128i_s32(x) \
+	(x)
+
+#define vreinterpretq_m128i_s64(x) \
+	vreinterpretq_s32_s64(x)
+
+
+#define vreinterpretq_m128i_u8(x) \
+	vreinterpretq_s32_u8(x)
+
+#define vreinterpretq_m128i_u16(x) \
+	vreinterpretq_s32_u16(x)
+
+#define vreinterpretq_m128i_u32(x) \
+	vreinterpretq_s32_u32(x)
+
+#define vreinterpretq_m128i_u64(x) \
+	vreinterpretq_s32_u64(x)
+
+
+#define vreinterpretq_s8_m128i(x) \
+	vreinterpretq_s8_s32(x)
+
+#define vreinterpretq_s16_m128i(x) \
+	vreinterpretq_s16_s32(x)
+
+#define vreinterpretq_s32_m128i(x) \
+	(x)
+
+#define vreinterpretq_s64_m128i(x) \
+	vreinterpretq_s64_s32(x)
+
+
+#define vreinterpretq_u8_m128i(x) \
+	vreinterpretq_u8_s32(x)
+
+#define vreinterpretq_u16_m128i(x) \
+	vreinterpretq_u16_s32(x)
+
+#define vreinterpretq_u32_m128i(x) \
+	vreinterpretq_u32_s32(x)
+
+#define vreinterpretq_u64_m128i(x) \
+	vreinterpretq_u64_s32(x)
 
 /// union intended to allow direct access to an __m128 variable using the names that the MSVC
 /// compiler provides.  This union should really only be used when trying to access the members
@@ -85,13 +228,6 @@ __forceinline __m128 _mm_setzero_ps(void)
     return vreinterpretq_m128_f32(vdupq_n_f32(0));
 }
 
-/// Sets the four single-precision, floating-point values to w.
-/// https://msdn.microsoft.com/en-us/library/vstudio/2x1se8ha(v=vs.100).aspx
-__forceinline __m128 _mm_set1_ps(float _w)
-{
-    return vreinterpretq_m128_f32(vdupq_n_f32(_w));
-}
-
 /// Copy single-precision (32-bit) floating-point element a to the lower element of dst, and zero the upper 3 elements.
 /// https://software.intel.com/sites/landingpage/IntrinsicsGuide/#text=_mm_set_ss&expand=4901,4895,4901
 __forceinline __m128 _mm_set_ss(float a)
@@ -100,11 +236,30 @@ __forceinline __m128 _mm_set_ss(float a)
     return vreinterpretq_m128_f32(vld1q_f32(data));
 }
 
+// Sets the four single-precision, floating-point values to w. https://msdn.microsoft.com/en-us/library/vstudio/2x1se8ha(v=vs.100).aspx
+__forceinline __m128 _mm_set1_ps(float _w)
+{
+    return vreinterpretq_m128_f32(vdupq_n_f32(_w));
+}
+
+// Sets the four single-precision, floating-point values to w. https://msdn.microsoft.com/en-us/library/vstudio/2x1se8ha(v=vs.100).aspx
+__forceinline __m128 _mm_set_ps1(float _w)
+{
+    return vreinterpretq_m128_f32(vdupq_n_f32(_w));
+}
+
 /// Sets the four single-precision, floating-point values to the four inputs.
 /// https://msdn.microsoft.com/en-us/library/vstudio/afh0zf75(v=vs.100).aspx
 __forceinline __m128 _mm_set_ps(float w, float z, float y, float x)
 {
     float __attribute__((aligned(16))) data[4] = { x, y, z, w };
+    return vreinterpretq_m128_f32(vld1q_f32(data));
+}
+
+// Sets the four single-precision, floating-point values to the four inputs in reverse order. https://msdn.microsoft.com/en-us/library/vstudio/d2172ct3(v=vs.100).aspx
+__forceinline __m128 _mm_setr_ps(float w, float z , float y , float x )
+{
+    float __attribute__ ((aligned (16))) data[4] = { w, z, y, x };
     return vreinterpretq_m128_f32(vld1q_f32(data));
 }
 
