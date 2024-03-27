@@ -113,6 +113,10 @@ extern "C" __declspec(dllimport) int __stdcall IsDebuggerPresent(void);
 #pragma comment(lib, "User32.lib")
 #endif
 
+#if defined(__ANDROID__)
+#include <android/log.h>
+#endif
+
 static UnitTest*    gUnitTests          = nullptr;
 static UnitTest*    gCurrentUnitTest	= nullptr;
 
@@ -158,7 +162,13 @@ static_assert(!IS_DEFINED(__UNDEFINED_MACRO), "IS_DEFINED is wrong!");
 #define UNIT_TEST_GOTO_FILE_COMMAND     "code --goto %s:%d"
 #endif
 
-#ifdef EMSCRIPTEN
+#ifdef __ANDROID__
+#define PRINTF(fmt, ...) __android_log_print(ANDROID_LOG_INFO, "vectormath", fmt, ##__VA_ARGS__)
+#else
+#define PRINTF(fmt, ...) printf(fmt, ##__VA_ARGS__)
+#endif
+
+#if defined(EMSCRIPTEN) || defined(__ANDROID__)
 #define PRINTF_COLOR_RED		
 #define PRINTF_COLOR_BLUE		
 #define PRINTF_COLOR_BLACK		
@@ -176,6 +186,10 @@ static_assert(!IS_DEFINED(__UNDEFINED_MACRO), "IS_DEFINED is wrong!");
 #define PRINTF_STRING_BLUE(string) PRINTF_COLOR_BLUE string PRINTF_COLOR_BLACK
 #define PRINTF_STRING_GREEN(string) PRINTF_COLOR_GREEN string PRINTF_COLOR_BLACK
 #define PRINTF_STRING_YELLOW(string) PRINTF_COLOR_YELLOW string PRINTF_COLOR_BLACK
+
+#ifndef UNIT_TEST_EXIT
+#define UNIT_TEST_EXIT(exit_code) exit(exit_code)
+#endif
 
 static void NotifyProgammer(const char* title, const char* message);
 
@@ -264,7 +278,7 @@ void UnitTest::HandleExitAfterFailed()
     
 	if (!IS_DEFINED(CONTINUE_UNIT_TEST_ON_FAIL))
 	{
-		exit(gUnitTestsExitCode);
+		UNIT_TEST_EXIT(gUnitTestsExitCode);
 	}
 }
 
@@ -279,7 +293,7 @@ int main(const int argc, const char* argv[])
         gUnitTestsLogHeader = argv[1];
     }
 
-	printf(
+    PRINTF(
 		PRINTF_STRING_BLUE("%s") " Start running " PRINTF_STRING_BLUE("%d") " unit tests...\n",
 		gUnitTestsLogHeader, gUnitTestsCount
 	);
@@ -296,7 +310,7 @@ int main(const int argc, const char* argv[])
 		gUnitTestsRunCount++;
 
 		// Run unit test
-		printf(
+        PRINTF(
 			PRINTF_STRING_BLUE("%s")" Running new unit test (%d/" PRINTF_STRING_BLUE("%d") ")\n"
 			"  Name: " PRINTF_STRING_YELLOW("%s") "\n"
 			"  Location: " PRINTF_STRING_YELLOW("%s:%d") "\n",
@@ -329,7 +343,7 @@ int main(const int argc, const char* argv[])
                 break;
         }
 
-        printf(
+        PRINTF(
             "  Status: %s\n\n", statusName
         );
 
@@ -344,7 +358,7 @@ int main(const int argc, const char* argv[])
 	// Prompt complete information
     if (gUnitTestsRunCount != gUnitTestsCount)
     {
-        printf(
+        PRINTF(
 			PRINTF_STRING_BLUE("%s")
 			" "
             PRINTF_STRING_RED("FAILURE")
@@ -354,7 +368,7 @@ int main(const int argc, const char* argv[])
     }
     else
     {
-        printf(
+        PRINTF(
 			PRINTF_STRING_BLUE("%s")
 			" "
             PRINTF_STRING_GREEN("SUCCESS")
@@ -365,7 +379,7 @@ int main(const int argc, const char* argv[])
     }
 
 	// Display stats
-	printf(
+    PRINTF(
 		"  - Untested: " PRINTF_STRING_YELLOW("%d") " unit tests.\n"
 		"  - Succeed: " PRINTF_STRING_GREEN("%d") " unit tests.\n"
 		"  - Failed: " PRINTF_STRING_RED("%d") " unit tests.\n"
@@ -381,6 +395,8 @@ void NotifyProgammer(const char* title, const char* message)
     #if defined(_WIN32)
     MessageBeep(MIM_ERROR);
     MessageBoxA(NULL, message, title, MB_OK);
+    #elif defined(__ANDROID__)
+    __android_log_print(ANDROID_LOG_ERROR, "vectormath", "%s: %s", title, message);
     #else
     printf("%s", message);
     fgetc(stdin);

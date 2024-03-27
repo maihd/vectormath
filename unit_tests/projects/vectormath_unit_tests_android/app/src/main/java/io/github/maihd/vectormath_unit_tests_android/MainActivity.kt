@@ -2,6 +2,7 @@ package io.github.maihd.vectormath_unit_tests_android
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.os.HandlerThread
 import android.widget.TextView
 import io.github.maihd.vectormath_unit_tests_android.databinding.ActivityMainBinding
 
@@ -16,7 +17,12 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         // Example of a call to a native method
-        binding.sampleText.text = if (runAllTestCases()) "Test Succeed!" else "Test failed";
+        binding.sampleText.text = "Running unit tests"
+
+        val thread = Thread("vectormath_unit_tests")
+        thread.run {
+            binding.sampleText.text = if (runAllTestCases()) "Test Succeed!" else "Test failed"
+        }
     }
 
     /**

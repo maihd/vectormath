@@ -22,12 +22,21 @@ add_library( # Sets the name of the library.
 
         # Provides a relative path to your source file(s).
         ../../../../../../cases/test_math_ex.cpp
+
+        ../../../../../../cases/test_int32.cpp
+        ../../../../../../cases/test_uint32.cpp
+
         ../../../../../../cases/test_mat4.cpp
         ../../../../../../cases/test_vec2.cpp
         ../../../../../../cases/test_vec3.cpp
         ../../../../../../cases/test_vec4.cpp
+
         ../../../../../../cases/test_vec4_swizzles.cpp
-        native-lib.cpp
+        ../../../../../../cases/test_vec2_swizzles_clang.cpp
+        ../../../../../../cases/test_vec3_swizzles_clang.cpp
+        ../../../../../../cases/test_vec4_swizzles_clang.cpp
+
+        vectormath_unit_tests_android.cpp
         )
 
 include_directories( # Sets the name of the library.
@@ -61,3 +70,12 @@ target_link_libraries( # Specifies the target library.
         # Links the target library to the log library
         # included in the NDK.
         ${log-lib})
+
+target_compile_options(
+        vectormath_unit_tests_android
+
+        PRIVATE
+
+        -DVECTORMATH_USE_EXACT_PRECISION
+        -DVECTORMATH_USE_CLANG_EXT
+        )
