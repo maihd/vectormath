@@ -10,7 +10,7 @@
 - (Only clang) vector-extensions, swizzle properties, operators overloading
 - Component-wise computing, specific computing for graphics math, only functions
 - Seperate data types and functions in headers, support better compile speed, only include what needed
-- Find more in `docs/coding_standards.md`
+- Find out more in `docs/coding_standards.md`
 
 ## TODOs
 - Make all code use `float32_t` instead of `float`, for clearer size of floating-point number type
@@ -72,6 +72,6 @@ so other languages you should use the libraries written specifily for thoses lan
 - Is it stable yet? No.
 
 ## Meta
-- Version: v0.2.0-dev
+- Version: v0.3.0-dev
 - License: UNLICENSED
 - Copyright: MaiHD @ 2022 - 2024
