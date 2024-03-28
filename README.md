@@ -65,6 +65,7 @@ so other languages you should use the libraries written specifily for thoses lan
 
 - Why Unlicense? Mostly source codes were re-written from The-Forge's VectorMath library, so I don't own the code. (I found the code with the same design with this library, but older: https://github.com/zauonlok/renderer/blob/master/renderer/core/maths.h)
 - Where the functions docs, and tutorials? WIP.
+- Advance usages, configs, build flags docs? Find out in [build_flags](docs/build_flags.md).
 - More examples on some popular renderers (bgfx, The-Forge)? Learning.
 - I want to use it with Raylib? replace struct definition of VectorX with typedef and it will work, Matrix must be do more work.
 - More about performance? Not the fastest, but enough to use with small project.
