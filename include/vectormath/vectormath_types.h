@@ -399,7 +399,7 @@ typedef union VECTORMATH_VECTORTYPE(mat4, 16)
 #endif
 
 static_assert(sizeof(vec2)  ==  8, "sizeof(vec2) must be 8 bytes");
-static_assert(sizeof(vec3)  == 16, "sizeof(vec3) must be 12 bytes");
+static_assert(sizeof(vec3)  == 16, "sizeof(vec3) must be 16 bytes");
 static_assert(sizeof(vec4)  == 16, "sizeof(vec4) must be 16 bytes");
 
 static_assert(sizeof(ivec2) ==  8, "sizeof(ivec2) must be 8 bytes");

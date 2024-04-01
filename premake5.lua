@@ -101,11 +101,11 @@ end
 
 -- examples
 newoption {
-    trigger = "examples",
+    trigger = "with-examples",
     description = "Generate examples projects"
 }
 
-if _OPTIONS["examples"] then
+if _OPTIONS["with-examples"] then
     local function vectormathexample(name)
         vectormathproject(name)
         do

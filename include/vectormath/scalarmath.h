@@ -418,7 +418,7 @@ __forceinline float float_fast_rsqrt(float x)
     cvt.f = x;
     cvt.i = 0x5f3759df - (cvt.i >> 1); 
     cvt.f = cvt.f * (1.5f - xhalf * cvt.f * cvt.f); // first approximation
-    // cvt.f = cvt.f * (1.5f - xhalf * cvt.f * cvt.f); // second approximation
+    cvt.f = cvt.f * (1.5f - xhalf * cvt.f * cvt.f); // second approximation
     return cvt.f;
 }
 

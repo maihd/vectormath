@@ -44,12 +44,16 @@ return {
             path.join(subincludedir, "stdmath_extensions.h"),
     
             path.join(subincludedir, "vectormath_types.h"),
+            path.join(subincludedir, "vectormath_common.h"),
     
             path.join(subincludedir, "vectormath_scalar.h"),
+            path.join(subincludedir, "vectormath_clang.h"),
             path.join(subincludedir, "vectormath_simd.h"),
+            path.join(subincludedir, "vectormath_simd_utils.h"),
             
             path.join(subincludedir, "vectormath_operators.h"),
             path.join(subincludedir, "vectormath_swizzles.h"),
+            path.join(subincludedir, "vectormath_generics.h"),
     
             path.join(includedir, "vectormath.h"),
         }
