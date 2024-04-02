@@ -131,16 +131,66 @@
 // -------------------------------------------------------------
 
 #if VECTORMATH_ENABLE_CLANG_EXT
+/// vec2
+/// 2D floating-point vector
+/// Components are 32 bit fixed-size floating-point number
+/// Struct Layout: [float x][float y]
 typedef float vec2 __attribute__((ext_vector_type(2), aligned(4)));
+
+
+/// vec3
+/// 3D floating-point vector
+/// Components are 32 bit fixed-size floating-point number
+/// Struct Layout: [float x][float y][float z][float __unused]
 typedef float vec3 __attribute__((ext_vector_type(3), aligned(16)));
+
+
+/// vec4
+/// 4D floating-point vector
+/// Components are 32 bit fixed-size floating-point number
+/// Struct Layout: [float x][float y][float z][float w]
 typedef float vec4 __attribute__((ext_vector_type(4), aligned(16)));
 
+
+/// ivec2
+/// 2D integer vector
+/// Components are 32 bit fixed-size signed integer
+/// Struct Layout: [int32_t x][int32_t y]
 typedef int32_t ivec2 __attribute__((ext_vector_type(2), aligned(4)));
+
+
+/// ivec3
+/// 3D integer vector
+/// Components are 32 bit fixed-size signed integer
+/// Struct Layout: [int32_t x][int32_t y][int32_t z][int32_t __unused]
 typedef int32_t ivec3 __attribute__((ext_vector_type(3), aligned(16)));
+
+
+/// ivec4
+/// 4D integer vector
+/// Components are 32 bit fixed-size signed integer
+/// Struct Layout: [int32_t x][int32_t y][int32_t z][int32_t w]
 typedef int32_t ivec4 __attribute__((ext_vector_type(4), aligned(16)));
 
+
+/// uvec2
+/// 2D integer vector
+/// Components are 32 bit fixed-size unsigned integer
+/// Struct Layout: [uint32_t x][uint32_t y]
 typedef uint32_t uvec2 __attribute__((ext_vector_type(2), aligned(4)));
+
+
+/// uvec3
+/// 3D integer vector
+/// Components are 32 bit fixed-size unsigned integer
+/// Struct Layout: [uint32_t x][uint32_t y][uint32_t z][uint32_t __unused]
 typedef uint32_t uvec3 __attribute__((ext_vector_type(3), aligned(16)));
+
+
+/// uvec4
+/// 4D integer vector
+/// Components are 32 bit fixed-size unsigned integer
+/// Struct Layout: [uint32_t x][uint32_t y][uint32_t z][uint32_t w]
 typedef uint32_t uvec4 __attribute__((ext_vector_type(4), aligned(16)));
 #else
 /// vec2
@@ -152,6 +202,7 @@ typedef struct VECTORMATH_ALIGNAS(vec2, 4)
     float                       x;
     float                       y;
 } vec2;
+
 
 /// vec3
 /// 3D floating-point vector
@@ -179,6 +230,7 @@ typedef union VECTORMATH_VECTORTYPE(vec3, 16)
     __m128                      m128;
     float                       data[4];
 } vec3;
+
 
 /// vec4
 /// 4D floating-point vector
@@ -222,6 +274,7 @@ typedef union VECTORMATH_VECTORTYPE(vec4, 16)
     //float                       data[4];
 } vec4;
 
+
 /// ivec2
 /// 2D integer vector
 /// Components are 32 bit fixed-size signed integer
@@ -230,6 +283,7 @@ typedef struct VECTORMATH_ALIGNAS(ivec2, 4)
 {
     int32_t                     x, y;
 } ivec2;
+
 
 /// ivec3
 /// 3D integer vector
@@ -247,6 +301,7 @@ typedef union VECTORMATH_VECTORTYPE(ivec3, 16)
     int32_t                     data[4];
 } ivec3;
 
+
 /// ivec4
 /// 4D integer vector
 /// Components are 32 bit fixed-size signed integer
@@ -263,6 +318,7 @@ typedef union VECTORMATH_VECTORTYPE(ivec4, 16)
     int32_t                     data[4];
 } ivec4;
 
+
 /// ivec2
 /// 2D integer vector
 /// Components are 32 bit fixed-size unsigned integer
@@ -271,6 +327,7 @@ typedef struct VECTORMATH_ALIGNAS(uvec2, 4)
 {
     uint32_t                    x, y;
 } uvec2;
+
 
 /// ivec3
 /// 3D integer vector
@@ -288,6 +345,7 @@ typedef union VECTORMATH_VECTORTYPE(uvec3, 16)
     uint32_t                    data[4];
 } uvec3;
 
+
 /// ivec4
 /// 4D integer vector
 /// Components are 32 bit fixed-size unsigned integer
@@ -304,6 +362,7 @@ typedef union VECTORMATH_VECTORTYPE(uvec4, 16)
     uint32_t                    data[4];
 } uvec4;
 #endif // VECTORMATH_USE_CLANG_EXT
+
 
 /// mat2
 /// 2x2 floating-point row-major matrix
@@ -330,6 +389,7 @@ typedef union VECTORMATH_VECTORTYPE(mat2, 16)
     float                       data[4];
 } mat2;
 
+
 /// mat3
 /// 3x3 floating-point row-major matrix
 /// Components are 32 bit fixed-size floating-point number
@@ -353,6 +413,7 @@ typedef union VECTORMATH_VECTORTYPE(mat3, 16)
         float                   m20, m21, m22, _m23;
     };
 } mat3;
+
 
 /// mat4
 /// 4x4 floating-point row-major matrix

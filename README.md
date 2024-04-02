@@ -12,21 +12,6 @@
 - Seperate data types and functions in headers, support better compile speed, only include what needed
 - Find out more in `docs/coding_standards.md`
 
-## TODOs
-- Make all code use `float32_t` instead of `float`, for clearer size of floating-point number type
-- Add project showcases
-- API docs and usage docs
-- Full clang extensions without deps on `__m128` for portable (on clang implementation)
-- Make an example that use full advantages of clang vector extensions
-- Benchmarking
-- Maybe pattern solution for common problem in game/graphics development
-- Make the first stable release
-- Support more systems: left/right handed, vertical/horizontal field of view
-- Choose namespace for primitives between: `int32`, `i32`, `int` (same with uint32, float32)
-    - `int32`: Same name with type `int32_t`, but too long
-    - `i32`: Short enough, not common in C, but maybe familiar for someones
-    - `int`: Short enough, common in C, but have no size
-
 ## Import/include instructions
 - This library is headers only, you can easily import to your projects
 - Use scripts/vectormath.genie.lua (WIP) to import to projects that support GENie
@@ -72,6 +57,6 @@ so other languages you should use the libraries written specifily for thoses lan
 - Is it stable yet? No.
 
 ## Meta
-- Version: v0.3.0-dev
+- Version: v0.5.0-dev
 - License: UNLICENSED
 - Copyright: MaiHD @ 2022 - 2024

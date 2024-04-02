@@ -612,7 +612,7 @@ __forceinline float vec3_distsqr(vec3 a, vec3 b)
 __forceinline vec3 vec3_normalize(vec3 v)
 {
 #ifndef VECTORMATH_USE_EXACT_PRECISION
-    return vec3_mul1(v, float32_fast_rsqrt(vec3_lensqr(v)));
+    return vec3_mul1(v, float_fast_rsqrt(vec3_lensqr(v)));
 #else
     const float lsqr = vec3_lensqr(v);
     if (lsqr > 0.0f)
@@ -936,7 +936,7 @@ __forceinline float vec4_distsqr(vec4 a, vec4 b)
 __forceinline vec4 vec4_normalize(vec4 v)
 {
 #ifndef VECTORMATH_USE_EXACT_PRECISION
-    return vec4_mul1(v, float32_fast_rsqrt(vec4_lensqr(v)));
+    return vec4_mul1(v, float_fast_rsqrt(vec4_lensqr(v)));
 #else
     const float lsqr = vec4_lensqr(v);
     if (lsqr > 0.0f)
