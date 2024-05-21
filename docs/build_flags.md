@@ -1,4 +1,5 @@
 # Build flags and config details
+
 - `VECTORMATH_ENABLE_CLANG_EXT`:
     - Compiler options: `-DVECTORMATH_ENABLE_CLANG_EXT`
     - Use clang vector extensions, only work with clang compiler.

@@ -1,6 +1,7 @@
 Coding standards for this library
 ---------------------------------
 
+
 Naming convention
 -----------------
 - Typenames should like glsl for familiar: `vec2`, `ivec2`, `mat4`, ...
@@ -13,6 +14,7 @@ Naming convention
 - Special case is standard math library extensions, which should be follow the standard style
 - Testing no need to follow the rules.
 
+
 Function naming semantics
 -------------------------
 - This section explain function naming semantics in more details than above sections
@@ -21,6 +23,7 @@ Function naming semantics
 - Use function names postfix for describe overloading functions.
 - Postfix should be describing type. Ex: `vec3_from_vec2` mean create new `vec3` from 1 `vec2`
 - Postfix should be describing number of parameters of that type. Ex: `mat4_new_16f32` mean create new `mat4` with 16 single-precision floating-point number (f32), `mat4_new_16f` is acceptable because `mat4` have been known the components precision (single-precision floating-point number).
+
 
 Function implementation philosophy
 ----------------------------------
@@ -35,11 +38,13 @@ Function implementation philosophy
 - Parameters are immutable.
 - This is fixed-size vector and matrix library for graphics programming, so do not add pointer parameters to keep it simple and ease to use. There will be special case, otherwise. But now, we only have one for return multi values: `mat4_decompose`.
 
+
 Compiler and Language Standards
 -------------------------------
 - Use C99 and C++0x. C89 and >=C++11 should works. Does not force use C89, because pass-by-value may cause performance problems.
 - Treat warnings as errors.
 - Does not force to use C99 in examples, maybe using C++ is better purposing, show the code to the end-users. 
+
 
 Physically architecture for source files
 ----------------------------------------
