@@ -8,3 +8,4 @@
 - Maybe pattern solution for common problem in game/graphics development
 - Support more systems: left/right handed, vertical/horizontal field of view
 - MacOS, iOS tests
+- Add contributing docs
