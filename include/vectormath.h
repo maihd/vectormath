@@ -13,5 +13,6 @@
 
 #include "vectormath/vectormath_operators.h"
 #include "vectormath/vectormath_swizzles.h"
+#include "vectormath/vectormath_constructors.h"
 
 //! LEAVE AN EMPTY LINE HERE, REQUIRE BY GCC/G++

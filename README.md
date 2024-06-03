@@ -1,49 +1,57 @@
 # Vector Math library based on Sony's Math library (Write new, not mod)
 
+
 ## Features and Design philosophy
-- Scalar math for graphics/game: `int32_t`, `uint32_t`
+- Scalar math for graphics/game: `int32_t`, `uint32_t`, `float`
 - Vector math for graphics/game: `vec2`, `vec3`, `vec4`, `ivec2`, `ivec3`, `ivec4`, `uvec2`, `uvec3`, `uvec4`, `quat`, `mat2`, `mat3`, `mat4`
-- Data structure is PODs only (no constructors)
+- Data structure is plain-old-data
 - Parameter pass-by-value, return as value (only few functions use pass-by-pointer for multi-return purpose)
 - Swizzle-like functions (easier to implement vs C++ properties)
 - C++ operators overloading
+- Data constructor with same name as data type (for cleaner code, GLSL-like, implementation avoid abstraction costs)
 - (Only clang) vector-extensions, swizzle properties, operators overloading
 - Component-wise computing, specific computing for graphics math, only functions
 - Seperate data types and functions in headers, support better compile speed, only include what needed
 - Find out more in `docs/coding_standards.md`
+
 
 ## Import/include instructions
 - This library is headers only, you can easily import to your projects
 - Use scripts/vectormath.genie.lua (WIP) to import to projects that support GENie
 - Use scripts/vectormath.premake5.lua to import to projects that support premake5
 
+
 ## Build instructions (examples and tests projects)
 - Run premake5 or GENie (WIP) to generate projects
 - Build with your chosen build system
 - (WIP) Planning to add cmake
 
+
 ## Small taste
 ```C
-vec3 position = vec3_new(100.0f, 200.0f, 10.0f);
+vec3 position = vec3_new(100.0f, 200.0f, 10.0f);    // equals to vec3(100.0f, 200.0f, 10.0f)
 vec4 rotation = quat_from_euler(0.0f, 0.0f, 0.0f);
-vec3 scale    = vec3_new1(1.0f);
+vec3 scale    = vec3_new1(1.0f);                    // equals to vec3(1.0f)
 mat4 model    = mat4_mul(mat4_mul(mat4_translation_vec3(position),
                                   mat4_rotation_quat(rotation)),
                          mat4_scalation_vec3(scale));
 
 // Perspective matrix with 45 degrees field-of-view
-mat4 proj = mat4_perspective(float32_deg2rad(45), WIDTH / HEIGHT, 0.0f, 100.0f);
+mat4 proj = mat4_perspective(float_deg2rad(45), WIDTH / HEIGHT, 0.0f, 100.0f);
 
 ... apply matrix to render ...
 ```
 
+
 ## Showcase examples
 - Please check folder `examples` to exploring
+
 
 ## Language bindings
 Language bindings only prefer transpiling language like Haxe (maybe only), that use C++ code to compile, which may using the advantages of inlining optimization. Other languages may need FFI, C ABI to call functions (not inlining),
 so other languages you should use the libraries written specifily for thoses languages. (Like Zig have zmath, Odin have native support for vector/matrix types)
 - Haxe Reflaxe.CPP (bindgen with nodejs script)
+
 
 ## FAQs
 - Why another math library? I'm a big fan of The-Forge renderer, when I read the source, discovered Sony's Math library. But the Sony's Math was support C++ only, then I write a port to support both C and C++ for learning purposes.
@@ -55,6 +63,7 @@ so other languages you should use the libraries written specifily for thoses lan
 - I want to use it with Raylib? replace struct definition of VectorX with typedef and it will work, Matrix must be do more work.
 - More about performance? Not the fastest, but enough to use with small project.
 - Is it stable yet? No.
+
 
 ## Meta
 - Version: v0.6.0-dev

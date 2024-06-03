@@ -1,5 +1,5 @@
 // This code is auto-generated, please avoid editting!
-// Date: Tue, 02 Jan 2024 03:53:35 GMT
+// Date: Mon, 03 Jun 2024 08:15:28 GMT
 
 package vectormath;
 
@@ -16,7 +16,6 @@ import cpp.Float32;
 @:valueType
 @:structAccess
 @:include("vectormath.h")
-@:include("vectormath/vectormath_generics.h")
 @:native("uvec2")
 extern class UVec2Data
 {
