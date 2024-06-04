@@ -38,6 +38,14 @@ __forceinline vec3 vec3_new1(float s)
     return result;
 }
 
+
+/// Create a new vector 3D with 3 components are zero
+__forceinline vec3 vec3_zero(void)
+{
+    return vec3_new(0.0f, 0.0f, 0.0f);
+}
+
+
 /// Create a new vector 3D from a vector 2D
 __forceinline vec3 vec3_from_vec2(vec2 v)
 {
@@ -78,6 +86,14 @@ __forceinline vec4 vec4_new1(float s)
     result.m128 = _mm_set_ps1(s);
     return result;
 }
+
+
+/// Create a new vector 4D with 4 components are zero
+__forceinline vec4 vec4_zero(void)
+{
+    return vec4_new(0.0f, 0.0f, 0.0f, 0.0f);
+}
+
 
 /// Create a new vector 4D from a __m128 simd
 /// @note: available only on SIMD vectormath version

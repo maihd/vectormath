@@ -28,6 +28,13 @@ __forceinline vec2 vec2_new1(float s)
 }
 
 
+/// Create a new vector 2D with 2 components are zero
+__forceinline vec2 vec2_zero(void)
+{
+    return vec2_new(0.0f, 0.0f);
+}
+
+
 /// Create a new vector 2D from a vector 3D
 __forceinline vec2 vec2_from_vec3(vec3 v)
 {
