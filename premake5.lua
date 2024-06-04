@@ -38,7 +38,7 @@ end
 
 workspace(PROJECT_PREFIX .. "_" .. _ACTION)
 do
-    language "C++"
+    language "C"
     location (path.join(BUILD_DIR, _ACTION))
 
     configurations { 
@@ -53,6 +53,7 @@ do
 
     -- Cflags
     MaiLib.cflags()
+    cdialect "C11"
 
     startproject (PROJECT_PREFIX .. "_" .. "unit_tests")
 
@@ -97,6 +98,19 @@ do
     }
 
     filter {}
+end
+
+if _ACTION == "vs2019" or _ACTION == "vs2022" then
+    vectormathproject("msvc_c11_generics")
+    do
+        kind "ConsoleApp"
+
+        files {
+            path.join(ROOT_DIR, "unit_tests/msvc_c11_generics/main.c"),
+        }
+
+        filter {}
+    end
 end
 
 -- examples

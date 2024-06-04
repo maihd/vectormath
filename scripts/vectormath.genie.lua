@@ -50,8 +50,10 @@ return {
             
             path.join(subincludedir, "vectormath_operators.h"),
             path.join(subincludedir, "vectormath_swizzles.h"),
+            path.join(subincludedir, "vectormath_constructors.h"),
     
             path.join(includedir, "vectormath.h"),
+            path.join(includedir, "scalarmath.h"),
         }
     end
 }

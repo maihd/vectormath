@@ -34,6 +34,14 @@ __forceinline vec2 vec2_from_vec3(vec3 v)
     return v.xy;
 }
 
+
+/// Create a new vector 2D from a vector 3D
+__forceinline vec2 vec2_from_vec4(vec4 v)
+{
+    return v.xy;
+}
+
+
 // -------------------------------------------------------------
 // Operators-like functions
 // -------------------------------------------------------------
