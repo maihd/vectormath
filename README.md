@@ -60,7 +60,9 @@ so other languages you should use the libraries written specifily for thoses lan
 - Where the functions docs, and tutorials? WIP.
 - Advance usages, configs, build flags docs? Find out in [build_flags](docs/build_flags.md).
 - More examples on some popular renderers (bgfx, The-Forge)? Learning.
-- I want to use it with Raylib? replace struct definition of VectorX with typedef and it will work, Matrix must be do more work.
+- I want to use it with Raylib? 
+    - Solution 1: replace struct definition of VectorX with typedef and it will work, Matrix must be do more work.
+    - Solution 2: create some helper functions to convert between two types, fear not about performance penalty, compiler will do the work for you. This work for other framework too. Recommended.
 - More about performance? Not the fastest, but enough to use with small project.
 - Is it stable yet? No.
 
