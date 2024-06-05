@@ -6,9 +6,11 @@
 
 #include <vectormath.h>
 
+
 // ------------------------------------------------------------------------------------------
 // Unit tests API
 // ------------------------------------------------------------------------------------------
+
 
 enum UnitTestStatus
 {
@@ -17,8 +19,10 @@ enum UnitTestStatus
     UnitTestStatus_Failed  
 };
 
+
 struct UnitTest;
 typedef void UnitTestFunc();
+
 
 struct UnitTest
 {
@@ -40,6 +44,7 @@ struct UnitTest
 	static void				HandleExitAfterFailed();
 };
 
+
 #ifndef CONCAT
 #define CONCAT(A, B)        CONCAT_IMPL(A, B)
 #define CONCAT_IMPL(A, B)   A ## B
@@ -49,10 +54,12 @@ struct UnitTest
 #define SYMBOL(PREFIX)      CONCAT(PREFIX, __LINE__)
 #endif
 
+
 #define DEFINE_UNIT_TEST(name)                                                          \
     static void SYMBOL(UnitTestFunc)();													\
     static UnitTest SYMBOL(UNIT_TEST)(name, SYMBOL(UnitTestFunc), __FILE__, __LINE__);  \
     static void SYMBOL(UnitTestFunc)()
+
 
 #if defined(_MSC_VER) && !defined(NDEBUG)
 extern "C" __declspec(dllimport) int __stdcall IsDebuggerPresent(void);
@@ -72,6 +79,7 @@ extern "C" __declspec(dllimport) int __stdcall IsDebuggerPresent(void);
     } while (false)
 #endif
 
+
 #define TEST(condition)                                                         \
     do {                                                                        \
         UnitTest::HandleHaveBeenTesting();										\
@@ -80,6 +88,7 @@ extern "C" __declspec(dllimport) int __stdcall IsDebuggerPresent(void);
             TEST_FAILED();                                                      \
         }                                                                       \
     } while (false)
+
 
 #define TEST_EQUAL(actual, expected)                                            \
     do {                                                                        \
@@ -90,6 +99,7 @@ extern "C" __declspec(dllimport) int __stdcall IsDebuggerPresent(void);
         }                                                                       \
     } while (false)
 
+
 #define TEST_NOT_EQUAL(actual, expected)                                        \
     do {                                                                        \
         UnitTest::HandleHaveBeenTesting();										\
@@ -99,23 +109,28 @@ extern "C" __declspec(dllimport) int __stdcall IsDebuggerPresent(void);
         }                                                                       \
     } while (false)
 
+
 // ------------------------------------------------------------------------------------------
 // Define test runner
 // ------------------------------------------------------------------------------------------
+
 
 #ifdef RUN_UNIT_TESTS
 #include <stdio.h>
 #include <stdlib.h>
 #include <assert.h>
 
+
 #if defined(_WIN32)
 #include <Windows.h>
 #pragma comment(lib, "User32.lib")
 #endif
 
+
 #if defined(__ANDROID__)
 #include <android/log.h>
 #endif
+
 
 static UnitTest*    gUnitTests          = nullptr;
 static UnitTest*    gCurrentUnitTest	= nullptr;
@@ -128,6 +143,7 @@ static int          gUnitTestsCount     = 0;
 static int          gUnitTestsRunCount  = 0;
 static int          gUnitTestsExitCode  = 0;
 static const char*  gUnitTestsLogHeader = "[vectormath]";
+
 
 /// `defined` operator on expression
 /// @note: The implementation is hard to understand
@@ -158,15 +174,18 @@ static_assert(IS_DEFINED(__cplusplus), "IS_DEFINED is wrong!");
 static_assert(IS_DEFINED(__EMPTY_MACRO), "IS_DEFINED is wrong!");
 static_assert(!IS_DEFINED(__UNDEFINED_MACRO), "IS_DEFINED is wrong!");
 
+
 #ifndef UNIT_TEST_GOTO_FILE_COMMAND
 #define UNIT_TEST_GOTO_FILE_COMMAND     "code --goto %s:%d"
 #endif
+
 
 #ifdef __ANDROID__
 #define PRINTF(fmt, ...) __android_log_print(ANDROID_LOG_INFO, "vectormath", fmt, ##__VA_ARGS__)
 #else
 #define PRINTF(fmt, ...) printf(fmt, ##__VA_ARGS__)
 #endif
+
 
 #if defined(EMSCRIPTEN) || defined(__ANDROID__)
 #define PRINTF_COLOR_RED		
@@ -182,16 +201,20 @@ static_assert(!IS_DEFINED(__UNDEFINED_MACRO), "IS_DEFINED is wrong!");
 #define PRINTF_COLOR_YELLOW		"\033[0;33m"
 #endif
 
+
 #define PRINTF_STRING_RED(string) PRINTF_COLOR_RED string PRINTF_COLOR_BLACK
 #define PRINTF_STRING_BLUE(string) PRINTF_COLOR_BLUE string PRINTF_COLOR_BLACK
 #define PRINTF_STRING_GREEN(string) PRINTF_COLOR_GREEN string PRINTF_COLOR_BLACK
 #define PRINTF_STRING_YELLOW(string) PRINTF_COLOR_YELLOW string PRINTF_COLOR_BLACK
 
+
 #ifndef UNIT_TEST_EXIT
 #define UNIT_TEST_EXIT(exit_code) exit(exit_code)
 #endif
 
+
 static void NotifyProgammer(const char* title, const char* message);
+
 
 UnitTest::UnitTest(const char* name, UnitTestFunc* func, const char* file, int line)
     : name(name)
@@ -205,6 +228,7 @@ UnitTest::UnitTest(const char* name, UnitTestFunc* func, const char* file, int l
     gUnitTests = this;
     gUnitTestsCount++;
 }
+
 
 void UnitTest::TestFailed(const char* file, const int line)
 {
@@ -235,7 +259,7 @@ void UnitTest::TestFailed(const char* file, const int line)
 		char notifyTitle[1024];
 		snprintf(notifyTitle, sizeof(notifyTitle), "%s Unit Testing", gUnitTestsLogHeader);
 
-        char notifyMessage[4096];
+        char notifyMessage[8192];
         snprintf(notifyMessage, sizeof(notifyMessage), "%s\n\nPress OK to exit!!!", (const char*)message);
 
         bool gotoSource = false;
@@ -265,10 +289,12 @@ void UnitTest::TestFailed(const char* file, const int line)
     }
 }
 
+
 void UnitTest::HandleHaveBeenTesting()
 {
 	gCurrentUnitTest->status = UnitTestStatus_Succeed;
 }
+
 
 void UnitTest::HandleExitAfterFailed()
 {
@@ -281,6 +307,7 @@ void UnitTest::HandleExitAfterFailed()
 		UNIT_TEST_EXIT(gUnitTestsExitCode);
 	}
 }
+
 
 #if defined(UNIT_TESTS_MAIN)
 int UNIT_TESTS_MAIN(const int argc, const char* argv[])
@@ -389,6 +416,7 @@ int main(const int argc, const char* argv[])
     
     return gUnitTestsExitCode;
 }
+
 
 void NotifyProgammer(const char* title, const char* message)
 {

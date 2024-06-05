@@ -3,7 +3,7 @@ CC=gcc
 RUN_ALLS=false
 
 # Build flags
-CFLAGS=-Wall -DVECTORMATH_USE_CLANG_EXT
+CFLAGS=-Wall -DVECTORMATH_USE_CLANG_EXT -Wno-unused-function -Wno-unused-variable
 LFLAGS=
 ifneq ($(OS),Windows_NT)
 LFLAGS+=-lm

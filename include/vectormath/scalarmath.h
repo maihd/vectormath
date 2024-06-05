@@ -4,6 +4,7 @@
 #include <stdint.h>
 #include <stdbool.h>
 
+
 // -------------------------------------------------------------
 // Remove stupid stuffs
 // -------------------------------------------------------------
@@ -12,6 +13,7 @@
 #undef max      // When Windows.h was included, `max` is an macro
 #undef far      // When Windows.h was included, `far` is an macro
 #undef near     // When Windows.h was included, `near` is an macro
+
 
 // -------------------------------------------------------------
 // Compiler settings
@@ -25,20 +27,23 @@
 #   endif
 #endif
 
+
 #if !defined(_MSC_VER) && !defined(__forceinline)
 #   if defined(__GNUC__)
-#       define __forceinline    static __attribute__((always_inline))
-#   elif defined(__cplusplus)
+#       define __forceinline    static __attribute__((always_inline)) inline
+#   elif !defined(__cplusplus)
 #       define __forceinline    static inline
 #   else
 #       define __forceinline    inline
 #   endif
 #endif
 
+
 // constexpr is helpful
 #if !defined(__cplusplus) && !defined(constexpr) && __STDC_VERSION__ <= 201710L
 #   define constexpr static const
 #endif
+
 
 // deprecated is helpful
 #if !defined(__deprecated)
@@ -57,6 +62,7 @@
 // -------------------------------------------------------------
 // Types
 // -------------------------------------------------------------
+
 
 // -------------------------------------------------------------
 // Constants
@@ -87,6 +93,7 @@ constexpr float     FLOAT_INV_PI            = 1.0f / (3.141592653589f * 1.0f);
 constexpr float     FLOAT_INV_TWO_PI        = 1.0f / (3.141592653589f * 2.0f);
 constexpr float     FLOAT_INV_HALF_PI       = 1.0f / (3.141592653589f * 0.5f);
 constexpr float     FLOAT_INV_THREE_HALF_PI = 1.0f / (3.141592653589f * 1.5f);
+
 
 // -------------------------------------------------------------
 // int32_t Functions
@@ -285,10 +292,12 @@ __forceinline float log2f(float x)
     return (logf(x) / 0.693147180559945f);
 }
 
+
 __forceinline double log2(double x)
 {
     return (log(x) / 0.693147180559945);
 }
+
 
 /// Computes the base 2 logarithm
 __forceinline float float_log2(float x)
