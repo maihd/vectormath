@@ -25,6 +25,7 @@ static uint32_t     gIbo;
 
 static mat4         gProjection;
 
+
 constexpr const char* vshader_src =
     "#version 330 core\n"
     "layout (location = 0) in vec4 vertex;"
@@ -35,6 +36,7 @@ constexpr const char* vshader_src =
         "UV = vertex.zw;"
         "gl_Position = Projection * Model * vec4(vertex.xy, 0, 1.0);"
     "}";
+
 
 constexpr const char* fshader_src =
     "#version 330 core\n"
@@ -57,6 +59,7 @@ constexpr const char* vshader_draw_text_src =
         "gl_Position = Projection * Model * vec4(vertex.xy, 0, 1.0);"
     "}";
 
+
 constexpr const char* fshader_draw_text_src =
     "#version 330 core\n"
     "in vec2 UV;"
@@ -67,9 +70,11 @@ constexpr const char* fshader_draw_text_src =
         "FragColor = vec4(Color, 1.0);"
     "}";
 
+
 #ifdef __cplusplus
 extern "C" {
 #endif
+
 
 static uint32_t Renderer_CreateShader(uint32_t type, const char* src)
 {
@@ -98,6 +103,7 @@ static uint32_t Renderer_CreateShader(uint32_t type, const char* src)
         return shader;
     }
 }
+
 
 static uint32_t Renderer_CreateProgram(const char* vshaderSource, const char* fshaderSource)
 {
@@ -130,6 +136,7 @@ static uint32_t Renderer_CreateProgram(const char* vshaderSource, const char* fs
     glDeleteShader(fshader);
     return program;
 }
+
 
 int Renderer_Setup(struct WindowDesc* window)
 {
@@ -177,6 +184,7 @@ int Renderer_Setup(struct WindowDesc* window)
     return 0;
 }
 
+
 void Renderer_Shutdown(struct WindowDesc* window)
 {
     if (gGLContext)
@@ -195,6 +203,7 @@ void Renderer_Shutdown(struct WindowDesc* window)
     }
 }
 
+
 void Renderer_Clear(void)
 {
     assert(gMainWindow != nullptr && gGLContext != nullptr);
@@ -206,6 +215,7 @@ void Renderer_Clear(void)
     glClear(GL_COLOR_BUFFER_BIT);
 }
 
+
 void Renderer_Present(void)
 {
     assert(gMainWindow != nullptr && gGLContext != nullptr);
@@ -213,6 +223,7 @@ void Renderer_Present(void)
     glMakeContextCurrent(gMainWindow, gGLContext);
     SwapBuffers((HDC)gMainWindow->device);
 }
+
 
 void Renderer_LoadSpritesHorizontal(SpriteBatch* spriteBatch, const char* file, int spriteCount)
 {
@@ -272,6 +283,7 @@ void Renderer_LoadSpritesHorizontal(SpriteBatch* spriteBatch, const char* file, 
     }
 }
 
+
 void Renderer_DrawSprite(const SpriteBatch* spriteBatch, int index, vec2 position, float rotation, vec2 scale, vec3 color)
 {
     const SpriteMesh* spriteMesh = &spriteBatch->sprites[index];
@@ -281,8 +293,8 @@ void Renderer_DrawSprite(const SpriteBatch* spriteBatch, int index, vec2 positio
     glUseProgram(gProgramDrawSprite);
 
     const mat4 model = mat4_mul(mat4_mul(mat4_translation_vec2(position), mat4_rotation_z(rotation)), mat4_scalation_vec2(scale * vec2_new(spriteMesh->width, spriteMesh->height)));
-    glUniformMatrix4fv(glGetUniformLocation(gProgramDrawSprite, "Model"), 1, false, (const float*)&model);
-    glUniformMatrix4fv(glGetUniformLocation(gProgramDrawSprite, "Projection"), 1, false, (const float*)&gProjection);
+    glUniformMatrix4fv(glGetUniformLocation(gProgramDrawSprite, "Model"), 1, false, model.data);
+    glUniformMatrix4fv(glGetUniformLocation(gProgramDrawSprite, "Projection"), 1, false, gProjection.data);
     glUniform3f(glGetUniformLocation(gProgramDrawSprite, "Color"), color.x, color.y, color.z);
 
     glActiveTexture(GL_TEXTURE0);
@@ -291,10 +303,12 @@ void Renderer_DrawSprite(const SpriteBatch* spriteBatch, int index, vec2 positio
     glDrawArrays(GL_TRIANGLES, 0, 6);
 }
 
+
 vec2 Renderer_TextSize(const char* text)
 {
     return vec2_new((float)stb_easy_font_width((char*)text), (float)stb_easy_font_height((char*)text)) * 3.0f;
 }
+
 
 void Renderer_DrawText(const char* text, vec2 position, vec3 color)
 {
@@ -328,12 +342,13 @@ void Renderer_DrawText(const char* text, vec2 position, vec3 color)
 
     const vec2 drawPosition = position - vec2_new(0.0f, 3.0f * stb_easy_font_height((char*)text));
     const mat4 model = mat4_mul(mat4_translation_vec2(drawPosition), mat4_scalation_vec2(vec2_new(3.0f, -3.0f)));
-    glUniformMatrix4fv(glGetUniformLocation(gProgramDrawText, "Model"), 1, false, (const float*)&model);
-    glUniformMatrix4fv(glGetUniformLocation(gProgramDrawText, "Projection"), 1, false, (const float*)&gProjection);
+    glUniformMatrix4fv(glGetUniformLocation(gProgramDrawText, "Model"), 1, false, model.data);
+    glUniformMatrix4fv(glGetUniformLocation(gProgramDrawText, "Projection"), 1, false, gProjection.data);
     glUniform3f(glGetUniformLocation(gProgramDrawText, "Color"), color.x, color.y, color.z);
 
     glDrawElements(GL_TRIANGLES, indexCount, GL_UINT16, NULL);
 }
+
 
 void Renderer_DrawQuad(vec2 start, vec2 end, vec3 color)
 {
@@ -361,8 +376,8 @@ void Renderer_DrawQuad(vec2 start, vec2 end, vec3 color)
     glUseProgram(gProgramDrawText);
 
     const mat4 model = mat4_identity();
-    glUniformMatrix4fv(glGetUniformLocation(gProgramDrawText, "Model"), 1, false, (const float*)&model);
-    glUniformMatrix4fv(glGetUniformLocation(gProgramDrawText, "Projection"), 1, false, (const float*)&gProjection);
+    glUniformMatrix4fv(glGetUniformLocation(gProgramDrawText, "Model"), 1, false, model.data);
+    glUniformMatrix4fv(glGetUniformLocation(gProgramDrawText, "Projection"), 1, false, gProjection.data);
     glUniform3f(glGetUniformLocation(gProgramDrawText, "Color"), color.x, color.y, color.z);
 
     glDrawArrays(GL_TRIANGLES, 0, 6);
@@ -371,3 +386,5 @@ void Renderer_DrawQuad(vec2 start, vec2 end, vec3 color)
 #ifdef __cplusplus
 }
 #endif
+
+//! EOF

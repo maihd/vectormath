@@ -7,6 +7,7 @@
 extern "C" {
 #endif
 
+
 typedef struct SpriteMesh
 {
     float       width;
@@ -16,6 +17,7 @@ typedef struct SpriteMesh
     uint32_t    vbo;
 } SpriteMesh;
 
+
 typedef struct SpriteBatch
 {
     uint32_t    textureId;
@@ -23,6 +25,7 @@ typedef struct SpriteBatch
     int         spritesCount;
     SpriteMesh* sprites;
 } SpriteBatch;
+
 
 int     Renderer_Setup(struct WindowDesc* window);
 void    Renderer_Shutdown(struct WindowDesc* window);
@@ -36,6 +39,7 @@ void    Renderer_DrawSprite(const SpriteBatch* spriteBatch, int spriteIndex, vec
 vec2    Renderer_TextSize(const char* text);
 void    Renderer_DrawText(const char* text, vec2 position, vec3 color);
 void    Renderer_DrawQuad(vec2 start, vec2 end, vec3 color);
+
 
 #ifdef __cplusplus
 }
