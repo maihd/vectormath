@@ -132,13 +132,13 @@ __forceinline vec4 vec4_load(const float ptr[])
 
 
 // Create a new matrix 4x4
-__forceinline mat4 mat4_new(vec4 row0, vec4 row1, vec4 row2, vec4 row3)
+__forceinline mat4 mat4_new(vec4 v0, vec4 v1, vec4 v2, vec4 v3)
 {
     mat4 result;
-    result.row0 = row0;
-    result.row1 = row1;
-    result.row2 = row2;
-    result.row3 = row3;
+    result.v0 = v0;
+    result.v1 = v1;
+    result.v2 = v2;
+    result.v3 = v3;
     return result;
 }
 
@@ -151,10 +151,10 @@ __forceinline mat4 mat4_new_16f(
     float m30, float m31, float m32, float m33)
 {
     mat4 result;
-    result.row0 = vec4_new(m00, m01, m02, m03);
-    result.row1 = vec4_new(m10, m11, m12, m13);
-    result.row2 = vec4_new(m20, m21, m22, m23);
-    result.row3 = vec4_new(m30, m31, m32, m33);
+    result.v0 = vec4_new(m00, m01, m02, m03);
+    result.v1 = vec4_new(m10, m11, m12, m13);
+    result.v2 = vec4_new(m20, m21, m22, m23);
+    result.v3 = vec4_new(m30, m31, m32, m33);
     return result;
 }
 
@@ -168,10 +168,10 @@ __forceinline mat4 mat4_new_f16(
     float m30, float m31, float m32, float m33)
 {
     mat4 result;
-    result.row0 = vec4_new(m00, m01, m02, m03);
-    result.row1 = vec4_new(m10, m11, m12, m13);
-    result.row2 = vec4_new(m20, m21, m22, m23);
-    result.row3 = vec4_new(m30, m31, m32, m33);
+    result.v0 = vec4_new(m00, m01, m02, m03);
+    result.v1 = vec4_new(m10, m11, m12, m13);
+    result.v2 = vec4_new(m20, m21, m22, m23);
+    result.v3 = vec4_new(m30, m31, m32, m33);
     return result;
 }
 
@@ -181,10 +181,13 @@ __forceinline mat4 mat4_new_f16(
 __forceinline mat4 mat4_load(const float ptr[])
 {
     mat4 result;
-    result.row0 = vec4_load(ptr + 0);
-    result.row1 = vec4_load(ptr + 4);
-    result.row2 = vec4_load(ptr + 8);
-    result.row3 = vec4_load(ptr + 12);
+
+    // @todo: do benchmark with memcpy, and choose one faster
+    result.v0 = vec4_load(ptr + 0);
+    result.v1 = vec4_load(ptr + 4);
+    result.v2 = vec4_load(ptr + 8);
+    result.v3 = vec4_load(ptr + 12);
+
     return result;
 }
 
@@ -366,10 +369,10 @@ __forceinline bool vec4_isclose(vec4 a, vec4 b)
 __forceinline mat4 mat4_neg(mat4 m)
 {
     mat4 result;
-    result.row0 = vec4_neg(m.row0);
-    result.row1 = vec4_neg(m.row1);
-    result.row2 = vec4_neg(m.row2);
-    result.row3 = vec4_neg(m.row3);
+    result.v0 = vec4_neg(m.v0);
+    result.v1 = vec4_neg(m.v1);
+    result.v2 = vec4_neg(m.v2);
+    result.v3 = vec4_neg(m.v3);
     return result;
 }
 
@@ -377,10 +380,10 @@ __forceinline mat4 mat4_neg(mat4 m)
 __forceinline mat4 mat4_add(mat4 a, mat4 b)
 {
     return mat4_new(
-        vec4_add(a.row0, b.row0),
-        vec4_add(a.row1, b.row1),
-        vec4_add(a.row2, b.row2),
-        vec4_add(a.row3, b.row3)
+        vec4_add(a.v0, b.v0),
+        vec4_add(a.v1, b.v1),
+        vec4_add(a.v2, b.v2),
+        vec4_add(a.v3, b.v3)
     );
 }
 
@@ -388,23 +391,23 @@ __forceinline mat4 mat4_add(mat4 a, mat4 b)
 __forceinline mat4 mat4_sub(mat4 a, mat4 b)
 {
     return mat4_new(
-        vec4_sub(a.row0, b.row0),
-        vec4_sub(a.row1, b.row1),
-        vec4_sub(a.row2, b.row2),
-        vec4_sub(a.row3, b.row3)
+        vec4_sub(a.v0, b.v0),
+        vec4_sub(a.v1, b.v1),
+        vec4_sub(a.v2, b.v2),
+        vec4_sub(a.v3, b.v3)
     );
 }
 
 
 __forceinline bool mat4_equal(mat4 a, mat4 b)
 {
-    return vec4_equal(a.row0, b.row0) && vec4_equal(a.row1, b.row1) && vec4_equal(a.row2, b.row2) && vec4_equal(a.row2, b.row2);
+    return vec4_equal(a.v0, b.v0) && vec4_equal(a.v1, b.v1) && vec4_equal(a.v2, b.v2) && vec4_equal(a.v2, b.v2);
 }
 
 
 __forceinline bool mat4_not_equal(mat4 a, mat4 b)
 {
-    return vec4_not_equal(a.row0, b.row0) && vec4_not_equal(a.row1, b.row1) && vec4_not_equal(a.row2, b.row2) && vec4_not_equal(a.row2, b.row2);
+    return vec4_not_equal(a.v0, b.v0) && vec4_not_equal(a.v1, b.v1) && vec4_not_equal(a.v2, b.v2) && vec4_not_equal(a.v2, b.v2);
 }
 
 
@@ -1219,7 +1222,7 @@ __forceinline vec4 quat_from_euler(float x, float y, float z)
 /// Computes absolute value
 __forceinline mat4 mat4_abs(mat4 m)
 {
-    return mat4_new(vec4_abs(m.row0), vec4_abs(m.row1), vec4_abs(m.row2), vec4_abs(m.row3));
+    return mat4_new(vec4_abs(m.v0), vec4_abs(m.v1), vec4_abs(m.v2), vec4_abs(m.v3));
 }
 
 
@@ -1227,10 +1230,10 @@ __forceinline mat4 mat4_abs(mat4 m)
 __forceinline mat4 mat4_cos(mat4 m)
 {
     return mat4_new(
-        vec4_cos(m.row0),
-        vec4_cos(m.row1),
-        vec4_cos(m.row2),
-        vec4_cos(m.row3)
+        vec4_cos(m.v0),
+        vec4_cos(m.v1),
+        vec4_cos(m.v2),
+        vec4_cos(m.v3)
     );
 }
 
@@ -1239,10 +1242,10 @@ __forceinline mat4 mat4_cos(mat4 m)
 __forceinline mat4 mat4_sin(mat4 m)
 {
     return mat4_new(
-        vec4_sin(m.row0),
-        vec4_sin(m.row1),
-        vec4_sin(m.row2),
-        vec4_sin(m.row3)
+        vec4_sin(m.v0),
+        vec4_sin(m.v1),
+        vec4_sin(m.v2),
+        vec4_sin(m.v3)
     );
 }
 
@@ -1251,10 +1254,10 @@ __forceinline mat4 mat4_sin(mat4 m)
 __forceinline mat4 mat4_tan(mat4 m)
 {
     return mat4_new(
-        vec4_tan(m.row0),
-        vec4_tan(m.row1),
-        vec4_tan(m.row2),
-        vec4_tan(m.row3)
+        vec4_tan(m.v0),
+        vec4_tan(m.v1),
+        vec4_tan(m.v2),
+        vec4_tan(m.v3)
     );
 }
 
@@ -1263,10 +1266,10 @@ __forceinline mat4 mat4_tan(mat4 m)
 __forceinline mat4 mat4_cosh(mat4 m)
 {
     return mat4_new(
-        vec4_cosh(m.row0),
-        vec4_cosh(m.row1),
-        vec4_cosh(m.row2),
-        vec4_cosh(m.row3)
+        vec4_cosh(m.v0),
+        vec4_cosh(m.v1),
+        vec4_cosh(m.v2),
+        vec4_cosh(m.v3)
     );
 }
 
@@ -1275,10 +1278,10 @@ __forceinline mat4 mat4_cosh(mat4 m)
 __forceinline mat4 mat4_sinh(mat4 m)
 {
     return mat4_new(
-        vec4_sinh(m.row0),
-        vec4_sinh(m.row1),
-        vec4_sinh(m.row2),
-        vec4_sinh(m.row3)
+        vec4_sinh(m.v0),
+        vec4_sinh(m.v1),
+        vec4_sinh(m.v2),
+        vec4_sinh(m.v3)
     );
 }
 
@@ -1287,10 +1290,10 @@ __forceinline mat4 mat4_sinh(mat4 m)
 __forceinline mat4 mat4_tanh(mat4 m)
 {
     return mat4_new(
-        vec4_tanh(m.row0),
-        vec4_tanh(m.row1),
-        vec4_tanh(m.row2),
-        vec4_tanh(m.row3)
+        vec4_tanh(m.v0),
+        vec4_tanh(m.v1),
+        vec4_tanh(m.v2),
+        vec4_tanh(m.v3)
     );
 }
 
@@ -1299,10 +1302,10 @@ __forceinline mat4 mat4_tanh(mat4 m)
 __forceinline mat4 mat4_acos(mat4 m)
 {
     return mat4_new(
-        vec4_acos(m.row0),
-        vec4_acos(m.row1),
-        vec4_acos(m.row2),
-        vec4_acos(m.row3)
+        vec4_acos(m.v0),
+        vec4_acos(m.v1),
+        vec4_acos(m.v2),
+        vec4_acos(m.v3)
     );
 }
 
@@ -1311,10 +1314,10 @@ __forceinline mat4 mat4_acos(mat4 m)
 __forceinline mat4 mat4_asin(mat4 m)
 {
     return mat4_new(
-        vec4_asin(m.row0),
-        vec4_asin(m.row1),
-        vec4_asin(m.row2),
-        vec4_asin(m.row3)
+        vec4_asin(m.v0),
+        vec4_asin(m.v1),
+        vec4_asin(m.v2),
+        vec4_asin(m.v3)
     );
 }
 
@@ -1323,10 +1326,10 @@ __forceinline mat4 mat4_asin(mat4 m)
 __forceinline mat4 mat4_atan(mat4 m)
 {
     return mat4_new(
-        vec4_atan(m.row0),
-        vec4_atan(m.row1),
-        vec4_atan(m.row2),
-        vec4_atan(m.row3)
+        vec4_atan(m.v0),
+        vec4_atan(m.v1),
+        vec4_atan(m.v2),
+        vec4_atan(m.v3)
     );
 }
 
@@ -1335,10 +1338,10 @@ __forceinline mat4 mat4_atan(mat4 m)
 __forceinline mat4 mat4_atan2(mat4 a, mat4 b)
 {
     return mat4_new(
-        vec4_atan2(a.row0, b.row0),
-        vec4_atan2(a.row1, b.row1),
-        vec4_atan2(a.row2, b.row2),
-        vec4_atan2(a.row3, b.row3)
+        vec4_atan2(a.v0, b.v0),
+        vec4_atan2(a.v1, b.v1),
+        vec4_atan2(a.v2, b.v2),
+        vec4_atan2(a.v3, b.v3)
     );
 }
 
@@ -1347,10 +1350,10 @@ __forceinline mat4 mat4_atan2(mat4 a, mat4 b)
 __forceinline mat4 mat4_exp(mat4 m)
 {
     return mat4_new(
-        vec4_exp(m.row0),
-        vec4_exp(m.row1),
-        vec4_exp(m.row2),
-        vec4_exp(m.row3)
+        vec4_exp(m.v0),
+        vec4_exp(m.v1),
+        vec4_exp(m.v2),
+        vec4_exp(m.v3)
     );
 }
 
@@ -1359,10 +1362,10 @@ __forceinline mat4 mat4_exp(mat4 m)
 __forceinline mat4 mat4_exp2(mat4 m)
 {
     return mat4_new(
-        vec4_exp2(m.row0),
-        vec4_exp2(m.row1),
-        vec4_exp2(m.row2),
-        vec4_exp2(m.row3)
+        vec4_exp2(m.v0),
+        vec4_exp2(m.v1),
+        vec4_exp2(m.v2),
+        vec4_exp2(m.v3)
     );
 }
 
@@ -1371,10 +1374,10 @@ __forceinline mat4 mat4_exp2(mat4 m)
 __forceinline mat4 mat4_log(mat4 m)
 {
     return mat4_new(
-        vec4_log(m.row0),
-        vec4_log(m.row1),
-        vec4_log(m.row2),
-        vec4_log(m.row3)
+        vec4_log(m.v0),
+        vec4_log(m.v1),
+        vec4_log(m.v2),
+        vec4_log(m.v3)
     );
 }
 
@@ -1383,10 +1386,10 @@ __forceinline mat4 mat4_log(mat4 m)
 __forceinline mat4 mat4_log2(mat4 m)
 {
     return mat4_new(
-        vec4_log2(m.row0),
-        vec4_log2(m.row1),
-        vec4_log2(m.row2),
-        vec4_log2(m.row3)
+        vec4_log2(m.v0),
+        vec4_log2(m.v1),
+        vec4_log2(m.v2),
+        vec4_log2(m.v3)
     );
 }
 
@@ -1395,10 +1398,10 @@ __forceinline mat4 mat4_log2(mat4 m)
 __forceinline mat4 mat4_log10(mat4 m)
 {
     return mat4_new(
-        vec4_log10(m.row0),
-        vec4_log10(m.row1),
-        vec4_log10(m.row2),
-        vec4_log10(m.row3)
+        vec4_log10(m.v0),
+        vec4_log10(m.v1),
+        vec4_log10(m.v2),
+        vec4_log10(m.v3)
     );
 }
 
@@ -1407,10 +1410,10 @@ __forceinline mat4 mat4_log10(mat4 m)
 __forceinline mat4 mat4_pow(mat4 a, mat4 b)
 {
     return mat4_new(
-        vec4_pow(a.row0, b.row0),
-        vec4_pow(a.row1, b.row1),
-        vec4_pow(a.row2, b.row2),
-        vec4_pow(a.row3, b.row3)
+        vec4_pow(a.v0, b.v0),
+        vec4_pow(a.v1, b.v1),
+        vec4_pow(a.v2, b.v2),
+        vec4_pow(a.v3, b.v3)
     );
 }
 
@@ -1419,10 +1422,10 @@ __forceinline mat4 mat4_pow(mat4 a, mat4 b)
 __forceinline mat4 mat4_frac(mat4 m)
 {
     return mat4_new(
-        vec4_frac(m.row0),
-        vec4_frac(m.row1),
-        vec4_frac(m.row2),
-        vec4_frac(m.row3)
+        vec4_frac(m.v0),
+        vec4_frac(m.v1),
+        vec4_frac(m.v2),
+        vec4_frac(m.v3)
     );
 }
 
@@ -1431,10 +1434,10 @@ __forceinline mat4 mat4_frac(mat4 m)
 __forceinline mat4 mat4_fmod(mat4 a, mat4 b)
 {
     return mat4_new(
-        vec4_fmod(a.row0, b.row0),
-        vec4_fmod(a.row1, b.row1),
-        vec4_fmod(a.row2, b.row2),
-        vec4_fmod(a.row3, b.row3)
+        vec4_fmod(a.v0, b.v0),
+        vec4_fmod(a.v1, b.v1),
+        vec4_fmod(a.v2, b.v2),
+        vec4_fmod(a.v3, b.v3)
     );
 }
 
@@ -1443,10 +1446,10 @@ __forceinline mat4 mat4_fmod(mat4 a, mat4 b)
 __forceinline mat4 mat4_ceil(mat4 m)
 {
     return mat4_new(
-        vec4_ceil(m.row0),
-        vec4_ceil(m.row1),
-        vec4_ceil(m.row2),
-        vec4_ceil(m.row3)
+        vec4_ceil(m.v0),
+        vec4_ceil(m.v1),
+        vec4_ceil(m.v2),
+        vec4_ceil(m.v3)
     );
 }
 
@@ -1455,10 +1458,10 @@ __forceinline mat4 mat4_ceil(mat4 m)
 __forceinline mat4 mat4_floor(mat4 m)
 {
     return mat4_new(
-        vec4_floor(m.row0),
-        vec4_floor(m.row1),
-        vec4_floor(m.row2),
-        vec4_floor(m.row3)
+        vec4_floor(m.v0),
+        vec4_floor(m.v1),
+        vec4_floor(m.v2),
+        vec4_floor(m.v3)
     );
 }
 
@@ -1467,10 +1470,10 @@ __forceinline mat4 mat4_floor(mat4 m)
 __forceinline mat4 mat4_round(mat4 m)
 {
     return mat4_new(
-        vec4_round(m.row0),
-        vec4_round(m.row1),
-        vec4_round(m.row2),
-        vec4_round(m.row3)
+        vec4_round(m.v0),
+        vec4_round(m.v1),
+        vec4_round(m.v2),
+        vec4_round(m.v3)
     );
 }
 
@@ -1479,10 +1482,10 @@ __forceinline mat4 mat4_round(mat4 m)
 __forceinline mat4 mat4_trunc(mat4 m)
 {
     return mat4_new(
-        vec4_trunc(m.row0),
-        vec4_trunc(m.row1),
-        vec4_trunc(m.row2),
-        vec4_trunc(m.row3)
+        vec4_trunc(m.v0),
+        vec4_trunc(m.v1),
+        vec4_trunc(m.v2),
+        vec4_trunc(m.v3)
     );
 }
 
@@ -1491,10 +1494,10 @@ __forceinline mat4 mat4_trunc(mat4 m)
 __forceinline mat4 mat4_min(mat4 a, mat4 b)
 {
     return mat4_new(
-        vec4_min(a.row0, b.row0),
-        vec4_min(a.row1, b.row1),
-        vec4_min(a.row2, b.row2),
-        vec4_min(a.row3, b.row3)
+        vec4_min(a.v0, b.v0),
+        vec4_min(a.v1, b.v1),
+        vec4_min(a.v2, b.v2),
+        vec4_min(a.v3, b.v3)
     );
 }
 
@@ -1503,10 +1506,10 @@ __forceinline mat4 mat4_min(mat4 a, mat4 b)
 __forceinline mat4 mat4_max(mat4 a, mat4 b)
 {
     return mat4_new(
-        vec4_max(a.row0, b.row0),
-        vec4_max(a.row1, b.row1),
-        vec4_max(a.row2, b.row2),
-        vec4_max(a.row3, b.row3)
+        vec4_max(a.v0, b.v0),
+        vec4_max(a.v1, b.v1),
+        vec4_max(a.v2, b.v2),
+        vec4_max(a.v3, b.v3)
     );
 }
 
@@ -1515,10 +1518,10 @@ __forceinline mat4 mat4_max(mat4 a, mat4 b)
 __forceinline mat4 mat4_clamp(mat4 v, mat4 min, mat4 max)
 {
     return mat4_new(
-        vec4_clamp(v.row0, min.row0, max.row0),
-        vec4_clamp(v.row1, min.row1, max.row1),
-        vec4_clamp(v.row2, min.row2, max.row2),
-        vec4_clamp(v.row3, min.row3, max.row3)
+        vec4_clamp(v.v0, min.v0, max.v0),
+        vec4_clamp(v.v1, min.v1, max.v1),
+        vec4_clamp(v.v2, min.v2, max.v2),
+        vec4_clamp(v.v3, min.v3, max.v3)
     );
 }
 
@@ -1527,10 +1530,10 @@ __forceinline mat4 mat4_clamp(mat4 v, mat4 min, mat4 max)
 __forceinline mat4 mat4_saturate(mat4 m)
 {
     return mat4_new(
-        vec4_saturate(m.row0),
-        vec4_saturate(m.row1),
-        vec4_saturate(m.row2),
-        vec4_saturate(m.row3)
+        vec4_saturate(m.v0),
+        vec4_saturate(m.v1),
+        vec4_saturate(m.v2),
+        vec4_saturate(m.v3)
     );
 }
 
@@ -1539,10 +1542,10 @@ __forceinline mat4 mat4_saturate(mat4 m)
 __forceinline mat4 mat4_step(mat4 a, mat4 b)
 {
     return mat4_new(
-        vec4_step(a.row0, b.row0),
-        vec4_step(a.row1, b.row1),
-        vec4_step(a.row2, b.row2),
-        vec4_step(a.row3, b.row3)
+        vec4_step(a.v0, b.v0),
+        vec4_step(a.v1, b.v1),
+        vec4_step(a.v2, b.v2),
+        vec4_step(a.v3, b.v3)
     );
 }
 
@@ -1551,10 +1554,10 @@ __forceinline mat4 mat4_step(mat4 a, mat4 b)
 __forceinline mat4 mat4_lerp(mat4 a, mat4 b, mat4 t)
 {
     return mat4_new(
-        vec4_lerp(a.row0, b.row0, t.row0),
-        vec4_lerp(a.row1, b.row1, t.row1),
-        vec4_lerp(a.row2, b.row2, t.row2),
-        vec4_lerp(a.row3, b.row3, t.row3)
+        vec4_lerp(a.v0, b.v0, t.v0),
+        vec4_lerp(a.v1, b.v1, t.v1),
+        vec4_lerp(a.v2, b.v2, t.v2),
+        vec4_lerp(a.v3, b.v3, t.v3)
     );
 }
 
@@ -1563,10 +1566,10 @@ __forceinline mat4 mat4_lerp(mat4 a, mat4 b, mat4 t)
 __forceinline mat4 mat4_lerp1(mat4 a, mat4 b, float t)
 {
     return mat4_new(
-        vec4_lerp(a.row0, b.row0, vec4_new1(t)),
-        vec4_lerp(a.row1, b.row1, vec4_new1(t)),
-        vec4_lerp(a.row2, b.row2, vec4_new1(t)),
-        vec4_lerp(a.row3, b.row3, vec4_new1(t))
+        vec4_lerp(a.v0, b.v0, vec4_new1(t)),
+        vec4_lerp(a.v1, b.v1, vec4_new1(t)),
+        vec4_lerp(a.v2, b.v2, vec4_new1(t)),
+        vec4_lerp(a.v3, b.v3, vec4_new1(t))
     );
 }
 
@@ -1575,10 +1578,10 @@ __forceinline mat4 mat4_lerp1(mat4 a, mat4 b, float t)
 __forceinline mat4 mat4_smoothstep(mat4 a, mat4 b, mat4 t)
 {
     return mat4_new(
-        vec4_smoothstep(a.row0, b.row0, t.row0),
-        vec4_smoothstep(a.row1, b.row1, t.row1),
-        vec4_smoothstep(a.row2, b.row2, t.row2),
-        vec4_smoothstep(a.row3, b.row3, t.row3)
+        vec4_smoothstep(a.v0, b.v0, t.v0),
+        vec4_smoothstep(a.v1, b.v1, t.v1),
+        vec4_smoothstep(a.v2, b.v2, t.v2),
+        vec4_smoothstep(a.v3, b.v3, t.v3)
     );
 }
 
@@ -1586,14 +1589,14 @@ __forceinline mat4 mat4_smoothstep(mat4 a, mat4 b, mat4 t)
 /// Computes square root of 'x'.
 __forceinline mat4 mat4_sqrt(mat4 m)
 {
-    return mat4_new(vec4_sqrt(m.row0), vec4_sqrt(m.row1), vec4_sqrt(m.row2), vec4_sqrt(m.row3));
+    return mat4_new(vec4_sqrt(m.v0), vec4_sqrt(m.v1), vec4_sqrt(m.v2), vec4_sqrt(m.v3));
 }
 
 
 /// Computes inverse square root of 'x'.
 __forceinline mat4 mat4_rsqrt(mat4 m)
 {
-    return mat4_new(vec4_rsqrt(m.row0), vec4_rsqrt(m.row1), vec4_rsqrt(m.row2), vec4_rsqrt(m.row3));
+    return mat4_new(vec4_rsqrt(m.v0), vec4_rsqrt(m.v1), vec4_rsqrt(m.v2), vec4_rsqrt(m.v3));
 }
 
 
@@ -1602,12 +1605,12 @@ __forceinline vec4 mat4_mul_vec4(mat4 a, vec4 b)
     return vec4_from_m128(
         _mm_add_ps(
             _mm_add_ps(
-                _mm_mul_ps(a.row0.m128, _mm_shuffle_ps(b.m128, b.m128, _MM_SHUFFLE(0, 0, 0, 0))), 
-                _mm_mul_ps(a.row1.m128, _mm_shuffle_ps(b.m128, b.m128, _MM_SHUFFLE(1, 1, 1, 1)))
+                _mm_mul_ps(a.v0.m128, _mm_shuffle_ps(b.m128, b.m128, _MM_SHUFFLE(0, 0, 0, 0))), 
+                _mm_mul_ps(a.v1.m128, _mm_shuffle_ps(b.m128, b.m128, _MM_SHUFFLE(1, 1, 1, 1)))
             ),
             _mm_add_ps(
-                _mm_mul_ps(a.row2.m128, _mm_shuffle_ps(b.m128, b.m128, _MM_SHUFFLE(2, 2, 2, 2))),
-                _mm_mul_ps(a.row3.m128, _mm_shuffle_ps(b.m128, b.m128, _MM_SHUFFLE(3, 3, 3, 3)))
+                _mm_mul_ps(a.v2.m128, _mm_shuffle_ps(b.m128, b.m128, _MM_SHUFFLE(2, 2, 2, 2))),
+                _mm_mul_ps(a.v3.m128, _mm_shuffle_ps(b.m128, b.m128, _MM_SHUFFLE(3, 3, 3, 3)))
             )
         )
     );
@@ -1637,10 +1640,10 @@ __forceinline vec2 mat4_mul_vec2(mat4 a, vec2 b)
 __forceinline mat4 mat4_mul(mat4 a, mat4 b)
 {
     return mat4_new(
-        mat4_mul_vec4(a, b.row0),
-        mat4_mul_vec4(a, b.row1),
-        mat4_mul_vec4(a, b.row2),
-        mat4_mul_vec4(a, b.row3)
+        mat4_mul_vec4(a, b.v0),
+        mat4_mul_vec4(a, b.v1),
+        mat4_mul_vec4(a, b.v2),
+        mat4_mul_vec4(a, b.v3)
     );
 }
 
@@ -1648,10 +1651,10 @@ __forceinline mat4 mat4_mul(mat4 a, mat4 b)
 __forceinline mat4 mat4_mul1(mat4 a, float b)
 {
     return mat4_new(
-        vec4_mul1(a.row0, b),
-        vec4_mul1(a.row1, b),
-        vec4_mul1(a.row2, b),
-        vec4_mul1(a.row3, b)
+        vec4_mul1(a.v0, b),
+        vec4_mul1(a.v1, b),
+        vec4_mul1(a.v2, b),
+        vec4_mul1(a.v3, b)
     );
 }
 
@@ -1659,10 +1662,10 @@ __forceinline mat4 mat4_mul1(mat4 a, float b)
 __forceinline mat4 mat4_transpose(mat4 m)
 {
     __m128 tmp0, tmp1, tmp2, tmp3, res0, res1, res2, res3;
-    tmp0 = m128_merge_hi(m.row0.m128, m.row2.m128);
-    tmp1 = m128_merge_hi(m.row1.m128, m.row3.m128);
-    tmp2 = m128_merge_lo(m.row0.m128, m.row2.m128);
-    tmp3 = m128_merge_lo(m.row1.m128, m.row3.m128);
+    tmp0 = m128_merge_hi(m.v0.m128, m.v2.m128);
+    tmp1 = m128_merge_hi(m.v1.m128, m.v3.m128);
+    tmp2 = m128_merge_lo(m.v0.m128, m.v2.m128);
+    tmp3 = m128_merge_lo(m.v1.m128, m.v3.m128);
     res0 = m128_merge_hi(tmp0, tmp1);
     res1 = m128_merge_lo(tmp0, tmp1);
     res2 = m128_merge_hi(tmp2, tmp3);
@@ -1682,10 +1685,10 @@ __forceinline mat4 mat4_inverse(mat4 m)
     __m128 sum, Det, RDet;
     __m128 trns0, trns1, trns2, trns3;
 
-    __m128 _L1 = m.row0.m128;
-    __m128 _L2 = m.row1.m128;
-    __m128 _L3 = m.row2.m128;
-    __m128 _L4 = m.row3.m128;
+    __m128 _L1 = m.v0.m128;
+    __m128 _L2 = m.v1.m128;
+    __m128 _L3 = m.v2.m128;
+    __m128 _L4 = m.v3.m128;
     // Calculating the minterms for the first line.
 
     // simdRor is just a macro using _mm_shuffle_ps().
@@ -1785,10 +1788,10 @@ __forceinline float mat4_determinant(mat4 mat)
     __m128 r1, r2, r3, tt, tt2;
     __m128 sum, det;
 
-    __m128 _L1 = mat.row0.m128;
-    __m128 _L2 = mat.row1.m128;
-    __m128 _L3 = mat.row2.m128;
-    __m128 _L4 = mat.row3.m128;
+    __m128 _L1 = mat.v0.m128;
+    __m128 _L2 = mat.v1.m128;
+    __m128 _L3 = mat.v2.m128;
+    __m128 _L4 = mat.v3.m128;
     // Calculating the minterms for the first line.
 
     // sseRor is just a macro using _mm_shuffle_ps().
@@ -1929,10 +1932,10 @@ __forceinline mat4 mat4_perspective_rh(float fov_radians, float aspect, float z_
     const float z_clip_bias_1 = (2.0f * z_near * z_far) / (z_near - z_far);
 
     mat4 result;
-    result.row0 = vec4_new(zoom_x,   0.0f,          0.0f,  0.0f);
-    result.row1 = vec4_new(  0.0f, zoom_y,          0.0f,  0.0f);
-    result.row2 = vec4_new(  0.0f,   0.0f, z_clip_bias_0, -1.0f);
-    result.row3 = vec4_new(  0.0f,   0.0f, z_clip_bias_1,  1.0f);
+    result.v0 = vec4_new(zoom_x,   0.0f,          0.0f,  0.0f);
+    result.v1 = vec4_new(  0.0f, zoom_y,          0.0f,  0.0f);
+    result.v2 = vec4_new(  0.0f,   0.0f, z_clip_bias_0, -1.0f);
+    result.v3 = vec4_new(  0.0f,   0.0f, z_clip_bias_1,  1.0f);
     return result;
 }
 
@@ -1951,10 +1954,10 @@ __forceinline mat4 mat4_lookat(vec3 eye, vec3 target, vec3 up)
     const vec3 y = vec3_normalize(vec3_cross(z, x));
 
     mat4 result;
-    result.row0 = vec4_new(              x.x,               y.x,               z.x, 0.0f);
-    result.row1 = vec4_new(              x.y,               y.y,               z.y, 0.0f);
-    result.row2 = vec4_new(              x.z,               y.z,               z.z, 0.0f);
-    result.row3 = vec4_new(-vec3_dot(x, eye), -vec3_dot(y, eye), -vec3_dot(z, eye), 1.0f);
+    result.v0 = vec4_new(              x.x,               y.x,               z.x, 0.0f);
+    result.v1 = vec4_new(              x.y,               y.y,               z.y, 0.0f);
+    result.v2 = vec4_new(              x.z,               y.z,               z.z, 0.0f);
+    result.v3 = vec4_new(-vec3_dot(x, eye), -vec3_dot(y, eye), -vec3_dot(z, eye), 1.0f);
     return result;
 }
 
@@ -2019,28 +2022,28 @@ __forceinline mat4 mat4_rotation(float x, float y, float z, float angle)
 
     mat4 result;
     /* Row 1 */
-    result.row0 = vec4_new(
+    result.v0 = vec4_new(
         t * x * x + c,
         t * x * y - s * z,
         t * x * z + s * y,
         0.0f);
 
     /* Row 2 */
-    result.row1 = vec4_new(
+    result.v1 = vec4_new(
         t * x * y + s * z,
         t * y * y + c,
         t * y * z - s * x,
         0.0f);
 
     /* Row 3 */
-    result.row2 = vec4_new(
+    result.v2 = vec4_new(
         t * x * z - s * y,
         t * y * z + s * x,
         t * z * z + c,
         0.0f);
 
     /* Row 4 */
-    result.row3 = vec4_new(0, 0, 0, 1.0f);
+    result.v3 = vec4_new(0, 0, 0, 1.0f);
     return result;
 }
 
@@ -2124,7 +2127,7 @@ __forceinline void mat4_decompose(mat4 m, vec3* scalation, vec4* quaternion, vec
 {
     if (translation)
     {
-        *translation = vec3_from_m128(m.row3.m128);
+        *translation = vec3_from_m128(m.v3.m128);
     }
 
     if (!scalation && !quaternion)
@@ -2132,9 +2135,9 @@ __forceinline void mat4_decompose(mat4 m, vec3* scalation, vec4* quaternion, vec
         return;
     }
 
-    vec3 xaxis = vec3_from_m128(m.row0.m128);
-    vec3 yaxis = vec3_from_m128(m.row1.m128);
-    vec3 zaxis = vec3_from_m128(m.row2.m128);
+    vec3 xaxis = vec3_from_m128(m.v0.m128);
+    vec3 yaxis = vec3_from_m128(m.v1.m128);
+    vec3 zaxis = vec3_from_m128(m.v2.m128);
 
     const float n11 = m.m00, n12 = m.m10, n13 = m.m20, n14 = m.m30;
     const float n21 = m.m01, n22 = m.m11, n23 = m.m21, n24 = m.m31;

@@ -457,10 +457,10 @@ __forceinline bool operator!=(vec4 a, vec4 b)
 __forceinline mat4 operator-(mat4 m)
 {
     mat4 result;
-    result.row0 = -m.row0;
-    result.row1 = -m.row1;
-    result.row2 = -m.row2;
-    result.row3 = -m.row3;
+    result.v0 = -m.v0;
+    result.v1 = -m.v1;
+    result.v2 = -m.v2;
+    result.v3 = -m.v3;
     return result;
 }
 
@@ -474,10 +474,10 @@ __forceinline mat4 operator+(mat4 m)
 __forceinline mat4 operator+(mat4 a, mat4 b)
 {
     return mat4_new(
-        a.row0 + b.row0,
-        a.row1 + b.row1,
-        a.row2 + b.row2,
-        a.row3 + b.row3
+        a.v0 + b.v0,
+        a.v1 + b.v1,
+        a.v2 + b.v2,
+        a.v3 + b.v3
     );
 }
 
@@ -485,10 +485,10 @@ __forceinline mat4 operator+(mat4 a, mat4 b)
 __forceinline mat4 operator+(mat4 a, float b)
 {
     return mat4_new(
-        a.row0 + b,
-        a.row1 + b,
-        a.row2 + b,
-        a.row3 + b
+        a.v0 + b,
+        a.v1 + b,
+        a.v2 + b,
+        a.v3 + b
     );
 }
 
@@ -496,10 +496,10 @@ __forceinline mat4 operator+(mat4 a, float b)
 __forceinline mat4 operator+(float a, mat4 b)
 {
     return mat4_new(
-        a + b.row0,
-        a + b.row1,
-        a + b.row2,
-        a + b.row3
+        a + b.v0,
+        a + b.v1,
+        a + b.v2,
+        a + b.v3
     );
 }
 
@@ -507,10 +507,10 @@ __forceinline mat4 operator+(float a, mat4 b)
 __forceinline mat4 operator-(mat4 a, mat4 b)
 {
     return mat4_new(
-        a.row0 - b.row0,
-        a.row1 - b.row1,
-        a.row2 - b.row2,
-        a.row3 - b.row3
+        a.v0 - b.v0,
+        a.v1 - b.v1,
+        a.v2 - b.v2,
+        a.v3 - b.v3
     );
 }
 
@@ -518,10 +518,10 @@ __forceinline mat4 operator-(mat4 a, mat4 b)
 __forceinline mat4 operator-(mat4 a, float b)
 {
     return mat4_new(
-        a.row0 - b,
-        a.row1 - b,
-        a.row2 - b,
-        a.row3 - b
+        a.v0 - b,
+        a.v1 - b,
+        a.v2 - b,
+        a.v3 - b
     );
 }
 
@@ -529,10 +529,10 @@ __forceinline mat4 operator-(mat4 a, float b)
 __forceinline mat4 operator-(float a, mat4 b)
 {
     return mat4_new(
-        a - b.row0,
-        a - b.row1,
-        a - b.row2,
-        a - b.row3
+        a - b.v0,
+        a - b.v1,
+        a - b.v2,
+        a - b.v3
     );
 }
 
@@ -576,10 +576,10 @@ __forceinline mat4 operator*(float a, mat4 b)
 __forceinline mat4 operator/(mat4 a, mat4 b)
 {
     return mat4_new(
-        a.row0 / b.row0,
-        a.row1 / b.row1,
-        a.row2 / b.row2,
-        a.row3 / b.row3
+        a.v0 / b.v0,
+        a.v1 / b.v1,
+        a.v2 / b.v2,
+        a.v3 / b.v3
     );
 }
 
@@ -587,10 +587,10 @@ __forceinline mat4 operator/(mat4 a, mat4 b)
 __forceinline mat4 operator/(mat4 a, float b)
 {
     return mat4_new(
-        a.row0 / b,
-        a.row1 / b,
-        a.row2 / b,
-        a.row3 / b
+        a.v0 / b,
+        a.v1 / b,
+        a.v2 / b,
+        a.v3 / b
     );
 }
 
@@ -598,10 +598,10 @@ __forceinline mat4 operator/(mat4 a, float b)
 __forceinline mat4 operator/(float a, mat4 b)
 {
     return mat4_new(
-        a / b.row0,
-        a / b.row1,
-        a / b.row2,
-        a / b.row3
+        a / b.v0,
+        a / b.v1,
+        a / b.v2,
+        a / b.v3
     );
 }
 
@@ -659,6 +659,7 @@ __forceinline bool operator!=(mat4 a, mat4 b)
     return mat4_not_equal(a, b);
 }
 
-#endif //! OPERATORS
+
+#endif //! VECTORMATH_OPERATORS
 
 //! LEAVE AN EMPTY LINE HERE, REQUIRE BY GCC/G++

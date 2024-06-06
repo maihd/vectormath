@@ -5,3 +5,4 @@
 - Add vecx_zero
 - Add system name or perspective/ortho/frustum, only support right handed now
 - Remove ++/-- operators
+- Update matrix fields name rowx -> vx, support both row/col major, but now only have col-major functions

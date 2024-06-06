@@ -67,6 +67,7 @@ __forceinline vec2 vec2_add(vec2 a, vec2 b)
     return vec2_new(a.x + b.x, a.y + b.y);
 }
 
+
 /// Subtract two vectors
 __forceinline vec2 vec2_sub(vec2 a, vec2 b)
 {

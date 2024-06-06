@@ -365,7 +365,7 @@ typedef union VECTORMATH_VECTORTYPE(uvec4, 16)
 
 
 /// mat2
-/// 2x2 floating-point row-major matrix
+/// 2x2 floating-point matrix (default col-major, row-major is supported)
 /// Components are 32 bit fixed-size floating-point number
 /// Struct Layout: 
 ///		[float m00][float m01]
@@ -374,8 +374,20 @@ typedef union VECTORMATH_VECTORTYPE(mat2, 16)
 {
     struct
     {
+        vec2                    v0;
+        vec2                    v1;
+    };
+
+    struct
+    {
         vec2                    row0;
         vec2                    row1;
+    };
+
+    struct
+    {
+        vec2                    col0;
+        vec2                    col1;
     };
 
     struct
@@ -384,6 +396,10 @@ typedef union VECTORMATH_VECTORTYPE(mat2, 16)
         float                   m10, m11;
     };
 
+    vec2                        vecs[2];            // Matrix rows array
+    vec2                        rows[2];            // Matrix rows array
+    vec2                        cols[2];            // Matrix cols array
+
     // Internal
     __m128                      m128;
     float                       data[4];
@@ -391,7 +407,7 @@ typedef union VECTORMATH_VECTORTYPE(mat2, 16)
 
 
 /// mat3
-/// 3x3 floating-point row-major matrix
+/// 3x3 floating-point matrix (default col-major, row-major is supported)
 /// Components are 32 bit fixed-size floating-point number
 /// Struct Layout: 
 ///		[float m00][float m01][float m02][float _m03]
@@ -401,9 +417,23 @@ typedef union VECTORMATH_VECTORTYPE(mat3, 16)
 {
     struct
     {
+        vec3                    v0;
+        vec3                    v1;
+        vec3                    v2;
+    };
+
+    struct
+    {
         vec3                    row0;
         vec3                    row1;
         vec3                    row2;
+    };
+
+    struct
+    {
+        vec3                    col0;
+        vec3                    col1;
+        vec3                    col2;
     };
 
     struct
@@ -412,11 +442,18 @@ typedef union VECTORMATH_VECTORTYPE(mat3, 16)
         float                   m10, m11, m12, _m13;
         float                   m20, m21, m22, _m23;
     };
+
+    vec3                        vecs[3];            // Matrix vecs array
+    vec3                        rows[3];            // Matrix rows array
+    vec3                        cols[3];            // Matrix cols array
+    
+    // Internal
+    float                       data[12];
 } mat3;
 
 
 /// mat4
-/// 4x4 floating-point row-major matrix
+/// 4x4 floating-point matrix (default col-major, row-major is supported)
 /// Components are 32 bit fixed-size floating-point number
 /// Struct Layout: 
 ///		[float m00][float m01][float m02][float m03]
@@ -427,6 +464,14 @@ typedef union VECTORMATH_VECTORTYPE(mat4, 16)
 {
     struct
     {
+        vec4                    v0;               // Matrix first vec  (4 components)
+        vec4                    v1;               // Matrix second vec (4 components)
+        vec4                    v2;               // Matrix third vec  (4 components)
+        vec4                    v3;               // Matrix fourth vec (4 components)
+    };
+    
+    struct
+    {
         vec4                    row0;               // Matrix first row  (4 components)
         vec4                    row1;               // Matrix second row (4 components)
         vec4                    row2;               // Matrix third row  (4 components)
@@ -435,15 +480,28 @@ typedef union VECTORMATH_VECTORTYPE(mat4, 16)
 
     struct
     {
-        float                   m00, m01, m02, m03; // Matrix first row  (4 components)
-        float                   m10, m11, m12, m13; // Matrix second row (4 components)
-        float                   m20, m21, m22, m23; // Matrix third row  (4 components)
-        float                   m30, m31, m32, m33; // Matrix fourth row (4 components)
+        vec4                    col0;               // Matrix first col  (4 components)
+        vec4                    col1;               // Matrix second col (4 components)
+        vec4                    col2;               // Matrix third col  (4 components)
+        vec4                    col3;               // Matrix fourth col (4 components)
     };
+
+    struct
+    {
+        float                   m00, m01, m02, m03; // Matrix first col  (4 components)
+        float                   m10, m11, m12, m13; // Matrix second col (4 components)
+        float                   m20, m21, m22, m23; // Matrix third col  (4 components)
+        float                   m30, m31, m32, m33; // Matrix fourth col (4 components)
+    };
+
+    vec4                        vecs[4];            // Matrix vecs array
+    vec4                        rows[4];            // Matrix rows array
+    vec4                        cols[4];            // Matrix cols array
 
     // Internal
     float                       data[16];
 } mat4;
+
 
 // -------------------------------------------------------------
 // Type size and align verification

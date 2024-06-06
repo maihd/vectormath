@@ -5,15 +5,18 @@
 #include "vectormath_common.h"
 #include "vectormath_simd_utils.h"
 
+
 // Make sure clang extensions is enable
 #if !VECTORMATH_ENABLE_CLANG_EXT
 #error The vectormath support for clang vector extensions is not enable, please use vectormath_scalar.h or vectormath_simd.h instead
 #endif
 
+
 // Should not use with other versions of vectormath together
 #if defined(VECTORMATH_FUNCTIONS_DEFINED)
 #error another version of vectormath has been include, please remove that from your source if you attempt to use vectormath with Clang extensions
 #endif
+
 
 // Helper for extensions
 #define VECTORMATH_FUNCTIONS_DEFINED
@@ -22,11 +25,13 @@
 // Constructors
 // -------------------------------------------------------------
 
+
 /// Create __m128 from vec3
 __forceinline __m128 m128_from_vec3(vec3 v)
 {
     return _mm_set_ps(0.0f, v.z, v.y, v.x);
 }
+
 
 /// Create a new vector 3D
 __forceinline vec3 vec3_new(float x, float y, float z)
@@ -34,6 +39,7 @@ __forceinline vec3 vec3_new(float x, float y, float z)
     vec3 result = { x, y, z };
     return result;
 }
+
 
 /// Create a new vector 3D, with components have same value
 __forceinline vec3 vec3_new1(float s)
@@ -56,11 +62,13 @@ __forceinline vec3 vec3_from_vec2(vec2 v)
     return { v.x, v.y, 0.0f };
 }
 
+
 /// Create a new vector 3D from a vector 4D
 __forceinline vec3 vec3_from_vec4(vec4 v)
 {
     return v.xyz;
 }
+
 
 /// Create a new vector 3D from a __m128 simd
 /// @note: available only on SIMD vectormath version
@@ -73,11 +81,13 @@ __forceinline vec3 vec3_from_m128(__m128 m128)
     return result;
 }
 
+
 /// Create a new vector 4D
 __forceinline vec4 vec4_new(float x, float y, float z, float w)
 {
     return { x, y, z, w };
 }
+
 
 /// Create a new vector 4D, with components have same value
 __forceinline vec4 vec4_new1(float s)
@@ -100,12 +110,14 @@ __forceinline vec4 vec4_from_m128(__m128 m128)
     return (vec4)m128;
 }
 
+
 /// Create a new vector 3D, with components' values load from a scalars array
 /// @note: this functions is not pointer-safe
 __forceinline vec3 vec3_load(const float ptr[])
 {
     return vec3_from_m128(_mm_load_ps(ptr));
 }
+
 
 /// Create a new vector 4D, with components' values load from an scalars array
 /// @note: this functions is not pointer-safe
@@ -114,16 +126,18 @@ __forceinline vec4 vec4_load(const float ptr[])
     return vec4_from_m128(_mm_load_ps(ptr));
 }
 
+
 // Create a new matrix 4x4
-__forceinline mat4 mat4_new(vec4 row0, vec4 row1, vec4 row2, vec4 row3)
+__forceinline mat4 mat4_new(vec4 v0, vec4 v1, vec4 v2, vec4 v3)
 {
     mat4 result;
-    result.row0 = row0;
-    result.row1 = row1;
-    result.row2 = row2;
-    result.row3 = row3;
+    result.v0 = v0;
+    result.v1 = v1;
+    result.v2 = v2;
+    result.v3 = v3;
     return result;
 }
+
 
 // Create a new matrix 4x4, specify the components with 16 scalars
 __forceinline mat4 mat4_new_16f(
@@ -133,12 +147,13 @@ __forceinline mat4 mat4_new_16f(
     float m30, float m31, float m32, float m33)
 {
     mat4 result;
-    result.row0 = vec4_new(m00, m01, m02, m03);
-    result.row1 = vec4_new(m10, m11, m12, m13);
-    result.row2 = vec4_new(m20, m21, m22, m23);
-    result.row3 = vec4_new(m30, m31, m32, m33);
+    result.v0 = vec4_new(m00, m01, m02, m03);
+    result.v1 = vec4_new(m10, m11, m12, m13);
+    result.v2 = vec4_new(m20, m21, m22, m23);
+    result.v3 = vec4_new(m30, m31, m32, m33);
     return result;
 }
+
 
 // Create a new matrix 4x4, specify the components with 16 scalars
 __deprecated("mat4_new_16f")
@@ -149,83 +164,97 @@ __forceinline mat4 mat4_new_f16(
     float m30, float m31, float m32, float m33)
 {
     mat4 result;
-    result.row0 = vec4_new(m00, m01, m02, m03);
-    result.row1 = vec4_new(m10, m11, m12, m13);
-    result.row2 = vec4_new(m20, m21, m22, m23);
-    result.row3 = vec4_new(m30, m31, m32, m33);
+    result.v0 = vec4_new(m00, m01, m02, m03);
+    result.v1 = vec4_new(m10, m11, m12, m13);
+    result.v2 = vec4_new(m20, m21, m22, m23);
+    result.v3 = vec4_new(m30, m31, m32, m33);
     return result;
 }
+
 
 /// Create a new vector 4D, with components' values load from an scalars array
 /// @note: this functions is not pointer-safe
 __forceinline mat4 mat4_load(const float ptr[])
 {
     mat4 result;
-    result.row0 = vec4_load(ptr + 0);
-    result.row1 = vec4_load(ptr + 4);
-    result.row2 = vec4_load(ptr + 8);
-    result.row3 = vec4_load(ptr + 12);
+    result.v0 = vec4_load(ptr + 0);
+    result.v1 = vec4_load(ptr + 4);
+    result.v2 = vec4_load(ptr + 8);
+    result.v3 = vec4_load(ptr + 12);
     return result;
 }
+
 
 // -------------------------------------------------------------
 // Operators-like functions
 // -------------------------------------------------------------
+
 
 __forceinline vec3 vec3_neg(vec3 v)
 {
     return -v;
 }
 
+
 __forceinline vec3 vec3_add(vec3 a, vec3 b)
 {
     return a + b;
 }
+
 
 __forceinline vec3 vec3_sub(vec3 a, vec3 b)
 {
     return a - b;
 }
 
+
 __forceinline vec3 vec3_mul(vec3 a, vec3 b)
 {
     return a * b;
 }
+
 
 __forceinline vec3 vec3_div(vec3 a, vec3 b)
 {
     return a / b;
 }
 
+
 __forceinline vec3 vec3_add1(vec3 a, float b)
 {
     return a + b;
 }
+
 
 __forceinline vec3 vec3_sub1(vec3 a, float b)
 {
     return a - b;
 }
 
+
 __forceinline vec3 vec3_mul1(vec3 a, float b)
 {
     return a * b;
 }
+
 
 __forceinline vec3 vec3_div1(vec3 a, float b)
 {
     return a / b;
 }
 
+
 __forceinline vec3 vec3_mul_add(vec3 a, vec3 b, vec3 c)
 {
     return c + a * b;
 }
 
+
 __forceinline vec3 vec3_mul_sub(vec3 a, vec3 b, vec3 c)
 {
     return c - a * b;
 }
+
 
 __forceinline bool vec3_equal(vec3 a, vec3 b)
 {
@@ -235,6 +264,7 @@ __forceinline bool vec3_equal(vec3 a, vec3 b)
         && a.z == b.z;
 }
 
+
 __forceinline bool vec3_not_equal(vec3 a, vec3 b)
 {
     //return (_mm_movemask_ps(_mm_cmpeq_ps(a, b)) & 0x7) != 0x7;
@@ -242,6 +272,7 @@ __forceinline bool vec3_not_equal(vec3 a, vec3 b)
         || a.y != b.y
         || a.z != b.z;
 }
+
 
 __forceinline bool vec3_isclose(vec3 a, vec3 b)
 {
@@ -252,60 +283,72 @@ __forceinline bool vec3_isclose(vec3 a, vec3 b)
         && float_isclose(a.z, b.z);
 }
 
+
 __forceinline vec4 vec4_neg(vec4 v)
 {
     return -v;
 }
+
 
 __forceinline vec4 vec4_add(vec4 a, vec4 b)
 {
     return a + b;
 }
 
+
 __forceinline vec4 vec4_sub(vec4 a, vec4 b)
 {
     return a - b;
 }
+
 
 __forceinline vec4 vec4_mul(vec4 a, vec4 b)
 {
     return a * b;
 }
 
+
 __forceinline vec4 vec4_div(vec4 a, vec4 b)
 {
     return a / b;
 }
+
 
 __forceinline vec4 vec4_add1(vec4 a, float b)
 {
     return a + b;
 }
 
+
 __forceinline vec4 vec4_sub1(vec4 a, float b)
 {
     return a - b;
 }
+
 
 __forceinline vec4 vec4_mul1(vec4 a, float b)
 {
     return a * b;
 }
 
+
 __forceinline vec4 vec4_div1(vec4 a, float b)
 {
     return a / b;
 }
+
 
 __forceinline vec4 vec4_mul_add(vec4 a, vec4 b, vec4 c)
 {
     return c + a * b;
 }
 
+
 __forceinline vec4 vec4_mul_sub(vec4 a, vec4 b, vec4 c)
 {
     return c - a * b;
 }
+
 
 __forceinline bool vec4_equal(vec4 a, vec4 b)
 {
@@ -316,6 +359,7 @@ __forceinline bool vec4_equal(vec4 a, vec4 b)
         && a.w == b.w;
 }
 
+
 __forceinline bool vec4_not_equal(vec4 a, vec4 b)
 {
     //return _mm_movemask_ps(_mm_cmpeq_ps(a.m128, b.m128)) != 0x16;
@@ -324,6 +368,7 @@ __forceinline bool vec4_not_equal(vec4 a, vec4 b)
         || a.z != b.z
         || a.w != b.w;
 }
+
 
 __forceinline bool vec4_isclose(vec4 a, vec4 b)
 {
@@ -335,49 +380,56 @@ __forceinline bool vec4_isclose(vec4 a, vec4 b)
         && float_isclose(a.w, b.w);
 }
 
+
 __forceinline mat4 mat4_neg(mat4 m)
 {
     mat4 result;
-    result.row0 = vec4_neg(m.row0);
-    result.row1 = vec4_neg(m.row1);
-    result.row2 = vec4_neg(m.row2);
-    result.row3 = vec4_neg(m.row3);
+    result.v0 = vec4_neg(m.v0);
+    result.v1 = vec4_neg(m.v1);
+    result.v2 = vec4_neg(m.v2);
+    result.v3 = vec4_neg(m.v3);
     return result;
 }
+
 
 __forceinline mat4 mat4_add(mat4 a, mat4 b)
 {
     return mat4_new(
-        vec4_add(a.row0, b.row0),
-        vec4_add(a.row1, b.row1),
-        vec4_add(a.row2, b.row2),
-        vec4_add(a.row3, b.row3)
+        vec4_add(a.v0, b.v0),
+        vec4_add(a.v1, b.v1),
+        vec4_add(a.v2, b.v2),
+        vec4_add(a.v3, b.v3)
     );
 }
+
 
 __forceinline mat4 mat4_sub(mat4 a, mat4 b)
 {
     return mat4_new(
-        vec4_sub(a.row0, b.row0),
-        vec4_sub(a.row1, b.row1),
-        vec4_sub(a.row2, b.row2),
-        vec4_sub(a.row3, b.row3)
+        vec4_sub(a.v0, b.v0),
+        vec4_sub(a.v1, b.v1),
+        vec4_sub(a.v2, b.v2),
+        vec4_sub(a.v3, b.v3)
     );
 }
 
+
 __forceinline bool mat4_equal(mat4 a, mat4 b)
 {
-    return vec4_equal(a.row0, b.row0) && vec4_equal(a.row1, b.row1) && vec4_equal(a.row2, b.row2) && vec4_equal(a.row2, b.row2);
+    return vec4_equal(a.v0, b.v0) && vec4_equal(a.v1, b.v1) && vec4_equal(a.v2, b.v2) && vec4_equal(a.v2, b.v2);
 }
+
 
 __forceinline bool mat4_not_equal(mat4 a, mat4 b)
 {
-    return vec4_not_equal(a.row0, b.row0) && vec4_not_equal(a.row1, b.row1) && vec4_not_equal(a.row2, b.row2) && vec4_not_equal(a.row2, b.row2);
+    return vec4_not_equal(a.v0, b.v0) && vec4_not_equal(a.v1, b.v1) && vec4_not_equal(a.v2, b.v2) && vec4_not_equal(a.v2, b.v2);
 }
+
 
 // -------------------------------------------------------------
 // Functions
 // -------------------------------------------------------------
+
 
 /// Computes sign of 'x'
 __forceinline ivec3 vec3_sign(vec3 v)
@@ -395,11 +447,13 @@ __forceinline ivec3 vec3_sign(vec3 v)
     return result;
 }
 
+
 /// Computes absolute value
 __forceinline vec3 vec3_abs(vec3 v)
 {
     return vec3_from_m128(m128_fabsf(m128_from_vec3(v)));
 }
+
 
 /// Computes cosine
 __forceinline vec3 vec3_cos(vec3 v)
@@ -407,11 +461,13 @@ __forceinline vec3 vec3_cos(vec3 v)
     return vec3_from_m128(m128_cosf(m128_from_vec3(v)));
 }
 
+
 /// Computes sine
 __forceinline vec3 vec3_sin(vec3 v)
 {
     return vec3_from_m128(m128_sinf(m128_from_vec3(v)));
 }
+
 
 /// Computes tangent
 __forceinline vec3 vec3_tan(vec3 v)
@@ -420,11 +476,13 @@ __forceinline vec3 vec3_tan(vec3 v)
     //return vec3_from_m128(m128_tanf(v.m128));
 }
 
+
 /// Computes hyperbolic cosine
 __forceinline vec3 vec3_cosh(vec3 v)
 {
     return vec3_new(coshf(v.x), coshf(v.y), coshf(v.z));
 }
+
 
 /// Computes hyperbolic sine
 __forceinline vec3 vec3_sinh(vec3 v)
@@ -432,11 +490,13 @@ __forceinline vec3 vec3_sinh(vec3 v)
     return vec3_new(sinhf(v.x), sinhf(v.y), sinhf(v.z));
 }
 
+
 /// Computes hyperbolic tangent
 __forceinline vec3 vec3_tanh(vec3 v)
 {
     return vec3_new(tanhf(v.x), tanhf(v.y), tanhf(v.z));
 }
+
 
 /// Computes inverse cosine
 __forceinline vec3 vec3_acos(vec3 v)
@@ -444,11 +504,13 @@ __forceinline vec3 vec3_acos(vec3 v)
     return vec3_from_m128(m128_acosf(m128_from_vec3(v)));
 }
 
+
 /// Computes inverse sine
 __forceinline vec3 vec3_asin(vec3 v)
 {
     return vec3_new(asinf(v.x), asinf(v.y), asinf(v.z));
 }
+
 
 /// Computes inverse tangent
 __forceinline vec3 vec3_atan(vec3 v)
@@ -456,11 +518,13 @@ __forceinline vec3 vec3_atan(vec3 v)
     return vec3_new(atanf(v.x), atanf(v.y), atanf(v.z));
 }
 
+
 /// Computes inverse tangent with 2 args
 __forceinline vec3 vec3_atan2(vec3 a, vec3 b)
 {
     return vec3_new(atan2f(a.x, b.x), atan2f(a.y, b.y), atan2f(a.z, b.z));
 }
+
 
 /// Computes Euler number raised to the power 'x'
 __forceinline vec3 vec3_exp(vec3 v)
@@ -468,11 +532,13 @@ __forceinline vec3 vec3_exp(vec3 v)
     return vec3_new(expf(v.x), expf(v.y), expf(v.z));
 }
 
+
 /// Computes 2 raised to the power 'x'
 __forceinline vec3 vec3_exp2(vec3 v)
 {
     return vec3_new(exp2f(v.x), exp2f(v.y), exp2f(v.z));
 }
+
 
 /// Computes the base Euler number logarithm
 __forceinline vec3 vec3_log(vec3 v)
@@ -480,11 +546,13 @@ __forceinline vec3 vec3_log(vec3 v)
     return vec3_new(logf(v.x), logf(v.y), logf(v.z));
 }
 
+
 /// Computes the base 2 logarithm
 __forceinline vec3 vec3_log2(vec3 v)
 {
     return vec3_new(log2f(v.x), log2f(v.y), log2f(v.z));
 }
+
 
 /// Computes the base 10 logarithm
 __forceinline vec3 vec3_log10(vec3 v)
@@ -492,11 +560,13 @@ __forceinline vec3 vec3_log10(vec3 v)
     return vec3_new(log10f(v.x), log10f(v.y), log10f(v.z));
 }
 
+
 /// Computes the value of base raised to the power exponent
 __forceinline vec3 vec3_pow(vec3 a, vec3 b)
 {
     return vec3_new(powf(a.x, b.x), powf(a.y, b.y), powf(a.z, b.z));
 }
+
 
 /// Get the fractal part of floating point
 __forceinline vec3 vec3_frac(vec3 v)
@@ -504,11 +574,13 @@ __forceinline vec3 vec3_frac(vec3 v)
     return vec3_new(float_frac(v.x), float_frac(v.y), float_frac(v.z));
 }
 
+
 /// Computes the floating-point remainder of the division operation x/y
 __forceinline vec3 vec3_fmod(vec3 a, vec3 b)
 {
     return vec3_new(fmodf(a.x, b.x), fmodf(a.y, b.y), fmodf(a.z, b.z));
 }
+
 
 /// Computes the smallest integer value not less than 'x'
 __forceinline vec3 vec3_ceil(vec3 v)
@@ -516,11 +588,13 @@ __forceinline vec3 vec3_ceil(vec3 v)
     return vec3_new(ceilf(v.x), ceilf(v.y), ceilf(v.z));
 }
 
+
 /// Computes the largest integer value not greater than 'x'
 __forceinline vec3 vec3_floor(vec3 v)
 {
     return vec3_new(floorf(v.x), floorf(v.y), floorf(v.z));
 }
+
 
 /// Computes the nearest integer value
 __forceinline vec3 vec3_round(vec3 v)
@@ -528,11 +602,13 @@ __forceinline vec3 vec3_round(vec3 v)
     return vec3_new(roundf(v.x), roundf(v.y), roundf(v.z));
 }
 
+
 /// Computes the nearest integer not greater in magnitude than 'x'
 __forceinline vec3 vec3_trunc(vec3 v)
 {
     return vec3_new(truncf(v.x), truncf(v.y), truncf(v.z));
 }
+
 
 /// Get the smaller value
 __forceinline vec3 vec3_min(vec3 a, vec3 b)
@@ -540,11 +616,13 @@ __forceinline vec3 vec3_min(vec3 a, vec3 b)
     return vec3_new(float_min(a.x, b.x), float_min(a.y, b.y), float_min(a.z, b.z));
 }
 
+
 /// Get the larger value
 __forceinline vec3 vec3_max(vec3 a, vec3 b)
 {
     return vec3_new(float_max(a.x, b.x), float_max(a.y, b.y), float_max(a.z, b.z));
 }
+
 
 /// Clamps the 'x' value to the [min, max].
 __forceinline vec3 vec3_clamp(vec3 v, vec3 min, vec3 max)
@@ -552,11 +630,13 @@ __forceinline vec3 vec3_clamp(vec3 v, vec3 min, vec3 max)
     return vec3_new(float_clamp(v.x, min.x, max.x), float_clamp(v.y, min.y, max.y), float_clamp(v.z, min.z, max.z));
 }
 
+
 /// Clamps the specified value within the range of 0 to 1
 __forceinline vec3 vec3_saturate(vec3 v)
 {
     return vec3_new(float_saturate(v.x), float_saturate(v.y), float_saturate(v.z));
 }
+
 
 /// Compares two values, returning 0 or 1 based on which value is greater.
 __forceinline vec3 vec3_step(vec3 a, vec3 b)
@@ -564,11 +644,13 @@ __forceinline vec3 vec3_step(vec3 a, vec3 b)
     return vec3_new(float_step(a.x, b.x), float_step(a.y, b.y), float_step(a.z, b.z));
 }
 
+
 /// Performs a linear interpolation.
 __forceinline vec3 vec3_lerp(vec3 a, vec3 b, vec3 t)
 {
     return vec3_new(float_lerp(a.x, b.x, t.x), float_lerp(a.y, b.y, t.y), float_lerp(a.z, b.z, t.z));
 }
+
 
 /// Performs a linear interpolation.
 __forceinline vec3 vec3_lerp1(vec3 a, vec3 b, float t)
@@ -576,11 +658,13 @@ __forceinline vec3 vec3_lerp1(vec3 a, vec3 b, float t)
     return vec3_new(float_lerp(a.x, b.x, t), float_lerp(a.y, b.y, t), float_lerp(a.z, b.z, t));
 }
 
+
 // Compute a smooth Hermite interpolation
 __forceinline vec3 vec3_smoothstep(vec3 a, vec3 b, vec3 t)
 {
     return vec3_new(float_smoothstep(a.x, b.x, t.x), float_smoothstep(a.y, b.y, t.y), float_smoothstep(a.z, b.z, t.z));
 }
+
 
 /// Computes square root of 'x'.
 __forceinline vec3 vec3_sqrt(vec3 v)
@@ -588,11 +672,13 @@ __forceinline vec3 vec3_sqrt(vec3 v)
     return vec3_new(sqrtf(v.x), sqrtf(v.y), sqrtf(v.z));
 }
 
+
 /// Computes inverse square root of 'x'.
 __forceinline vec3 vec3_rsqrt(vec3 v)
 {
     return vec3_new(float_rsqrt(v.x), float_rsqrt(v.y), float_rsqrt(v.z));
 }
+
 
 /// Compute cross product of two vectors
 __forceinline vec3 vec3_cross(vec3 a, vec3 b)
@@ -606,6 +692,7 @@ __forceinline vec3 vec3_cross(vec3 a, vec3 b)
     return vec3_from_m128(result);
 }
 
+
 /// Compute dot product of two vectors
 __forceinline float vec3_dot(vec3 a, vec3 b)
 {
@@ -613,11 +700,13 @@ __forceinline float vec3_dot(vec3 a, vec3 b)
     return c.x + c.y + c.z;
 }
 
+
 /// Compute squared length of vector
 __forceinline float vec3_lensqr(vec3 v)
 {
     return vec3_dot(v, v);
 }
+
 
 /// Compute length of vector
 __forceinline float vec3_length(vec3 v)
@@ -625,17 +714,20 @@ __forceinline float vec3_length(vec3 v)
     return sqrtf(vec3_lensqr(v));
 }
 
+
 /// Compute distance from 'a' to b
 __forceinline float vec3_distance(vec3 a, vec3 b)
 {
     return vec3_length(vec3_sub(a, b));
 }
 
+
 /// Compute squared distance from 'a' to b
 __forceinline float vec3_distsqr(vec3 a, vec3 b)
 {
     return vec3_lensqr(vec3_sub(a, b));
 }
+
 
 /// Compute normalized vector
 __forceinline vec3 vec3_normalize(vec3 v)
@@ -652,11 +744,13 @@ __forceinline vec3 vec3_normalize(vec3 v)
     }
 }
 
+
 /// Compute reflection vector
 __forceinline vec3 vec3_reflect(vec3 v, vec3 n)
 {
     return vec3_sub(v, vec3_mul1(n, 2.0f * vec3_dot(v, n)));
 }
+
 
 /// Compute refraction vector
 __forceinline vec3 vec3_refract(vec3 v, vec3 n, float eta)
@@ -667,11 +761,13 @@ __forceinline vec3 vec3_refract(vec3 v, vec3 n, float eta)
         : vec3_sub(vec3_mul1(v, eta), vec3_mul1(n, (eta * vec3_dot(v, n) + sqrtf(k))));
 }
 
+
 /// Compute faceforward vector
 __forceinline vec3 vec3_faceforward(vec3 n, vec3 i, vec3 nref)
 {
     return vec3_dot(i, nref) < 0.0f ? n : vec3_neg(n);
 }
+
 
 /// Computes sign of 'x'
 __forceinline ivec4 vec4_sign(vec4 v)
@@ -692,11 +788,13 @@ __forceinline ivec4 vec4_sign(vec4 v)
     return result;
 }
 
+
 /// Computes absolute value
 __forceinline vec4 vec4_abs(vec4 v)
 {
     return vec4_from_m128(m128_fabsf((__m128)v));
 }
+
 
 /// Computes cosine
 __forceinline vec4 vec4_cos(vec4 v)
@@ -704,11 +802,13 @@ __forceinline vec4 vec4_cos(vec4 v)
     return vec4_from_m128(m128_cosf((__m128)v));
 }
 
+
 /// Computes sine
 __forceinline vec4 vec4_sin(vec4 v)
 {
     return vec4_from_m128(m128_sinf((__m128)v));
 }
+
 
 /// Computes tangent
 __forceinline vec4 vec4_tan(vec4 v)
@@ -717,11 +817,13 @@ __forceinline vec4 vec4_tan(vec4 v)
     //return vec4_from_m128(m128_tanf(v.m128));
 }
 
+
 /// Computes hyperbolic cosine
 __forceinline vec4 vec4_cosh(vec4 v)
 {
     return vec4_new(coshf(v.x), coshf(v.y), coshf(v.z), coshf(v.w));
 }
+
 
 /// Computes hyperbolic sine
 __forceinline vec4 vec4_sinh(vec4 v)
@@ -729,11 +831,13 @@ __forceinline vec4 vec4_sinh(vec4 v)
     return vec4_new(sinhf(v.x), sinhf(v.y), sinhf(v.z), sinhf(v.w));
 }
 
+
 /// Computes hyperbolic tangent
 __forceinline vec4 vec4_tanh(vec4 v)
 {
     return vec4_new(tanhf(v.x), tanhf(v.y), tanhf(v.z), tanhf(v.w));
 }
+
 
 /// Computes inverse cosine
 __forceinline vec4 vec4_acos(vec4 v)
@@ -741,11 +845,13 @@ __forceinline vec4 vec4_acos(vec4 v)
     return vec4_from_m128(m128_acosf((__m128)v));
 }
 
+
 /// Computes inverse sine
 __forceinline vec4 vec4_asin(vec4 v)
 {
     return vec4_new(asinf(v.x), asinf(v.y), asinf(v.z), asinf(v.w));
 }
+
 
 /// Computes inverse tangent
 __forceinline vec4 vec4_atan(vec4 v)
@@ -753,11 +859,13 @@ __forceinline vec4 vec4_atan(vec4 v)
     return vec4_new(atanf(v.x), atanf(v.y), atanf(v.z), atanf(v.w));
 }
 
+
 /// Computes inverse tangent with 2 args
 __forceinline vec4 vec4_atan2(vec4 a, vec4 b)
 {
     return vec4_new(atan2f(a.x, b.x), atan2f(a.y, b.y), atan2f(a.z, b.z), atan2f(a.w, b.w));
 }
+
 
 /// Computes Euler number raised to the power 'x'
 __forceinline vec4 vec4_exp(vec4 v)
@@ -765,11 +873,13 @@ __forceinline vec4 vec4_exp(vec4 v)
     return vec4_new(expf(v.x), expf(v.y), expf(v.z), expf(v.w));
 }
 
+
 /// Computes 2 raised to the power 'x'
 __forceinline vec4 vec4_exp2(vec4 v)
 {
     return vec4_new(exp2f(v.x), exp2f(v.y), exp2f(v.z), exp2f(v.w));
 }
+
 
 /// Computes the base Euler number logarithm
 __forceinline vec4 vec4_log(vec4 v)
@@ -777,11 +887,13 @@ __forceinline vec4 vec4_log(vec4 v)
     return vec4_new(logf(v.x), logf(v.y), logf(v.z), logf(v.w));
 }
 
+
 /// Computes the base 2 logarithm
 __forceinline vec4 vec4_log2(vec4 v)
 {
     return vec4_new(log2f(v.x), log2f(v.y), log2f(v.z), log2f(v.w));
 }
+
 
 /// Computes the base 10 logarithm
 __forceinline vec4 vec4_log10(vec4 v)
@@ -789,11 +901,13 @@ __forceinline vec4 vec4_log10(vec4 v)
     return vec4_new(log10f(v.x), log10f(v.y), log10f(v.z), log10f(v.w));
 }
 
+
 /// Computes the value of base raised to the power exponent
 __forceinline vec4 vec4_pow(vec4 a, vec4 b)
 {
     return vec4_new(powf(a.x, b.x), powf(a.y, b.y), powf(a.z, b.z), powf(a.w, b.w));
 }
+
 
 /// Get the fractal part of floating point
 __forceinline vec4 vec4_frac(vec4 v)
@@ -801,11 +915,13 @@ __forceinline vec4 vec4_frac(vec4 v)
     return vec4_new(float_frac(v.x), float_frac(v.y), float_frac(v.z), float_frac(v.w));
 }
 
+
 /// Computes the floating-point remainder of the division operation x/y
 __forceinline vec4 vec4_fmod(vec4 a, vec4 b)
 {
     return vec4_new(fmodf(a.x, b.x), fmodf(a.y, b.y), fmodf(a.z, b.z), fmodf(a.w, b.w));
 }
+
 
 /// Computes the smallest integer value not less than 'x'
 __forceinline vec4 vec4_ceil(vec4 v)
@@ -813,11 +929,13 @@ __forceinline vec4 vec4_ceil(vec4 v)
     return vec4_new(ceilf(v.x), ceilf(v.y), ceilf(v.z), ceilf(v.w));
 }
 
+
 /// Computes the largest integer value not greater than 'x'
 __forceinline vec4 vec4_floor(vec4 v)
 {
     return vec4_new(floorf(v.x), floorf(v.y), floorf(v.z), floorf(v.w));
 }
+
 
 /// Computes the nearest integer value
 __forceinline vec4 vec4_round(vec4 v)
@@ -825,11 +943,13 @@ __forceinline vec4 vec4_round(vec4 v)
     return vec4_new(roundf(v.x), roundf(v.y), roundf(v.z), roundf(v.w));
 }
 
+
 /// Computes the nearest integer not greater in magnitude than 'x'
 __forceinline vec4 vec4_trunc(vec4 v)
 {
     return vec4_new(truncf(v.x), truncf(v.y), truncf(v.z), truncf(v.w));
 }
+
 
 /// Get the smaller value
 __forceinline vec4 vec4_min(vec4 a, vec4 b)
@@ -842,6 +962,7 @@ __forceinline vec4 vec4_min(vec4 a, vec4 b)
     );
 }
 
+
 /// Get the larger value
 __forceinline vec4 vec4_max(vec4 a, vec4 b)
 {
@@ -852,6 +973,7 @@ __forceinline vec4 vec4_max(vec4 a, vec4 b)
         float_max(a.w, b.w)
     );
 }
+
 
 /// Clamps the 'x' value to the [min, max].
 __forceinline vec4 vec4_clamp(vec4 v, vec4 min, vec4 max)
@@ -864,11 +986,13 @@ __forceinline vec4 vec4_clamp(vec4 v, vec4 min, vec4 max)
     );
 }
 
+
 /// Clamps the specified value within the range of 0 to 1
 __forceinline vec4 vec4_saturate(vec4 v)
 {
     return vec4_new(float_saturate(v.x), float_saturate(v.y), float_saturate(v.z), float_saturate(v.w));
 }
+
 
 /// Compares two values, returning 0 or 1 based on which value is greater.
 __forceinline vec4 vec4_step(vec4 a, vec4 b)
@@ -881,6 +1005,7 @@ __forceinline vec4 vec4_step(vec4 a, vec4 b)
     );
 }
 
+
 /// Performs a linear interpolation.
 __forceinline vec4 vec4_lerp(vec4 a, vec4 b, vec4 t)
 {
@@ -891,6 +1016,7 @@ __forceinline vec4 vec4_lerp(vec4 a, vec4 b, vec4 t)
         float_lerp(a.w, b.w, t.w)
     );
 }
+
 
 /// Performs a linear interpolation.
 __forceinline vec4 vec4_lerp1(vec4 a, vec4 b, float t)
@@ -903,6 +1029,7 @@ __forceinline vec4 vec4_lerp1(vec4 a, vec4 b, float t)
     );
 }
 
+
 /// Compute a smooth Hermite interpolation
 __forceinline vec4 vec4_smoothstep(vec4 a, vec4 b, vec4 t)
 {
@@ -914,17 +1041,20 @@ __forceinline vec4 vec4_smoothstep(vec4 a, vec4 b, vec4 t)
     );
 }
 
+
 /// Computes square root of 'x'.
 __forceinline vec4 vec4_sqrt(vec4 v)
 {
     return vec4_new(sqrtf(v.x), sqrtf(v.y), sqrtf(v.z), sqrtf(v.w));
 }
 
+
 /// Computes inverse square root of 'x'.
 __forceinline vec4 vec4_rsqrt(vec4 v)
 {
     return vec4_new(float_rsqrt(v.x), float_rsqrt(v.y), float_rsqrt(v.z), float_rsqrt(v.w));
 }
+
 
 /// Compute dot product of two vectors
 __forceinline float vec4_dot(vec4 a, vec4 b)
@@ -933,11 +1063,13 @@ __forceinline float vec4_dot(vec4 a, vec4 b)
     return c.x + c.y + c.z + c.w;
 }
 
+
 /// Compute squared length of vector
 __forceinline float vec4_lensqr(vec4 v)
 {
     return vec4_dot(v, v);
 }
+
 
 /// Compute length of vector
 __forceinline float vec4_length(vec4 v)
@@ -945,17 +1077,20 @@ __forceinline float vec4_length(vec4 v)
     return sqrtf(vec4_lensqr(v));
 }
 
+
 /// Compute distance from 'a' to 'b'
 __forceinline float vec4_distance(vec4 a, vec4 b)
 {
     return vec4_length(vec4_sub(a, b));
 }
 
+
 /// Compute squared distance from 'a' to 'b'
 __forceinline float vec4_distsqr(vec4 a, vec4 b)
 {
     return vec4_lensqr(vec4_sub(a, b));
 }
+
 
 /// Compute normalized vector
 __forceinline vec4 vec4_normalize(vec4 v)
@@ -972,11 +1107,13 @@ __forceinline vec4 vec4_normalize(vec4 v)
     }
 }
 
+
 /// Compute reflection vector
 __forceinline vec4 vec4_reflect(vec4 v, vec4 n)
 {
     return vec4_sub(v, vec4_mul1(n, 2.0f * vec4_dot(v, n)));
 }
+
 
 /// Compute refraction vector
 __forceinline vec4 vec4_refract(vec4 v, vec4 n, float eta)
@@ -987,11 +1124,13 @@ __forceinline vec4 vec4_refract(vec4 v, vec4 n, float eta)
         : vec4_sub(vec4_mul1(v, eta), vec4_mul1(n, eta * vec4_dot(v, n) + sqrtf(k)));
 }
 
+
 /// Compute faceforward vector
 __forceinline vec4 vec4_faceforward(vec4 n, vec4 i, vec4 nref)
 {
     return vec4_dot(i, nref) < 0.0f ? n : vec4_neg(n);
 }
+
 
 /// Quaternion multiplication
 __forceinline vec4 quat_mul(vec4 a, vec4 b)
@@ -1005,17 +1144,20 @@ __forceinline vec4 quat_mul(vec4 a, vec4 b)
     return vec4_new(xyz.x, xyz.y, xyz.z, w);
 }
 
+
 /// Quaternion inversion
 __forceinline vec4 quat_inverse(vec4 q)
 {
     return vec4_new(q.x, q.y, q.z, -q.w);
 }
 
+
 /// Quaternion conjugate
 __forceinline vec4 quat_conj(vec4 q)
 {
     return vec4_new(-q.x, -q.y, -q.z, q.w);
 }
+
 
 /// Create quaternion from axes and angle
 __forceinline vec4 quat_from_axis_angle(vec3 axis, float angle)
@@ -1028,6 +1170,7 @@ __forceinline vec4 quat_from_axis_angle(vec3 axis, float angle)
     const vec3 normalized = vec3_mul1(vec3_normalize(axis), sinf(angle * 0.5f));
     return vec4_new(normalized.x, normalized.y, normalized.z, cosf(angle * 0.5f));
 }
+
 
 /// Convert quaternion from axes and angle
 __forceinline vec4 quat_to_axis_angle(vec4 quat)
@@ -1047,6 +1190,7 @@ __forceinline vec4 quat_to_axis_angle(vec4 quat)
     return vec4_new(axis.x, axis.y, axis.z, angle);
 }
 
+
 /// Convert quaternion from axes and angle, pass-by-ref
 __forceinline void quat_to_axis_angle_ref(vec4 quat, vec3* axis, float* angle)
 {
@@ -1054,6 +1198,7 @@ __forceinline void quat_to_axis_angle_ref(vec4 quat, vec3* axis, float* angle)
     if (axis) *axis = vec3_from_vec4(axisAngle);
     if (angle) *angle = axisAngle.w;
 }
+
 
 /// Create quaternion from euler
 __forceinline vec4 quat_from_euler(float x, float y, float z)
@@ -1080,369 +1225,404 @@ __forceinline vec4 quat_from_euler(float x, float y, float z)
     );
 }
 
+
 /// Computes absolute value
 __forceinline mat4 mat4_abs(mat4 m)
 {
-    return mat4_new(vec4_abs(m.row0), vec4_abs(m.row1), vec4_abs(m.row2), vec4_abs(m.row3));
+    return mat4_new(vec4_abs(m.v0), vec4_abs(m.v1), vec4_abs(m.v2), vec4_abs(m.v3));
 }
+
 
 /// Computes cosine
 __forceinline mat4 mat4_cos(mat4 m)
 {
     return mat4_new(
-        vec4_cos(m.row0),
-        vec4_cos(m.row1),
-        vec4_cos(m.row2),
-        vec4_cos(m.row3)
+        vec4_cos(m.v0),
+        vec4_cos(m.v1),
+        vec4_cos(m.v2),
+        vec4_cos(m.v3)
     );
 }
+
 
 /// Computes sine
 __forceinline mat4 mat4_sin(mat4 m)
 {
     return mat4_new(
-        vec4_sin(m.row0),
-        vec4_sin(m.row1),
-        vec4_sin(m.row2),
-        vec4_sin(m.row3)
+        vec4_sin(m.v0),
+        vec4_sin(m.v1),
+        vec4_sin(m.v2),
+        vec4_sin(m.v3)
     );
 }
+
 
 /// Computes tangent
 __forceinline mat4 mat4_tan(mat4 m)
 {
     return mat4_new(
-        vec4_tan(m.row0),
-        vec4_tan(m.row1),
-        vec4_tan(m.row2),
-        vec4_tan(m.row3)
+        vec4_tan(m.v0),
+        vec4_tan(m.v1),
+        vec4_tan(m.v2),
+        vec4_tan(m.v3)
     );
 }
+
 
 /// Computes hyperbolic cosine
 __forceinline mat4 mat4_cosh(mat4 m)
 {
     return mat4_new(
-        vec4_cosh(m.row0),
-        vec4_cosh(m.row1),
-        vec4_cosh(m.row2),
-        vec4_cosh(m.row3)
+        vec4_cosh(m.v0),
+        vec4_cosh(m.v1),
+        vec4_cosh(m.v2),
+        vec4_cosh(m.v3)
     );
 }
+
 
 /// Computes hyperbolic sine
 __forceinline mat4 mat4_sinh(mat4 m)
 {
     return mat4_new(
-        vec4_sinh(m.row0),
-        vec4_sinh(m.row1),
-        vec4_sinh(m.row2),
-        vec4_sinh(m.row3)
+        vec4_sinh(m.v0),
+        vec4_sinh(m.v1),
+        vec4_sinh(m.v2),
+        vec4_sinh(m.v3)
     );
 }
+
 
 /// Computes hyperbolic tangent
 __forceinline mat4 mat4_tanh(mat4 m)
 {
     return mat4_new(
-        vec4_tanh(m.row0),
-        vec4_tanh(m.row1),
-        vec4_tanh(m.row2),
-        vec4_tanh(m.row3)
+        vec4_tanh(m.v0),
+        vec4_tanh(m.v1),
+        vec4_tanh(m.v2),
+        vec4_tanh(m.v3)
     );
 }
+
 
 /// Computes inverse cosine
 __forceinline mat4 mat4_acos(mat4 m)
 {
     return mat4_new(
-        vec4_acos(m.row0),
-        vec4_acos(m.row1),
-        vec4_acos(m.row2),
-        vec4_acos(m.row3)
+        vec4_acos(m.v0),
+        vec4_acos(m.v1),
+        vec4_acos(m.v2),
+        vec4_acos(m.v3)
     );
 }
+
 
 /// Computes inverse sine
 __forceinline mat4 mat4_asin(mat4 m)
 {
     return mat4_new(
-        vec4_asin(m.row0),
-        vec4_asin(m.row1),
-        vec4_asin(m.row2),
-        vec4_asin(m.row3)
+        vec4_asin(m.v0),
+        vec4_asin(m.v1),
+        vec4_asin(m.v2),
+        vec4_asin(m.v3)
     );
 }
+
 
 /// Computes inverse tangent
 __forceinline mat4 mat4_atan(mat4 m)
 {
     return mat4_new(
-        vec4_atan(m.row0),
-        vec4_atan(m.row1),
-        vec4_atan(m.row2),
-        vec4_atan(m.row3)
+        vec4_atan(m.v0),
+        vec4_atan(m.v1),
+        vec4_atan(m.v2),
+        vec4_atan(m.v3)
     );
 }
+
 
 /// Computes inverse tangent with 2 args
 __forceinline mat4 mat4_atan2(mat4 a, mat4 b)
 {
     return mat4_new(
-        vec4_atan2(a.row0, b.row0),
-        vec4_atan2(a.row1, b.row1),
-        vec4_atan2(a.row2, b.row2),
-        vec4_atan2(a.row3, b.row3)
+        vec4_atan2(a.v0, b.v0),
+        vec4_atan2(a.v1, b.v1),
+        vec4_atan2(a.v2, b.v2),
+        vec4_atan2(a.v3, b.v3)
     );
 }
+
 
 /// Computes Euler number raised to the power 'x'
 __forceinline mat4 mat4_exp(mat4 m)
 {
     return mat4_new(
-        vec4_exp(m.row0),
-        vec4_exp(m.row1),
-        vec4_exp(m.row2),
-        vec4_exp(m.row3)
+        vec4_exp(m.v0),
+        vec4_exp(m.v1),
+        vec4_exp(m.v2),
+        vec4_exp(m.v3)
     );
 }
+
 
 /// Computes 2 raised to the power 'x'
 __forceinline mat4 mat4_exp2(mat4 m)
 {
     return mat4_new(
-        vec4_exp2(m.row0),
-        vec4_exp2(m.row1),
-        vec4_exp2(m.row2),
-        vec4_exp2(m.row3)
+        vec4_exp2(m.v0),
+        vec4_exp2(m.v1),
+        vec4_exp2(m.v2),
+        vec4_exp2(m.v3)
     );
 }
+
 
 /// Computes the base Euler number logarithm
 __forceinline mat4 mat4_log(mat4 m)
 {
     return mat4_new(
-        vec4_log(m.row0),
-        vec4_log(m.row1),
-        vec4_log(m.row2),
-        vec4_log(m.row3)
+        vec4_log(m.v0),
+        vec4_log(m.v1),
+        vec4_log(m.v2),
+        vec4_log(m.v3)
     );
 }
+
 
 /// Computes the base 2 logarithm
 __forceinline mat4 mat4_log2(mat4 m)
 {
     return mat4_new(
-        vec4_log2(m.row0),
-        vec4_log2(m.row1),
-        vec4_log2(m.row2),
-        vec4_log2(m.row3)
+        vec4_log2(m.v0),
+        vec4_log2(m.v1),
+        vec4_log2(m.v2),
+        vec4_log2(m.v3)
     );
 }
+
 
 /// Computes the base 10 logarithm
 __forceinline mat4 mat4_log10(mat4 m)
 {
     return mat4_new(
-        vec4_log10(m.row0),
-        vec4_log10(m.row1),
-        vec4_log10(m.row2),
-        vec4_log10(m.row3)
+        vec4_log10(m.v0),
+        vec4_log10(m.v1),
+        vec4_log10(m.v2),
+        vec4_log10(m.v3)
     );
 }
+
 
 /// Computes the value of base raised to the power exponent
 __forceinline mat4 mat4_pow(mat4 a, mat4 b)
 {
     return mat4_new(
-        vec4_pow(a.row0, b.row0),
-        vec4_pow(a.row1, b.row1),
-        vec4_pow(a.row2, b.row2),
-        vec4_pow(a.row3, b.row3)
+        vec4_pow(a.v0, b.v0),
+        vec4_pow(a.v1, b.v1),
+        vec4_pow(a.v2, b.v2),
+        vec4_pow(a.v3, b.v3)
     );
 }
+
 
 /// Get the fractal part of floating point
 __forceinline mat4 mat4_frac(mat4 m)
 {
     return mat4_new(
-        vec4_frac(m.row0),
-        vec4_frac(m.row1),
-        vec4_frac(m.row2),
-        vec4_frac(m.row3)
+        vec4_frac(m.v0),
+        vec4_frac(m.v1),
+        vec4_frac(m.v2),
+        vec4_frac(m.v3)
     );
 }
+
 
 /// Computes the floating-point remainder of the division operation x/y
 __forceinline mat4 mat4_fmod(mat4 a, mat4 b)
 {
     return mat4_new(
-        vec4_fmod(a.row0, b.row0),
-        vec4_fmod(a.row1, b.row1),
-        vec4_fmod(a.row2, b.row2),
-        vec4_fmod(a.row3, b.row3)
+        vec4_fmod(a.v0, b.v0),
+        vec4_fmod(a.v1, b.v1),
+        vec4_fmod(a.v2, b.v2),
+        vec4_fmod(a.v3, b.v3)
     );
 }
+
 
 /// Computes the smallest integer value not less than 'x'
 __forceinline mat4 mat4_ceil(mat4 m)
 {
     return mat4_new(
-        vec4_ceil(m.row0),
-        vec4_ceil(m.row1),
-        vec4_ceil(m.row2),
-        vec4_ceil(m.row3)
+        vec4_ceil(m.v0),
+        vec4_ceil(m.v1),
+        vec4_ceil(m.v2),
+        vec4_ceil(m.v3)
     );
 }
+
 
 /// Computes the largest integer value not greater than 'x'
 __forceinline mat4 mat4_floor(mat4 m)
 {
     return mat4_new(
-        vec4_floor(m.row0),
-        vec4_floor(m.row1),
-        vec4_floor(m.row2),
-        vec4_floor(m.row3)
+        vec4_floor(m.v0),
+        vec4_floor(m.v1),
+        vec4_floor(m.v2),
+        vec4_floor(m.v3)
     );
 }
+
 
 /// Computes the nearest integer value
 __forceinline mat4 mat4_round(mat4 m)
 {
     return mat4_new(
-        vec4_round(m.row0),
-        vec4_round(m.row1),
-        vec4_round(m.row2),
-        vec4_round(m.row3)
+        vec4_round(m.v0),
+        vec4_round(m.v1),
+        vec4_round(m.v2),
+        vec4_round(m.v3)
     );
 }
+
 
 /// Computes the nearest integer not greater in magnitude than 'x'
 __forceinline mat4 mat4_trunc(mat4 m)
 {
     return mat4_new(
-        vec4_trunc(m.row0),
-        vec4_trunc(m.row1),
-        vec4_trunc(m.row2),
-        vec4_trunc(m.row3)
+        vec4_trunc(m.v0),
+        vec4_trunc(m.v1),
+        vec4_trunc(m.v2),
+        vec4_trunc(m.v3)
     );
 }
+
 
 /// Get the smaller value
 __forceinline mat4 mat4_min(mat4 a, mat4 b)
 {
     return mat4_new(
-        vec4_min(a.row0, b.row0),
-        vec4_min(a.row1, b.row1),
-        vec4_min(a.row2, b.row2),
-        vec4_min(a.row3, b.row3)
+        vec4_min(a.v0, b.v0),
+        vec4_min(a.v1, b.v1),
+        vec4_min(a.v2, b.v2),
+        vec4_min(a.v3, b.v3)
     );
 }
+
 
 /// Get the larger value
 __forceinline mat4 mat4_max(mat4 a, mat4 b)
 {
     return mat4_new(
-        vec4_max(a.row0, b.row0),
-        vec4_max(a.row1, b.row1),
-        vec4_max(a.row2, b.row2),
-        vec4_max(a.row3, b.row3)
+        vec4_max(a.v0, b.v0),
+        vec4_max(a.v1, b.v1),
+        vec4_max(a.v2, b.v2),
+        vec4_max(a.v3, b.v3)
     );
 }
+
 
 /// Clamps the 'x' value to the [min, max].
 __forceinline mat4 mat4_clamp(mat4 v, mat4 min, mat4 max)
 {
     return mat4_new(
-        vec4_clamp(v.row0, min.row0, max.row0),
-        vec4_clamp(v.row1, min.row1, max.row1),
-        vec4_clamp(v.row2, min.row2, max.row2),
-        vec4_clamp(v.row3, min.row3, max.row3)
+        vec4_clamp(v.v0, min.v0, max.v0),
+        vec4_clamp(v.v1, min.v1, max.v1),
+        vec4_clamp(v.v2, min.v2, max.v2),
+        vec4_clamp(v.v3, min.v3, max.v3)
     );
 }
+
 
 /// Clamps the specified value within the range of 0 to 1
 __forceinline mat4 mat4_saturate(mat4 m)
 {
     return mat4_new(
-        vec4_saturate(m.row0),
-        vec4_saturate(m.row1),
-        vec4_saturate(m.row2),
-        vec4_saturate(m.row3)
+        vec4_saturate(m.v0),
+        vec4_saturate(m.v1),
+        vec4_saturate(m.v2),
+        vec4_saturate(m.v3)
     );
 }
+
 
 /// Compares two values, returning 0 or 1 based on which value is greater.
 __forceinline mat4 mat4_step(mat4 a, mat4 b)
 {
     return mat4_new(
-        vec4_step(a.row0, b.row0),
-        vec4_step(a.row1, b.row1),
-        vec4_step(a.row2, b.row2),
-        vec4_step(a.row3, b.row3)
+        vec4_step(a.v0, b.v0),
+        vec4_step(a.v1, b.v1),
+        vec4_step(a.v2, b.v2),
+        vec4_step(a.v3, b.v3)
     );
 }
+
 
 /// Performs a linear interpolation.
 __forceinline mat4 mat4_lerp(mat4 a, mat4 b, mat4 t)
 {
     return mat4_new(
-        vec4_lerp(a.row0, b.row0, t.row0),
-        vec4_lerp(a.row1, b.row1, t.row1),
-        vec4_lerp(a.row2, b.row2, t.row2),
-        vec4_lerp(a.row3, b.row3, t.row3)
+        vec4_lerp(a.v0, b.v0, t.v0),
+        vec4_lerp(a.v1, b.v1, t.v1),
+        vec4_lerp(a.v2, b.v2, t.v2),
+        vec4_lerp(a.v3, b.v3, t.v3)
     );
 }
+
 
 /// Performs a linear interpolation.
 __forceinline mat4 mat4_lerp1(mat4 a, mat4 b, float t)
 {
     return mat4_new(
-        vec4_lerp(a.row0, b.row0, vec4_new1(t)),
-        vec4_lerp(a.row1, b.row1, vec4_new1(t)),
-        vec4_lerp(a.row2, b.row2, vec4_new1(t)),
-        vec4_lerp(a.row3, b.row3, vec4_new1(t))
+        vec4_lerp(a.v0, b.v0, vec4_new1(t)),
+        vec4_lerp(a.v1, b.v1, vec4_new1(t)),
+        vec4_lerp(a.v2, b.v2, vec4_new1(t)),
+        vec4_lerp(a.v3, b.v3, vec4_new1(t))
     );
 }
+
 
 /// Compute a smooth Hermite interpolation
 __forceinline mat4 mat4_smoothstep(mat4 a, mat4 b, mat4 t)
 {
     return mat4_new(
-        vec4_smoothstep(a.row0, b.row0, t.row0),
-        vec4_smoothstep(a.row1, b.row1, t.row1),
-        vec4_smoothstep(a.row2, b.row2, t.row2),
-        vec4_smoothstep(a.row3, b.row3, t.row3)
+        vec4_smoothstep(a.v0, b.v0, t.v0),
+        vec4_smoothstep(a.v1, b.v1, t.v1),
+        vec4_smoothstep(a.v2, b.v2, t.v2),
+        vec4_smoothstep(a.v3, b.v3, t.v3)
     );
 }
+
 
 /// Computes square root of 'x'.
 __forceinline mat4 mat4_sqrt(mat4 m)
 {
-    return mat4_new(vec4_sqrt(m.row0), vec4_sqrt(m.row1), vec4_sqrt(m.row2), vec4_sqrt(m.row3));
+    return mat4_new(vec4_sqrt(m.v0), vec4_sqrt(m.v1), vec4_sqrt(m.v2), vec4_sqrt(m.v3));
 }
+
 
 /// Computes inverse square root of 'x'.
 __forceinline mat4 mat4_rsqrt(mat4 m)
 {
-    return mat4_new(vec4_rsqrt(m.row0), vec4_rsqrt(m.row1), vec4_rsqrt(m.row2), vec4_rsqrt(m.row3));
+    return mat4_new(vec4_rsqrt(m.v0), vec4_rsqrt(m.v1), vec4_rsqrt(m.v2), vec4_rsqrt(m.v3));
 }
+
 
 __forceinline vec4 mat4_mul_vec4(mat4 a, vec4 b)
 {
     return vec4_from_m128(
         _mm_add_ps(
             _mm_add_ps(
-                _mm_mul_ps((__m128)a.row0, _mm_shuffle_ps((__m128)b, b, _MM_SHUFFLE(0, 0, 0, 0))), 
-                _mm_mul_ps((__m128)a.row1, _mm_shuffle_ps((__m128)b, b, _MM_SHUFFLE(1, 1, 1, 1)))
+                _mm_mul_ps((__m128)a.v0, _mm_shuffle_ps((__m128)b, b, _MM_SHUFFLE(0, 0, 0, 0))), 
+                _mm_mul_ps((__m128)a.v1, _mm_shuffle_ps((__m128)b, b, _MM_SHUFFLE(1, 1, 1, 1)))
             ),
             _mm_add_ps(
-                _mm_mul_ps((__m128)a.row2, _mm_shuffle_ps((__m128)b, b, _MM_SHUFFLE(2, 2, 2, 2))),
-                _mm_mul_ps((__m128)a.row3, _mm_shuffle_ps((__m128)b, b, _MM_SHUFFLE(3, 3, 3, 3)))
+                _mm_mul_ps((__m128)a.v2, _mm_shuffle_ps((__m128)b, b, _MM_SHUFFLE(2, 2, 2, 2))),
+                _mm_mul_ps((__m128)a.v3, _mm_shuffle_ps((__m128)b, b, _MM_SHUFFLE(3, 3, 3, 3)))
             )
         )
     );
 }
+
 
 __forceinline vec3 mat4_mul_vec3(mat4 a, vec3 b)
 {
@@ -1453,6 +1633,7 @@ __forceinline vec3 mat4_mul_vec3(mat4 a, vec3 b)
     return vec3_new(b1.x * iw, b1.y * iw, b1.z * iw);
 }
 
+
 __forceinline vec2 mat4_mul_vec2(mat4 a, vec2 b)
 {
     const vec4 b0 = vec4_new(b.x, b.y, 0.0f, 1.0f);
@@ -1462,39 +1643,43 @@ __forceinline vec2 mat4_mul_vec2(mat4 a, vec2 b)
     return vec2_new(b1.x * iw, b1.y * iw);
 }
 
+
 __forceinline mat4 mat4_mul(mat4 a, mat4 b)
 {
     return mat4_new(
-        mat4_mul_vec4(a, b.row0),
-        mat4_mul_vec4(a, b.row1),
-        mat4_mul_vec4(a, b.row2),
-        mat4_mul_vec4(a, b.row3)
+        mat4_mul_vec4(a, b.v0),
+        mat4_mul_vec4(a, b.v1),
+        mat4_mul_vec4(a, b.v2),
+        mat4_mul_vec4(a, b.v3)
     );
 }
+
 
 __forceinline mat4 mat4_mul1(mat4 a, float b)
 {
     return mat4_new(
-        vec4_mul1(a.row0, b),
-        vec4_mul1(a.row1, b),
-        vec4_mul1(a.row2, b),
-        vec4_mul1(a.row3, b)
+        vec4_mul1(a.v0, b),
+        vec4_mul1(a.v1, b),
+        vec4_mul1(a.v2, b),
+        vec4_mul1(a.v3, b)
     );
 }
+
 
 __forceinline mat4 mat4_transpose(mat4 m)
 {
     __m128 tmp0, tmp1, tmp2, tmp3, res0, res1, res2, res3;
-    tmp0 = m128_merge_hi((__m128)m.row0, (__m128)m.row2);
-    tmp1 = m128_merge_hi((__m128)m.row1, (__m128)m.row3);
-    tmp2 = m128_merge_lo((__m128)m.row0, (__m128)m.row2);
-    tmp3 = m128_merge_lo((__m128)m.row1, (__m128)m.row3);
+    tmp0 = m128_merge_hi((__m128)m.v0, (__m128)m.v2);
+    tmp1 = m128_merge_hi((__m128)m.v1, (__m128)m.v3);
+    tmp2 = m128_merge_lo((__m128)m.v0, (__m128)m.v2);
+    tmp3 = m128_merge_lo((__m128)m.v1, (__m128)m.v3);
     res0 = m128_merge_hi(tmp0, tmp1);
     res1 = m128_merge_lo(tmp0, tmp1);
     res2 = m128_merge_hi(tmp2, tmp3);
     res3 = m128_merge_lo(tmp2, tmp3);
     return mat4_new(vec4_from_m128(res0), vec4_from_m128(res1), vec4_from_m128(res2), vec4_from_m128(res3));
 }
+
 
 __forceinline mat4 mat4_inverse(mat4 m)
 {
@@ -1507,10 +1692,10 @@ __forceinline mat4 mat4_inverse(mat4 m)
     __m128 sum, Det, RDet;
     __m128 trns0, trns1, trns2, trns3;
 
-    __m128 _L1 = (__m128)m.row0;
-    __m128 _L2 = (__m128)m.row1;
-    __m128 _L3 = (__m128)m.row2;
-    __m128 _L4 = (__m128)m.row3;
+    __m128 _L1 = (__m128)m.v0;
+    __m128 _L2 = (__m128)m.v1;
+    __m128 _L3 = (__m128)m.v2;
+    __m128 _L4 = (__m128)m.v3;
     // Calculating the minterms for the first line.
 
     // simdRor is just a macro using _mm_shuffle_ps().
@@ -1603,16 +1788,17 @@ __forceinline mat4 mat4_inverse(mat4 m)
     return mat4_new(vec4_from_m128(_L1), vec4_from_m128(_L2), vec4_from_m128(_L3), vec4_from_m128(_L4));
 }
 
+
 __forceinline float mat4_determinant(mat4 mat)
 {
     __m128 Va, Vb, Vc;
     __m128 r1, r2, r3, tt, tt2;
     __m128 sum, det;
 
-    __m128 _L1 = (__m128)mat.row0;
-    __m128 _L2 = (__m128)mat.row1;
-    __m128 _L3 = (__m128)mat.row2;
-    __m128 _L4 = (__m128)mat.row3;
+    __m128 _L1 = (__m128)mat.v0;
+    __m128 _L2 = (__m128)mat.v1;
+    __m128 _L3 = (__m128)mat.v2;
+    __m128 _L4 = (__m128)mat.v3;
     // Calculating the minterms for the first line.
 
     // sseRor is just a macro using _mm_shuffle_ps().
@@ -1651,7 +1837,8 @@ __forceinline float mat4_determinant(mat4 mat)
     return vec4_from_m128(det).x;
 }
 
-__forceinline mat4 mat4_identity()
+
+__forceinline mat4 mat4_identity(void)
 {
     return mat4_new(
         vec4_new(1, 0, 0, 0),
@@ -1661,13 +1848,14 @@ __forceinline mat4 mat4_identity()
     );
 }
 
-__forceinline mat4 mat4_ortho(float left, float right, float bottom, float top, float near, float far)
+
+__forceinline mat4 mat4_ortho_rh(float left, float right, float bottom, float top, float z_near, float z_far)
 {
     const __m128 zero           = _mm_set_ps1(0.0f);
     const __m128 l              = _mm_set_ps1(left);
-    const __m128 f              = _mm_set_ps1(far);
+    const __m128 f              = _mm_set_ps1(z_far);
     const __m128 r              = _mm_set_ps1(right);
-    const __m128 n              = _mm_set_ps1(near);
+    const __m128 n              = _mm_set_ps1(z_near);
     const __m128 b              = _mm_set_ps1(bottom);
     const __m128 t              = _mm_set_ps1(top);
     const __m128 lbn            = m128_merge_hi(m128_merge_hi(l, n), b);
@@ -1693,14 +1881,22 @@ __forceinline mat4 mat4_ortho(float left, float right, float bottom, float top, 
     );
 }
 
-__forceinline mat4 mat4_frustum(float left, float right, float bottom, float top, float near, float far)
+
+__deprecated("mat4_frustum_rh")
+__forceinline mat4 mat4_ortho(float left, float right, float bottom, float top, float z_near, float z_far)
+{
+    return mat4_ortho_rh(left, right, bottom, top, z_near, z_far);
+}
+
+
+__forceinline mat4 mat4_frustum_rh(float left, float right, float bottom, float top, float z_near, float z_far)
 {
     const __m128 zero       = _mm_setzero_ps();
 
     const __m128 l          = _mm_set_ps(left, 0.0f, 0.0f, 0.0f);
-    const __m128 f          = _mm_set_ps(far, 0.0f, 0.0f, 0.0f);
+    const __m128 f          = _mm_set_ps(z_far, 0.0f, 0.0f, 0.0f);
     const __m128 r          = _mm_set_ps(right, 0.0f, 0.0f, 0.0f);
-    const __m128 n          = _mm_set_ps(near, 0.0f, 0.0f, 0.0f);
+    const __m128 n          = _mm_set_ps(z_near, 0.0f, 0.0f, 0.0f);
     const __m128 b          = _mm_set_ps(bottom, 0.0f, 0.0f, 0.0f);
     const __m128 t          = _mm_set_ps(top, 0.0f, 0.0f, 0.0f);
 
@@ -1726,21 +1922,37 @@ __forceinline mat4 mat4_frustum(float left, float right, float bottom, float top
     );
 }
 
-__forceinline mat4 mat4_perspective(float fov, float aspect, float near, float far)
-{
-    const float zoomX = 1.0f / tanf(fov * 0.5f);
-    const float zoomY = zoomX * aspect;
 
-    const float zClipBias0 = (near + far) / (near - far);
-    const float zClipBias1 = (2.0f * near * far) / (near - far);
+__deprecated("mat4_frustum_rh")
+__forceinline mat4 mat4_frustum(float left, float right, float bottom, float top, float z_near, float z_far)
+{
+    return mat4_frustum_rh(left, right, bottom, top, z_near, z_far);
+}
+
+
+__forceinline mat4 mat4_perspective_rh(float fov_radians, float aspect, float z_near, float z_far)
+{
+    const float zoom_x = 1.0f / tanf(fov_radians * 0.5f);
+    const float zoom_y = zoom_x * aspect;
+
+    const float z_clip_bias_0 = (z_near + z_far) / (z_near - z_far);
+    const float z_clip_bias_1 = (2.0f * z_near * z_far) / (z_near - z_far);
 
     mat4 result;
-    result.row0 = vec4_new(zoomX,  0.0f,       0.0f,  0.0f);
-    result.row1 = vec4_new( 0.0f, zoomY,       0.0f,  0.0f);
-    result.row2 = vec4_new( 0.0f,  0.0f, zClipBias0, -1.0f);
-    result.row3 = vec4_new( 0.0f,  0.0f, zClipBias1,  1.0f);
+    result.v0 = vec4_new(zoom_x,   0.0f,          0.0f,  0.0f);
+    result.v1 = vec4_new(  0.0f, zoom_y,          0.0f,  0.0f);
+    result.v2 = vec4_new(  0.0f,   0.0f, z_clip_bias_0, -1.0f);
+    result.v3 = vec4_new(  0.0f,   0.0f, z_clip_bias_1,  1.0f);
     return result;
 }
+
+
+__deprecated("mat4_perspective_rh")
+__forceinline mat4 mat4_perspective(float fov_radians, float aspect, float z_near, float z_far)
+{
+    return mat4_perspective_rh(fov_radians, aspect, z_near, z_far);
+}
+
 
 __forceinline mat4 mat4_lookat(vec3 eye, vec3 target, vec3 up)
 {
@@ -1749,12 +1961,13 @@ __forceinline mat4 mat4_lookat(vec3 eye, vec3 target, vec3 up)
     const vec3 y = vec3_normalize(vec3_cross(z, x));
 
     mat4 result;
-    result.row0 = vec4_new(         x.x,          y.x,          z.x, 0.0f);
-    result.row1 = vec4_new(         x.y,          y.y,          z.y, 0.0f);
-    result.row2 = vec4_new(         x.z,          y.z,          z.z, 0.0f);
-    result.row3 = vec4_new(-vec3_dot(x, eye), -vec3_dot(y, eye), -vec3_dot(z, eye), 1.0f);
+    result.v0 = vec4_new(         x.x,          y.x,          z.x, 0.0f);
+    result.v1 = vec4_new(         x.y,          y.y,          z.y, 0.0f);
+    result.v2 = vec4_new(         x.z,          y.z,          z.z, 0.0f);
+    result.v3 = vec4_new(-vec3_dot(x, eye), -vec3_dot(y, eye), -vec3_dot(z, eye), 1.0f);
     return result;
 }
+
 
 __forceinline mat4 mat4_scalation(float x, float y, float z)
 {
@@ -1766,20 +1979,24 @@ __forceinline mat4 mat4_scalation(float x, float y, float z)
     );
 }
 
+
 __forceinline mat4 mat4_scalation1(float s)
 {
     return mat4_scalation(s, s, s);
 }
+
 
 __forceinline mat4 mat4_scalation_vec2(vec2 v)
 {
     return mat4_scalation(v.x, v.y, 1.0f);
 }
 
+
 __forceinline mat4 mat4_scalation_vec3(vec3 v)
 {
     return mat4_scalation(v.x, v.y, v.z);
 }
+
 
 __forceinline mat4 mat4_translation(float x, float y, float z)
 {
@@ -1791,15 +2008,18 @@ __forceinline mat4 mat4_translation(float x, float y, float z)
     );
 }
 
+
 __forceinline mat4 mat4_translation_vec2(vec2 v)
 {
     return mat4_translation(v.x, v.y, 0.0f);
 }
 
+
 __forceinline mat4 mat4_translation_vec3(vec3 v)
 {
     return mat4_translation(v.x, v.y, v.z);
 }
+
 
 __forceinline mat4 mat4_rotation(float x, float y, float z, float angle)
 {
@@ -1809,35 +2029,37 @@ __forceinline mat4 mat4_rotation(float x, float y, float z, float angle)
 
     mat4 result;
     /* Row 1 */
-    result.row0 = vec4_new(
+    result.v0 = vec4_new(
         t * x * x + c,
         t * x * y - s * z,
         t * x * z + s * y,
         0.0f);
 
     /* Row 2 */
-    result.row1 = vec4_new(
+    result.v1 = vec4_new(
         t * x * y + s * z,
         t * y * y + c,
         t * y * z - s * x,
         0.0f);
 
     /* Row 3 */
-    result.row2 = vec4_new(
+    result.v2 = vec4_new(
         t * x * z - s * y,
         t * y * z + s * x,
         t * z * z + c,
         0.0f);
 
     /* Row 4 */
-    result.row3 = vec4_new(0, 0, 0, 1.0f);
+    result.v3 = vec4_new(0, 0, 0, 1.0f);
     return result;
 }
+
 
 __forceinline mat4 mat4_rotation_axis_angle(vec3 axis, float angle)
 {
     return mat4_rotation(axis.x, axis.y, axis.z, angle);
 }
+
 
 __forceinline mat4 mat4_rotation_x(float angle)
 {
@@ -1852,6 +2074,7 @@ __forceinline mat4 mat4_rotation_x(float angle)
     );
 }
 
+
 __forceinline mat4 mat4_rotation_y(float angle)
 {
     const float s = sinf(angle);
@@ -1864,6 +2087,7 @@ __forceinline mat4 mat4_rotation_y(float angle)
         vec4_new( 0, 0, 0, 1)
     );
 }
+
 
 __forceinline mat4 mat4_rotation_z(float angle)
 {
@@ -1878,11 +2102,13 @@ __forceinline mat4 mat4_rotation_z(float angle)
     );
 }
 
+
 __forceinline mat4 mat4_rotation_quat(vec4 quaternion)
 {
     vec4 axisangle = quat_to_axis_angle(quaternion);
     return mat4_rotation(axisangle.x, axisangle.y, axisangle.z, axisangle.w);
 }
+
 
 /// Create 2D transformation matrix
 __forceinline mat4 mat4_transform2(vec2 position, float angle, vec2 scale)
@@ -1893,6 +2119,7 @@ __forceinline mat4 mat4_transform2(vec2 position, float angle, vec2 scale)
     return mat4_mul(mat4_mul(translation, rotation), scalation);
 }
 
+
 /// Create 3D transformation matrix
 __forceinline mat4 mat4_transform3(vec3 position, vec4 quat, vec3 scale)
 {
@@ -1902,11 +2129,12 @@ __forceinline mat4 mat4_transform3(vec3 position, vec4 quat, vec3 scale)
     return mat4_mul(mat4_mul(translation, rotation), scalation);
 }
 
+
 __forceinline void mat4_decompose(mat4 m, vec3* scalation, vec4* quaternion, vec3* translation)
 {
     if (translation)
     {
-        *translation = vec3_from_vec4(m.row3);
+        *translation = vec3_from_vec4(m.v3);
     }
 
     if (!scalation && !quaternion)
@@ -1914,9 +2142,9 @@ __forceinline void mat4_decompose(mat4 m, vec3* scalation, vec4* quaternion, vec
         return;
     }
 
-    vec3 xaxis = vec3_from_vec4(m.row0);
-    vec3 yaxis = vec3_from_vec4(m.row1);
-    vec3 zaxis = vec3_from_vec4(m.row2);
+    vec3 xaxis = vec3_from_vec4(m.v0);
+    vec3 yaxis = vec3_from_vec4(m.v1);
+    vec3 zaxis = vec3_from_vec4(m.v2);
 
     const float n11 = m.m00, n12 = m.m10, n13 = m.m20, n14 = m.m30;
     const float n21 = m.m01, n22 = m.m11, n23 = m.m21, n24 = m.m31;
@@ -1990,6 +2218,7 @@ __forceinline void mat4_decompose(mat4 m, vec3* scalation, vec4* quaternion, vec
     }
 }
 
+
 __forceinline void mat4_decompose_axis_angle(mat4 m, vec3* scalation, vec3* axis, float* angle, vec3* translation)
 {
     if (axis || angle)
@@ -2004,5 +2233,6 @@ __forceinline void mat4_decompose_axis_angle(mat4 m, vec3* scalation, vec3* axis
         mat4_decompose(m, scalation, (vec4*)0, translation);
     }
 }
+
 
 //! LEAVE AN EMPTY LINE HERE, REQUIRE BY GCC/G++
