@@ -125,6 +125,19 @@ __forceinline mat4 mat4_new(vec4 col0, vec4 col1, vec4 col2, vec4 col3)
     return result;
 }
 
+
+// Create a new diagonal matrix 4x4
+__forceinline mat4 mat4_new_1f(float s)
+{
+    mat4 result;
+    result.col0 = vec4_new(s, 0, 0, 0);
+    result.col1 = vec4_new(0, s, 0, 0);
+    result.col2 = vec4_new(0, 0, s, 0);
+    result.col3 = vec4_new(0, 0, 0, s);
+    return result;
+}
+
+
 // Create a new matrix 4x4, specify the components with 16 scalars
 __forceinline mat4 mat4_new_16f(
     float m00, float m01, float m02, float m03,
