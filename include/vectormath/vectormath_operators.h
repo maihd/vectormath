@@ -457,10 +457,10 @@ __forceinline bool operator!=(vec4 a, vec4 b)
 __forceinline mat4 operator-(mat4 m)
 {
     mat4 result;
-    result.v0 = -m.v0;
-    result.v1 = -m.v1;
-    result.v2 = -m.v2;
-    result.v3 = -m.v3;
+    result.col0 = -m.col0;
+    result.col1 = -m.col1;
+    result.col2 = -m.col2;
+    result.col3 = -m.col3;
     return result;
 }
 
@@ -474,10 +474,10 @@ __forceinline mat4 operator+(mat4 m)
 __forceinline mat4 operator+(mat4 a, mat4 b)
 {
     return mat4_new(
-        a.v0 + b.v0,
-        a.v1 + b.v1,
-        a.v2 + b.v2,
-        a.v3 + b.v3
+        a.col0 + b.col0,
+        a.col1 + b.col1,
+        a.col2 + b.col2,
+        a.col3 + b.col3
     );
 }
 
@@ -485,10 +485,10 @@ __forceinline mat4 operator+(mat4 a, mat4 b)
 __forceinline mat4 operator+(mat4 a, float b)
 {
     return mat4_new(
-        a.v0 + b,
-        a.v1 + b,
-        a.v2 + b,
-        a.v3 + b
+        a.col0 + b,
+        a.col1 + b,
+        a.col2 + b,
+        a.col3 + b
     );
 }
 
@@ -496,10 +496,10 @@ __forceinline mat4 operator+(mat4 a, float b)
 __forceinline mat4 operator+(float a, mat4 b)
 {
     return mat4_new(
-        a + b.v0,
-        a + b.v1,
-        a + b.v2,
-        a + b.v3
+        a + b.col0,
+        a + b.col1,
+        a + b.col2,
+        a + b.col3
     );
 }
 
@@ -507,10 +507,10 @@ __forceinline mat4 operator+(float a, mat4 b)
 __forceinline mat4 operator-(mat4 a, mat4 b)
 {
     return mat4_new(
-        a.v0 - b.v0,
-        a.v1 - b.v1,
-        a.v2 - b.v2,
-        a.v3 - b.v3
+        a.col0 - b.col0,
+        a.col1 - b.col1,
+        a.col2 - b.col2,
+        a.col3 - b.col3
     );
 }
 
@@ -518,10 +518,10 @@ __forceinline mat4 operator-(mat4 a, mat4 b)
 __forceinline mat4 operator-(mat4 a, float b)
 {
     return mat4_new(
-        a.v0 - b,
-        a.v1 - b,
-        a.v2 - b,
-        a.v3 - b
+        a.col0 - b,
+        a.col1 - b,
+        a.col2 - b,
+        a.col3 - b
     );
 }
 
@@ -529,10 +529,10 @@ __forceinline mat4 operator-(mat4 a, float b)
 __forceinline mat4 operator-(float a, mat4 b)
 {
     return mat4_new(
-        a - b.v0,
-        a - b.v1,
-        a - b.v2,
-        a - b.v3
+        a - b.col0,
+        a - b.col1,
+        a - b.col2,
+        a - b.col3
     );
 }
 
@@ -576,10 +576,10 @@ __forceinline mat4 operator*(float a, mat4 b)
 __forceinline mat4 operator/(mat4 a, mat4 b)
 {
     return mat4_new(
-        a.v0 / b.v0,
-        a.v1 / b.v1,
-        a.v2 / b.v2,
-        a.v3 / b.v3
+        a.col0 / b.col0,
+        a.col1 / b.col1,
+        a.col2 / b.col2,
+        a.col3 / b.col3
     );
 }
 
@@ -587,10 +587,10 @@ __forceinline mat4 operator/(mat4 a, mat4 b)
 __forceinline mat4 operator/(mat4 a, float b)
 {
     return mat4_new(
-        a.v0 / b,
-        a.v1 / b,
-        a.v2 / b,
-        a.v3 / b
+        a.col0 / b,
+        a.col1 / b,
+        a.col2 / b,
+        a.col3 / b
     );
 }
 
@@ -598,10 +598,10 @@ __forceinline mat4 operator/(mat4 a, float b)
 __forceinline mat4 operator/(float a, mat4 b)
 {
     return mat4_new(
-        a / b.v0,
-        a / b.v1,
-        a / b.v2,
-        a / b.v3
+        a / b.col0,
+        a / b.col1,
+        a / b.col2,
+        a / b.col3
     );
 }
 
