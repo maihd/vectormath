@@ -2025,28 +2025,28 @@ __forceinline mat4 mat4_rotation(float x, float y, float z, float angle)
     const float t = 1.0f - c;
 
     mat4 result;
-    /* Row 1 */
+    /* Col 1 */
     result.col0 = vec4_new(
         t * x * x + c,
         t * x * y - s * z,
         t * x * z + s * y,
         0.0f);
 
-    /* Row 2 */
+    /* Col 2 */
     result.col1 = vec4_new(
         t * x * y + s * z,
         t * y * y + c,
         t * y * z - s * x,
         0.0f);
 
-    /* Row 3 */
+    /* Col 3 */
     result.col2 = vec4_new(
         t * x * z - s * y,
         t * y * z + s * x,
         t * z * z + c,
         0.0f);
 
-    /* Row 4 */
+    /* Col 4 */
     result.col3 = vec4_new(0, 0, 0, 1.0f);
     return result;
 }

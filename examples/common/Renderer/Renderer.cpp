@@ -292,7 +292,7 @@ void Renderer_DrawSprite(const SpriteBatch* spriteBatch, int index, vec2 positio
 
     glUseProgram(gProgramDrawSprite);
 
-    const mat4 model = mat4_mul(mat4_mul(mat4_translation_vec2(position), mat4_rotation_z(rotation)), mat4_scalation_vec2(scale * vec2_new(spriteMesh->width, spriteMesh->height)));
+    const mat4 model = mat4_translation_vec2(position) * mat4_rotation_z(rotation) * mat4_scalation_vec2(scale * vec2_new(spriteMesh->width, spriteMesh->height));
     glUniformMatrix4fv(glGetUniformLocation(gProgramDrawSprite, "Model"), 1, false, model.data);
     glUniformMatrix4fv(glGetUniformLocation(gProgramDrawSprite, "Projection"), 1, false, gProjection.data);
     glUniform3f(glGetUniformLocation(gProgramDrawSprite, "Color"), color.x, color.y, color.z);
@@ -341,7 +341,7 @@ void Renderer_DrawText(const char* text, vec2 position, vec3 color)
     glUseProgram(gProgramDrawText);
 
     const vec2 drawPosition = position - vec2_new(0.0f, 3.0f * stb_easy_font_height((char*)text));
-    const mat4 model = mat4_mul(mat4_translation_vec2(drawPosition), mat4_scalation_vec2(vec2_new(3.0f, -3.0f)));
+    const mat4 model = mat4_translation_vec2(drawPosition) * mat4_scalation_vec2(vec2_new(3.0f, -3.0f));
     glUniformMatrix4fv(glGetUniformLocation(gProgramDrawText, "Model"), 1, false, model.data);
     glUniformMatrix4fv(glGetUniformLocation(gProgramDrawText, "Projection"), 1, false, gProjection.data);
     glUniform3f(glGetUniformLocation(gProgramDrawText, "Color"), color.x, color.y, color.z);

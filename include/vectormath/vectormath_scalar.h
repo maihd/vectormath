@@ -1868,25 +1868,25 @@ __forceinline mat4 mat4_rotation(float x, float y, float z, float radians)
     const float t = 1.0f - c;
 
     return mat4_new_16f(
-        /* Row 0 */
+        /* Col 0 */
         t * x * x + c,
         t * x * y - s * z,
         t * x * z + s * y,
         0.0f,
 
-        /* Row 1 */
-        t* x* y + s * z,
-        t* y* y + c,
-        t* y* z - s * x,
+        /* Col 1 */
+        t * x * y + s * z,
+        t * y * y + c,
+        t * y * z - s * x,
         0.0f,
 
-        /* Row 2 */
-        t* x* z - s * y,
-        t* y* z + s * x,
-        t* z* z + c,
+        /* Col 2 */
+        t * x * z - s * y,
+        t * y * z + s * x,
+        t * z * z + c,
         0.0f,
 
-        /* Row 3 */
+        /* Col 3 */
         0, 0, 0, 1.0f
     );
 }
