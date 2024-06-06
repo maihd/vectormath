@@ -81,7 +81,7 @@ so other languages you should use the libraries written specifily for thoses lan
 
 - More about performance? Not the fastest, but enough to use with small project.
 
-- Is it stable yet? No.
+- Is it stable yet? No. This library need to make some big decisions, some decisions are mistaked in beginning.
 
 
 ## Meta
