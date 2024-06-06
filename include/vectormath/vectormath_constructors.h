@@ -87,6 +87,7 @@ __forceinline mat4 mat4_new(float s)
     return mat4_new_1f(s);
 }
 
+
 #else
 
 
