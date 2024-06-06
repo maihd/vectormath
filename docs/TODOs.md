@@ -1,5 +1,6 @@
 ## TODOs
 - Make the first stable release
+- Change matrix row-major to column-major
 - Add project showcases
 - API docs and usage docs
 - Full clang extensions without deps on `__m128` for portable (on clang implementation)
