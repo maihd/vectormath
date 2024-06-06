@@ -1787,7 +1787,7 @@ __forceinline mat4 mat4_perspective(float fov_radians, float aspect, float z_nea
 }
 
 
-__forceinline mat4 mat4_lookat(vec3 eye, vec3 target, vec3 up)
+__forceinline mat4 mat4_lookat_rh(vec3 eye, vec3 target, vec3 up)
 {
     const vec3 z = vec3_normalize(vec3_sub(eye, target));
     const vec3 x = vec3_normalize(vec3_cross(vec3_normalize(up), z));
@@ -1799,6 +1799,13 @@ __forceinline mat4 mat4_lookat(vec3 eye, vec3 target, vec3 up)
          x.z,  y.z,  z.z, -vec3_dot(z, eye),
         0.0f, 0.0f, 0.0f,              1.0f
     );
+}
+
+
+__deprecated("mat4_lookat")
+__forceinline mat4 mat4_lookat(vec3 eye, vec3 target, vec3 up)
+{
+    return mat4_lookat_rh(eye, target, up);
 }
 
 
