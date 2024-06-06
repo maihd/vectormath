@@ -161,6 +161,7 @@ __forceinline mat4 __mat4_copy(mat4 m)
 ///     - quat(quat):       dummy cast
 #define quat(...) vec4_new(__VA_ARGS__)
 
+
 /// Create new matrix 4x4
 /// Overloading:
 ///     - mat4(float s):    4D vector with 4 components equals to 's'
@@ -168,6 +169,7 @@ __forceinline mat4 __mat4_copy(mat4 m)
 ///     - mat4(vec4 col0, vec4 col1, vec4 col2, vec4 col3)
 ///     - mat4(mat4):       dummy cast
 #define mat4(...) mat4_new(__VA_ARGS__)
+
 
 #else
 
