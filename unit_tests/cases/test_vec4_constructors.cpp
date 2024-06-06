@@ -1,13 +1,6 @@
 #include "../test_framework.h"
 
 
-DEFINE_UNIT_TEST("vec4 constructor without parameters")
-{
-    const vec4 v = vec4();
-    TEST(v.x == 0.0f && v.y == 0.0f && v.z == 0.0f && v.w == 0.0f);
-}
-
-
 DEFINE_UNIT_TEST("vec4 constructor with 1 scalar")
 {
     const vec4 v = vec4(1.0f);

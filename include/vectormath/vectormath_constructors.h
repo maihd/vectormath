@@ -6,23 +6,6 @@
 
 #ifdef __cplusplus
 
-__forceinline vec2 vec2_new(void)
-{
-    return vec2_zero();
-}
-
-
-__forceinline vec3 vec3_new(void)
-{
-    return vec3_zero();
-}
-
-
-__forceinline vec4 vec4_new(void)
-{
-    return vec4_zero();
-}
-
 
 __forceinline vec2 vec2_new(float s)
 {
@@ -154,7 +137,6 @@ struct __vectormath_no_arg { int _; };
 /// @note: donot use directly
 #define __vec2_ctor(args, x, y, ...)                        \
     _Generic((x)                                            \
-        , struct __vectormath_no_arg: vec2_zero             \
         , vec2: __vec2_copy                                 \
         , vec3: vec2_from_vec3                              \
         , vec4: vec2_from_vec4                              \
@@ -180,7 +162,6 @@ struct __vectormath_no_arg { int _; };
 /// @note: donot use directly
 #define __vec3_ctor(args, x, y, ...)                        \
     _Generic((x)                                            \
-        , struct __vectormath_no_arg: vec3_zero             \
         , vec3: __vec3_copy                                 \
         , vec2: vec3_from_vec2                              \
         , vec4: vec3_from_vec4                              \
@@ -206,7 +187,6 @@ struct __vectormath_no_arg { int _; };
 /// @note: donot use directly
 #define __vec4_ctor(args, x, y, ...)                        \
     _Generic((x)                                            \
-        , struct __vectormath_no_arg: vec4_zero             \
         , vec4: __vec4_copy                                 \
         , default:                                          \
             _Generic((y)                                    \
