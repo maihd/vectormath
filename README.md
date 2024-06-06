@@ -85,6 +85,6 @@ so other languages you should use the libraries written specifily for thoses lan
 
 
 ## Meta
-- Version: v0.7.0-dev
+- Version: v0.8.0-dev (nearly stable)
 - License: UNLICENSED
 - Copyright: MaiHD @ 2022 - 2024
