@@ -465,12 +465,14 @@ __forceinline mat4 operator-(mat4 m)
 }
 
 
+// @todo: expr to use `const mat4&` instead of `mat4`
 __forceinline mat4 operator+(mat4 m)
 {
     return m;
 }
 
 
+// @todo: expr to use `const mat4&` instead of `mat4`
 __forceinline mat4 operator+(mat4 a, mat4 b)
 {
     return mat4_new(
@@ -482,6 +484,7 @@ __forceinline mat4 operator+(mat4 a, mat4 b)
 }
 
 
+// @todo: expr to use `const mat4&` instead of `mat4`
 __forceinline mat4 operator+(mat4 a, float b)
 {
     return mat4_new(
@@ -493,6 +496,7 @@ __forceinline mat4 operator+(mat4 a, float b)
 }
 
 
+// @todo: expr to use `const mat4&` instead of `mat4`
 __forceinline mat4 operator+(float a, mat4 b)
 {
     return mat4_new(
@@ -504,6 +508,7 @@ __forceinline mat4 operator+(float a, mat4 b)
 }
 
 
+// @todo: expr to use `const mat4&` instead of `mat4`
 __forceinline mat4 operator-(mat4 a, mat4 b)
 {
     return mat4_new(
@@ -515,6 +520,7 @@ __forceinline mat4 operator-(mat4 a, mat4 b)
 }
 
 
+// @todo: expr to use `const mat4&` instead of `mat4`
 __forceinline mat4 operator-(mat4 a, float b)
 {
     return mat4_new(
@@ -526,6 +532,7 @@ __forceinline mat4 operator-(mat4 a, float b)
 }
 
 
+// @todo: expr to use `const mat4&` instead of `mat4`
 __forceinline mat4 operator-(float a, mat4 b)
 {
     return mat4_new(
@@ -537,53 +544,49 @@ __forceinline mat4 operator-(float a, mat4 b)
 }
 
 
+// @todo: expr to use `const mat4&` instead of `mat4`
 __forceinline mat4 operator*(mat4 a, mat4 b)
 {
     return mat4_mul(a, b);
 }
 
 
+// @todo: expr to use `const mat4&` instead of `mat4`
 __forceinline vec2 operator*(mat4 a, vec2 b)
 {
     return mat4_mul_vec2(a, b);
 }
 
 
+// @todo: expr to use `const mat4&` instead of `mat4`
 __forceinline vec3 operator*(mat4 a, vec3 b)
 {
     return mat4_mul_vec3(a, b);
 }
 
 
+// @todo: expr to use `const mat4&` instead of `mat4`
 __forceinline vec4 operator*(mat4 a, vec4 b)
 {
     return mat4_mul_vec4(a, b);
 }
 
 
+// @todo: expr to use `const mat4&` instead of `mat4`
 __forceinline mat4 operator*(mat4 a, float b)
 {
     return mat4_mul1(a, b);
 }
 
 
+// @todo: expr to use `const mat4&` instead of `mat4`
 __forceinline mat4 operator*(float a, mat4 b)
 {
     return mat4_mul1(b, a);
 }
 
 
-__forceinline mat4 operator/(mat4 a, mat4 b)
-{
-    return mat4_new(
-        a.col0 / b.col0,
-        a.col1 / b.col1,
-        a.col2 / b.col2,
-        a.col3 / b.col3
-    );
-}
-
-
+// @todo: expr to use `const mat4&` instead of `mat4`
 __forceinline mat4 operator/(mat4 a, float b)
 {
     return mat4_new(
@@ -595,6 +598,7 @@ __forceinline mat4 operator/(mat4 a, float b)
 }
 
 
+// @todo: expr to use `const mat4&` instead of `mat4`
 __forceinline mat4 operator/(float a, mat4 b)
 {
     return mat4_new(
@@ -606,6 +610,7 @@ __forceinline mat4 operator/(float a, mat4 b)
 }
 
 
+// @todo: expr to use `const mat4&` instead of `mat4`
 __forceinline mat4& operator+=(mat4& a, mat4 b)
 {
     return (a = a + b);
@@ -618,6 +623,7 @@ __forceinline mat4& operator+=(mat4& a, float b)
 }
 
 
+// @todo: expr to use `const mat4&` instead of `mat4`
 __forceinline mat4& operator-=(mat4& a, mat4 b)
 {
     return (a = a - b);
@@ -630,6 +636,7 @@ __forceinline mat4& operator-=(mat4& a, float b)
 }
 
 
+// @todo: expr to use `const mat4&` instead of `mat4`
 __forceinline mat4& operator*=(mat4& a, mat4 b)
 {
     return (a = a * b);
@@ -648,12 +655,14 @@ __forceinline mat4& operator/=(mat4& a, float b)
 }
 
 
+// @todo: expr to use `const mat4&` instead of `mat4`
 __forceinline bool operator==(mat4 a, mat4 b)
 {
     return mat4_equal(a, b);
 }
 
 
+// @todo: expr to use `const mat4&` instead of `mat4`
 __forceinline bool operator!=(mat4 a, mat4 b)
 {
     return mat4_not_equal(a, b);
