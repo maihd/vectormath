@@ -10,11 +10,11 @@
 - Many frameworks, game engine use different handed systems
 - Make functions clearly show what its does underneath
 
-## Use matrix row-major instead of column major
-- Commonly in game framework/engine
-- Structure layout is simple, linear
-- Reduce cognition overhead
-- No need to change code
+## Use matrix row-major instead of column-major
+- Commonly in game framework/engine -> wrong
+- Structure layout is simple, linear -> users often donot care
+- Reduce cognition overhead -> wrong, based on reason 1
+- No need to change code -> just because I commonly create vectormath with row-major, like vmath, hlslmath
 
 ## Vector constructors
 - Shortname for vecx_new
