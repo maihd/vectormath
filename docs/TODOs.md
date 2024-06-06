@@ -9,3 +9,6 @@
 - Support more systems: left/right handed, vertical/horizontal field of view
 - MacOS, iOS tests
 - Add contributing docs
+- Make unit tests with better values, meaning results
+- Complete empty unit tests
+- Add missing unit tests
