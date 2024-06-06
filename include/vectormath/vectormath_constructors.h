@@ -66,6 +66,27 @@ __forceinline vec4 vec4_new(vec4 v)
     return v;
 }
 
+
+__forceinline mat4 mat4_new(
+    float m00, float m01, float m02, float m03,
+    float m10, float m11, float m12, float m13,
+    float m20, float m21, float m22, float m23,
+    float m30, float m31, float m32, float m33)
+{
+    return mat4_new_16f(
+        m00, m01, m02, m03,
+        m10, m11, m12, m13,
+        m20, m21, m22, m23,
+        m30, m31, m32, m33
+    );
+}
+
+
+__forceinline mat4 mat4_new(float s)
+{
+    return mat4_new_1f(s);
+}
+
 #else
 
 
@@ -129,6 +150,24 @@ __forceinline mat4 __mat4_copy(mat4 m)
 ///     - vec4(float x, float y, float z, float w)
 ///     - vec4(vec4):       dummy cast
 #define vec4(...) vec4_new(__VA_ARGS__)
+
+
+/// Create new quaternion
+/// Overloading:
+///     - quat(float s):    quaternion with 4 components equals to 's'
+///     - quat(float x, float y, float z, float w)
+///     - quat(vec4):       dummy cast
+///     - quat(quat):       dummy cast
+#define quat(...) vec4_new(__VA_ARGS__)
+
+/// Create new matrix 4x4
+/// Overloading:
+///     - mat4(float s):    4D vector with 4 components equals to 's'
+///     - mat4(float m00 .. m33)
+///     - mat4(vec4 col0, vec4 col1, vec4 col2, vec4 col3)
+///     - mat4(mat4):       dummy cast
+#define mat4(...) mat4_new(__VA_ARGS__)
+
 #else
 
 
