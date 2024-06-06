@@ -47,7 +47,7 @@ mat4 model    = mat4_mul(mat4_mul(mat4_translation_vec3(position),
                          mat4_scalation_vec3(scale));
 
 // Perspective matrix with 45 degrees field-of-view, right handed, row-major
-mat4 proj = mat4_perspective(float_deg2rad(45), WIDTH / HEIGHT, 0.0f, 100.0f);
+mat4 proj = mat4_perspective_rh(float_deg2rad(45), WIDTH / HEIGHT, 0.0f, 100.0f);
 
 // ... apply matrix to render, should convert to other systems (handed, row/column major) ...
 ```

@@ -52,7 +52,7 @@ do
     platforms { "x32", "x64" }
 
     -- Cflags
-    MaiLib.cflags()
+    -- MaiLib.cflags()
     cdialect "C11"
 
     startproject (PROJECT_PREFIX .. "_" .. "unit_tests")

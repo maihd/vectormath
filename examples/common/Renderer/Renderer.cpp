@@ -199,7 +199,7 @@ void Renderer_Clear(void)
 {
     assert(gMainWindow != nullptr && gGLContext != nullptr);
     
-    gProjection = mat4_ortho(0, (float)gMainWindow->width, 0, (float)gMainWindow->height, -10.0f, 10.0f);
+    gProjection = mat4_ortho_rh(0, (float)gMainWindow->width, 0, (float)gMainWindow->height, -10.0f, 10.0f);
 
     glViewport(0, 0, gMainWindow->width, gMainWindow->height);
     glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
