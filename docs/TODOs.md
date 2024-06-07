@@ -3,8 +3,8 @@
 - Change matrix row-major to column-major
 - Add project showcases
 - API docs and usage docs
-- Full clang extensions without deps on `__m128` for portable (on clang implementation)
 - Make an example that use full advantages of clang vector extensions
+- Support gcc vector extension
 - Benchmarking
 - Maybe pattern solution for common problem in game/graphics development
 - Support more systems: left/right handed, vertical/horizontal field of view
@@ -13,4 +13,4 @@
 - Make unit tests with better values, meaning results
 - Complete empty unit tests
 - Add missing unit tests
-- quat, mat4 constructors
+- Add profile, features guidelines

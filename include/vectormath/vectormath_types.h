@@ -19,11 +19,6 @@
 #define VECTORMATH_ENABLE_CLANG_EXT 0
 #endif
 
-#if VECTORMATH_ENABLE_CLANG_EXT
-#undef  VECTORMATH_SIMD_ENABLE
-#define VECTORMATH_SIMD_ENABLE 0 // Force to not use simd
-#endif
-
 // Only Visual Studio 2022 support clang vector extensions (maybe only it work well with clang)
 // #if VECTORMATH_ENABLE_CLANG_EXT && defined(_MSC_VER) && _MSC_VER < 1930
 // #undef  VECTORMATH_ENABLE_CLANG_EXT
@@ -150,6 +145,12 @@ typedef float vec3 __attribute__((ext_vector_type(3), aligned(16)));
 /// Components are 32 bit fixed-size floating-point number
 /// Struct Layout: [float x][float y][float z][float w]
 typedef float vec4 __attribute__((ext_vector_type(4), aligned(16)));
+
+
+/// quat
+/// Quaternion datastructure
+/// Just an alias of vec4
+typedef vec4 quat;
 
 
 /// ivec2

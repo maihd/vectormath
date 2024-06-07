@@ -9,6 +9,7 @@ local MaiLib = dofile(path.join(MAILIB_PATH, "premake5.mailib.lua"))
 
 local vectormath = dofile(path.join(ROOT_DIR, "scripts", "vectormath.premake5.lua"))
 
+
 local function vectormathproject(name)
     if (type(name) == "string") then
         project(PROJECT_PREFIX .. "_" .. name)
@@ -20,6 +21,7 @@ local function vectormathproject(name)
     vectormath.includedirs(ROOT_DIR)
     vectormath.files(ROOT_DIR)
 end
+
 
 local function filedirs(dirs)
     if type(dirs) == "string" then
@@ -36,10 +38,34 @@ local function filedirs(dirs)
     end
 end
 
-workspace(PROJECT_PREFIX .. "_" .. _ACTION)
+newoption {
+    trigger = "use-clang",
+    description = "Use clang as compiler or toolset (visual studio)"
+}
+
+
+local function useclang()
+    local clangenabled = _OPTIONS["use-clang"]
+    local clangsupport = _ACTION == "vs2019" or _ACTION == "vs2022"
+    return clangenabled and clangsupport
+end
+
+
+local function getworkspacename()
+    local name = PROJECT_PREFIX .. "_" .. _ACTION
+
+    if useclang() then
+        name = name .. "_clang"
+    end
+
+    return name
+end
+
+
+workspace(getworkspacename())
 do
     language "C"
-    location (path.join(BUILD_DIR, _ACTION))
+    location (path.join(BUILD_DIR, _ACTION .. (useclang() and "_clang" or "")))
 
     configurations { 
         "DebugScalar", 
@@ -54,6 +80,10 @@ do
     -- Cflags
     -- MaiLib.cflags()
     cdialect "C11"
+
+    if useclang() then
+        toolset "clang"
+    end
 
     startproject (PROJECT_PREFIX .. "_" .. "unit_tests")
 
@@ -84,10 +114,17 @@ do
     filter {}
 end
 
+
 vectormathproject("unit_tests")
 do
     kind "ConsoleApp"
-    
+
+    if useclang() then
+        defines {
+            "VECTORMATH_USE_CLANG_EXT"
+        }
+    end
+
     filedirs {
         "unit_tests/cases"
     }
@@ -99,6 +136,7 @@ do
 
     filter {}
 end
+
 
 if _ACTION == "vs2019" or _ACTION == "vs2022" then
     vectormathproject("msvc_c11_generics")
@@ -112,6 +150,7 @@ if _ACTION == "vs2019" or _ACTION == "vs2022" then
         filter {}
     end
 end
+
 
 -- examples
 newoption {

@@ -26,17 +26,28 @@
 /// Create a new vector 3D
 __forceinline vec3 vec3_new(float x, float y, float z)
 {
+
+#if VECTORMATH_ENABLE_CLANG_EXT
+    return { x, y, z };
+#else
     vec3 result;
     result.m128 = _mm_setr_ps(x, y, z, 0.0f);
+
     return result;
+#endif
 }
 
 
 /// Create a new vector 3D, with components have same value
 __forceinline vec3 vec3_new1(float s)
 {
+#if VECTORMATH_ENABLE_CLANG_EXT
+    vec3 result = { s, s, s };
+#else
     vec3 result;
     result.m128 = _mm_set_ps1(s);
+#endif
+
     return result;
 }
 
@@ -51,18 +62,27 @@ __forceinline vec3 vec3_zero(void)
 /// Create a new vector 3D from a vector 2D
 __forceinline vec3 vec3_from_vec2(vec2 v)
 {
+#if VECTORMATH_ENABLE_CLANG_EXT
+    return { v.x, v.y, 0.0f };
+#else
     vec3 result;
     result.m128 = _mm_setr_ps(v.x, v.y, 0.0f, 0.0f);
+
     return result;
+#endif
 }
 
 
 /// Create a new vector 3D from a vector 4D
 __forceinline vec3 vec3_from_vec4(vec4 v)
 {
+#if VECTORMATH_ENABLE_CLANG_EXT
+    return v.xyz;
+#else
     vec3 result;
     result.m128 = v.m128;
     return result;
+#endif
 }
 
 
@@ -70,8 +90,13 @@ __forceinline vec3 vec3_from_vec4(vec4 v)
 /// @note: available only on SIMD vectormath version
 __forceinline vec3 vec3_from_m128(__m128 m128)
 {
+#if VECTORMATH_ENABLE_CLANG_EXT
+    vec3 result = { m128[0], m128[1], m128[2] };
+#else
     vec3 result;
     result.m128 = m128;
+#endif
+
     return result;
 }
 
@@ -80,15 +105,24 @@ __forceinline vec3 vec3_from_m128(__m128 m128)
 /// @note: available only on SIMD vectormath version
 __forceinline __m128 m128_from_vec3(vec3 v3)
 {
+#if VECTORMATH_ENABLE_CLANG_EXT
+    return _mm_set_ps(0.0f, v3.z, v3.y, v3.x);
+#else
     return v3.m128;
+#endif
 }
 
 
 /// Create a new vector 4D
 __forceinline vec4 vec4_new(float x, float y, float z, float w)
 {
+#if VECTORMATH_ENABLE_CLANG_EXT
+    vec4 result = { x, y, z, w };
+#else
     vec4 result;
     result.m128 = _mm_setr_ps(x, y, z, w);
+#endif
+
     return result;
 }
 
@@ -96,8 +130,13 @@ __forceinline vec4 vec4_new(float x, float y, float z, float w)
 /// Create a new vector 4D, with components have same value
 __forceinline vec4 vec4_new1(float s)
 {
+#if VECTORMATH_ENABLE_CLANG_EXT
+    vec4 result = { s, s, s, s };
+#else
     vec4 result;
     result.m128 = _mm_set_ps1(s);
+#endif
+
     return result;
 }
 
@@ -113,9 +152,13 @@ __forceinline vec4 vec4_zero(void)
 /// @note: available only on SIMD vectormath version
 __forceinline vec4 vec4_from_m128(__m128 m128)
 {
+#if VECTORMATH_ENABLE_CLANG_EXT
+    return (vec4)m128;
+#else
     vec4 result;
     result.m128 = m128;
     return result;
+#endif
 }
 
 
@@ -123,7 +166,11 @@ __forceinline vec4 vec4_from_m128(__m128 m128)
 /// @note: available only on SIMD vectormath version
 __forceinline __m128 m128_from_vec4(vec4 v4)
 {
+#if VECTORMATH_ENABLE_CLANG_EXT
+    return (__m128)v4;
+#else
     return v4.m128;
+#endif
 }
 
 
@@ -131,9 +178,13 @@ __forceinline __m128 m128_from_vec4(vec4 v4)
 /// @note: this functions is not pointer-safe
 __forceinline vec3 vec3_load(const float ptr[])
 {
+#if VECTORMATH_ENABLE_CLANG_EXT
+    return vec3_from_m128(_mm_load_ps(ptr));
+#else
     vec3 result;
     result.m128 = _mm_load_ps(ptr);
     return result;
+#endif
 }
 
 
@@ -141,9 +192,13 @@ __forceinline vec3 vec3_load(const float ptr[])
 /// @note: this functions is not pointer-safe
 __forceinline vec4 vec4_load(const float ptr[])
 {
+#if VECTORMATH_ENABLE_CLANG_EXT
+    return vec4_from_m128(_mm_load_ps(ptr));
+#else
     vec4 result;
     result.m128 = _mm_load_ps(ptr);
     return result;
+#endif
 }
 
 
