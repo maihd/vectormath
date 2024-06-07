@@ -76,6 +76,14 @@ __forceinline vec3 vec3_from_m128(__m128 m128)
 }
 
 
+/// Create a new __m128 simd from a vector 3D
+/// @note: available only on SIMD vectormath version
+__forceinline __m128 m128_from_vec3(vec3 v3)
+{
+    return v3.m128;
+}
+
+
 /// Create a new vector 4D
 __forceinline vec4 vec4_new(float x, float y, float z, float w)
 {
@@ -108,6 +116,14 @@ __forceinline vec4 vec4_from_m128(__m128 m128)
     vec4 result;
     result.m128 = m128;
     return result;
+}
+
+
+/// Create a new __m128 simd from a vector 4D
+/// @note: available only on SIMD vectormath version
+__forceinline __m128 m128_from_vec4(vec4 v4)
+{
+    return v4.m128;
 }
 
 
@@ -207,170 +223,170 @@ __forceinline mat4 mat4_load(const float ptr[])
 
 __forceinline vec3 vec3_neg(vec3 v)
 {
-    return vec3_from_m128(_mm_sub_ps(_mm_setzero_ps(), v.m128));
+    return vec3_from_m128(_mm_sub_ps(_mm_setzero_ps(), m128_from_vec3(v)));
 }
 
 
 __forceinline vec3 vec3_add(vec3 a, vec3 b)
 {
-    return vec3_from_m128(_mm_add_ps(a.m128, b.m128));
+    return vec3_from_m128(_mm_add_ps(m128_from_vec3(a), m128_from_vec3(b)));
 }
 
 
 __forceinline vec3 vec3_sub(vec3 a, vec3 b)
 {
-    return vec3_from_m128(_mm_sub_ps(a.m128, b.m128));
+    return vec3_from_m128(_mm_sub_ps(m128_from_vec3(a), m128_from_vec3(b)));
 }
 
 
 __forceinline vec3 vec3_mul(vec3 a, vec3 b)
 {
-    return vec3_from_m128(_mm_mul_ps(a.m128, b.m128));
+    return vec3_from_m128(_mm_mul_ps(m128_from_vec3(a), m128_from_vec3(b)));
 }
 
 
 __forceinline vec3 vec3_div(vec3 a, vec3 b)
 {
-    return vec3_from_m128(_mm_div_ps(a.m128, b.m128));
+    return vec3_from_m128(_mm_div_ps(m128_from_vec3(a), m128_from_vec3(b)));
 }
 
 
 __forceinline vec3 vec3_add1(vec3 a, float b)
 {
-    return vec3_from_m128(_mm_add_ps(a.m128, _mm_set_ps1(b)));
+    return vec3_from_m128(_mm_add_ps(m128_from_vec3(a), _mm_set_ps1(b)));
 }
 
 
 __forceinline vec3 vec3_sub1(vec3 a, float b)
 {
-    return vec3_from_m128(_mm_sub_ps(a.m128, _mm_set_ps1(b)));
+    return vec3_from_m128(_mm_sub_ps(m128_from_vec3(a), _mm_set_ps1(b)));
 }
 
 
 __forceinline vec3 vec3_mul1(vec3 a, float b)
 {
-    return vec3_from_m128(_mm_mul_ps(a.m128, _mm_set_ps1(b)));
+    return vec3_from_m128(_mm_mul_ps(m128_from_vec3(a), _mm_set_ps1(b)));
 }
 
 
 __forceinline vec3 vec3_div1(vec3 a, float b)
 {
-    return vec3_from_m128(_mm_mul_ps(a.m128, _mm_set_ps1(1.0f / b)));
+    return vec3_from_m128(_mm_mul_ps(m128_from_vec3(a), _mm_set_ps1(1.0f / b)));
 }
 
 
 __forceinline vec3 vec3_mul_add(vec3 a, vec3 b, vec3 c)
 {
-    return vec3_from_m128(m128_mul_add(a.m128, b.m128, c.m128));
+    return vec3_from_m128(m128_mul_add(m128_from_vec3(a), m128_from_vec3(b), m128_from_vec3(c)));
 }
 
 
 __forceinline vec3 vec3_mul_sub(vec3 a, vec3 b, vec3 c)
 {
-    return vec3_from_m128(m128_mul_sub(a.m128, b.m128, c.m128));
+    return vec3_from_m128(m128_mul_sub(m128_from_vec3(a), m128_from_vec3(b), m128_from_vec3(c)));
 }
 
 
 __forceinline bool vec3_equal(vec3 a, vec3 b)
 {
-    return (_mm_movemask_ps(_mm_cmpeq_ps(a.m128, b.m128)) & 0x7) == 0x7;
+    return (_mm_movemask_ps(_mm_cmpeq_ps(m128_from_vec3(a), m128_from_vec3(b))) & 0x7) == 0x7;
 }
 
 
 __forceinline bool vec3_not_equal(vec3 a, vec3 b)
 {
-    return (_mm_movemask_ps(_mm_cmpeq_ps(a.m128, b.m128)) & 0x7) != 0x7;
+    return (_mm_movemask_ps(_mm_cmpeq_ps(m128_from_vec3(a), m128_from_vec3(b))) & 0x7) != 0x7;
 }
 
 
 __forceinline bool vec3_isclose(vec3 a, vec3 b)
 {
-    const __m128 sub_abs = m128_fabsf(_mm_sub_ps(a.m128, b.m128));
+    const __m128 sub_abs = m128_fabsf(_mm_sub_ps(m128_from_vec3(a), m128_from_vec3(b)));
     return (_mm_movemask_ps(_mm_cmplt_ps(sub_abs, _mm_set_ps1(FLOAT_EPSILON))) & 0x7) == 0x7;
 }
 
 
 __forceinline vec4 vec4_neg(vec4 v)
 {
-    return vec4_from_m128(_mm_sub_ps(_mm_setzero_ps(), v.m128));
+    return vec4_from_m128(_mm_sub_ps(_mm_setzero_ps(), m128_from_vec4(v)));
 }
 
 
 __forceinline vec4 vec4_add(vec4 a, vec4 b)
 {
-    return vec4_from_m128(_mm_add_ps(a.m128, b.m128));
+    return vec4_from_m128(_mm_add_ps(m128_from_vec4(a), m128_from_vec4(b)));
 }
 
 
 __forceinline vec4 vec4_sub(vec4 a, vec4 b)
 {
-    return vec4_from_m128(_mm_sub_ps(a.m128, b.m128));
+    return vec4_from_m128(_mm_sub_ps(m128_from_vec4(a), m128_from_vec4(b)));
 }
 
 
 __forceinline vec4 vec4_mul(vec4 a, vec4 b)
 {
-    return vec4_from_m128(_mm_mul_ps(a.m128, b.m128));
+    return vec4_from_m128(_mm_mul_ps(m128_from_vec4(a), m128_from_vec4(b)));
 }
 
 
 __forceinline vec4 vec4_div(vec4 a, vec4 b)
 {
-    return vec4_from_m128(_mm_div_ps(a.m128, b.m128));
+    return vec4_from_m128(_mm_div_ps(m128_from_vec4(a), m128_from_vec4(b)));
 }
 
 
 __forceinline vec4 vec4_add1(vec4 a, float b)
 {
-    return vec4_from_m128(_mm_add_ps(a.m128, _mm_set_ps1(b)));
+    return vec4_from_m128(_mm_add_ps(m128_from_vec4(a), _mm_set_ps1(b)));
 }
 
 
 __forceinline vec4 vec4_sub1(vec4 a, float b)
 {
-    return vec4_from_m128(_mm_sub_ps(a.m128, _mm_set_ps1(b)));
+    return vec4_from_m128(_mm_sub_ps(m128_from_vec4(a), _mm_set_ps1(b)));
 }
 
 
 __forceinline vec4 vec4_mul1(vec4 a, float b)
 {
-    return vec4_from_m128(_mm_mul_ps(a.m128, _mm_set_ps1(b)));
+    return vec4_from_m128(_mm_mul_ps(m128_from_vec4(a), _mm_set_ps1(b)));
 }
 
 
 __forceinline vec4 vec4_div1(vec4 a, float b)
 {
-    return vec4_from_m128(_mm_div_ps(a.m128, _mm_set_ps1(b)));
+    return vec4_from_m128(_mm_div_ps(m128_from_vec4(a), _mm_set_ps1(b)));
 }
 
 
 __forceinline vec4 vec4_mul_add(vec4 a, vec4 b, vec4 c)
 {
-    return vec4_from_m128(m128_mul_add(a.m128, b.m128, c.m128));
+    return vec4_from_m128(m128_mul_add(m128_from_vec4(a), m128_from_vec4(b), m128_from_vec4(c)));
 }
 
 
 __forceinline vec4 vec4_mul_sub(vec4 a, vec4 b, vec4 c)
 {
-    return vec4_from_m128(m128_mul_sub(a.m128, b.m128, c.m128));
+    return vec4_from_m128(m128_mul_sub(m128_from_vec4(a), m128_from_vec4(b), m128_from_vec4(c)));
 }
 
 
 __forceinline bool vec4_equal(vec4 a, vec4 b)
 {
-    return _mm_movemask_ps(_mm_cmpeq_ps(a.m128, b.m128)) == 0x16;
+    return _mm_movemask_ps(_mm_cmpeq_ps(m128_from_vec4(a), m128_from_vec4(b))) == 0x16;
 }
 
 
 __forceinline bool vec4_not_equal(vec4 a, vec4 b)
 {
-    return _mm_movemask_ps(_mm_cmpeq_ps(a.m128, b.m128)) != 0x16;
+    return _mm_movemask_ps(_mm_cmpeq_ps(m128_from_vec4(a), m128_from_vec4(b))) != 0x16;
 }
 
 
 __forceinline bool vec4_isclose(vec4 a, vec4 b)
 {
-    const __m128 sub_abs = m128_fabsf(_mm_sub_ps(a.m128, b.m128));
+    const __m128 sub_abs = m128_fabsf(_mm_sub_ps(m128_from_vec4(a), m128_from_vec4(b)));
     return _mm_movemask_ps(_mm_cmplt_ps(sub_abs, _mm_set_ps1(FLOAT_EPSILON))) == 0x16;
 }
 
@@ -428,7 +444,7 @@ __forceinline bool mat4_not_equal(mat4 a, mat4 b)
 /// Computes sign of 'x'
 __forceinline ivec3 vec3_sign(vec3 v)
 {
-    //__m128i iv = _mm_castps_si128(v.m128);
+    //__m128i iv = _mm_castps_si128(m128_from_vec3(v));
     //int32_t* c = (int32_t*)&iv;
     //
     //ivec3 result;
@@ -445,21 +461,21 @@ __forceinline ivec3 vec3_sign(vec3 v)
 /// Computes absolute value
 __forceinline vec3 vec3_abs(vec3 v)
 {
-    return vec3_from_m128(m128_fabsf(v.m128));
+    return vec3_from_m128(m128_fabsf(m128_from_vec3(v)));
 }
 
 
 /// Computes cosine
 __forceinline vec3 vec3_cos(vec3 v)
 {
-    return vec3_from_m128(m128_cosf(v.m128));
+    return vec3_from_m128(m128_cosf(m128_from_vec3(v)));
 }
 
 
 /// Computes sine
 __forceinline vec3 vec3_sin(vec3 v)
 {
-    return vec3_from_m128(m128_sinf(v.m128));
+    return vec3_from_m128(m128_sinf(m128_from_vec3(v)));
 }
 
 
@@ -467,7 +483,7 @@ __forceinline vec3 vec3_sin(vec3 v)
 __forceinline vec3 vec3_tan(vec3 v)
 {
     return vec3_new(tanf(v.x), tanf(v.y), tanf(v.z));
-    //return vec3_from_m128(m128_tanf(v.m128));
+    //return vec3_from_m128(m128_tanf(m128_from_vec3(v)));
 }
 
 
@@ -495,7 +511,7 @@ __forceinline vec3 vec3_tanh(vec3 v)
 /// Computes inverse cosine
 __forceinline vec3 vec3_acos(vec3 v)
 {
-    return vec3_from_m128(m128_acosf(v.m128));
+    return vec3_from_m128(m128_acosf(m128_from_vec3(v)));
 }
 
 
@@ -677,10 +693,10 @@ __forceinline vec3 vec3_rsqrt(vec3 v)
 /// Compute cross product of two vectors
 __forceinline vec3 vec3_cross(vec3 a, vec3 b)
 {
-    const __m128 tmp0   = _mm_shuffle_ps(a.m128, a.m128, _MM_SHUFFLE(3, 0, 2, 1));
-    const __m128 tmp1   = _mm_shuffle_ps(b.m128, b.m128, _MM_SHUFFLE(3, 1, 0, 2));
-    const __m128 tmp2   = _mm_shuffle_ps(a.m128, a.m128, _MM_SHUFFLE(3, 1, 0, 2));
-    const __m128 tmp3   = _mm_shuffle_ps(b.m128, b.m128, _MM_SHUFFLE(3, 0, 2, 1));
+    const __m128 tmp0   = _mm_shuffle_ps(m128_from_vec3(a), m128_from_vec3(a), _MM_SHUFFLE(3, 0, 2, 1));
+    const __m128 tmp1   = _mm_shuffle_ps(m128_from_vec3(b), m128_from_vec3(b), _MM_SHUFFLE(3, 1, 0, 2));
+    const __m128 tmp2   = _mm_shuffle_ps(m128_from_vec3(a), m128_from_vec3(a), _MM_SHUFFLE(3, 1, 0, 2));
+    const __m128 tmp3   = _mm_shuffle_ps(m128_from_vec3(b), m128_from_vec3(b), _MM_SHUFFLE(3, 0, 2, 1));
           __m128 result = _mm_mul_ps(tmp0, tmp1);
                  result = m128_mul_sub(tmp2, tmp3, result);
     return vec3_from_m128(result);
@@ -770,7 +786,7 @@ __forceinline vec3 vec3_faceforward(vec3 n, vec3 i, vec3 nref)
 /// Computes sign of 'x'
 __forceinline ivec4 vec4_sign(vec4 v)
 {
-    //__m128i iv = _mm_castps_si128(v.m128);
+    //__m128i iv = _mm_castps_si128(m128_from_vec4(v));
     //__m128i im = _mm_set1_epi32(31);
     //
     //int32_t* c = (int32_t*)&iv;
@@ -790,21 +806,21 @@ __forceinline ivec4 vec4_sign(vec4 v)
 /// Computes absolute value
 __forceinline vec4 vec4_abs(vec4 v)
 {
-    return vec4_from_m128(m128_fabsf(v.m128));
+    return vec4_from_m128(m128_fabsf(m128_from_vec4(v)));
 }
 
 
 /// Computes cosine
 __forceinline vec4 vec4_cos(vec4 v)
 {
-    return vec4_from_m128(m128_cosf(v.m128));
+    return vec4_from_m128(m128_cosf(m128_from_vec4(v)));
 }
 
 
 /// Computes sine
 __forceinline vec4 vec4_sin(vec4 v)
 {
-    return vec4_from_m128(m128_sinf(v.m128));
+    return vec4_from_m128(m128_sinf(m128_from_vec4(v)));
 }
 
 
@@ -812,7 +828,7 @@ __forceinline vec4 vec4_sin(vec4 v)
 __forceinline vec4 vec4_tan(vec4 v)
 {
     return vec4_new(tanf(v.x), tanf(v.y), tanf(v.z), tanf(v.w));
-    //return vec4_from_m128(m128_tanf(v.m128));
+    //return vec4_from_m128(m128_tanf(m128_from_vec4(v)));
 }
 
 
@@ -840,7 +856,7 @@ __forceinline vec4 vec4_tanh(vec4 v)
 /// Computes inverse cosine
 __forceinline vec4 vec4_acos(vec4 v)
 {
-    return vec4_from_m128(m128_acosf(v.m128));
+    return vec4_from_m128(m128_acosf(m128_from_vec4(v)));
 }
 
 
@@ -1197,7 +1213,7 @@ __forceinline vec4 quat_to_axis_angle(quat quat)
 __forceinline void quat_to_axis_angle_ref(quat quat, vec3* axis, float* angle)
 {
     vec4 axisAngle = quat_to_axis_angle(quat);
-    if (axis) *axis = vec3_from_m128(axisAngle.m128);
+    if (axis) *axis = vec3_from_vec4(axisAngle);
     if (angle) *angle = axisAngle.w;
 }
 
@@ -1611,15 +1627,16 @@ __forceinline mat4 mat4_rsqrt(mat4 m)
 
 __forceinline vec4 mat4_mul_vec4(mat4 a, vec4 b)
 {
+    const __m128 b128 = m128_from_vec4(b);
     return vec4_from_m128(
         _mm_add_ps(
             _mm_add_ps(
-                _mm_mul_ps(a.col0.m128, _mm_shuffle_ps(b.m128, b.m128, _MM_SHUFFLE(0, 0, 0, 0))), 
-                _mm_mul_ps(a.col1.m128, _mm_shuffle_ps(b.m128, b.m128, _MM_SHUFFLE(1, 1, 1, 1)))
+                _mm_mul_ps(m128_from_vec4(a.col0), _mm_shuffle_ps(b128, b128, _MM_SHUFFLE(0, 0, 0, 0))), 
+                _mm_mul_ps(m128_from_vec4(a.col1), _mm_shuffle_ps(b128, b128, _MM_SHUFFLE(1, 1, 1, 1)))
             ),
             _mm_add_ps(
-                _mm_mul_ps(a.col2.m128, _mm_shuffle_ps(b.m128, b.m128, _MM_SHUFFLE(2, 2, 2, 2))),
-                _mm_mul_ps(a.col3.m128, _mm_shuffle_ps(b.m128, b.m128, _MM_SHUFFLE(3, 3, 3, 3)))
+                _mm_mul_ps(m128_from_vec4(a.col2), _mm_shuffle_ps(b128, b128, _MM_SHUFFLE(2, 2, 2, 2))),
+                _mm_mul_ps(m128_from_vec4(a.col3), _mm_shuffle_ps(b128, b128, _MM_SHUFFLE(3, 3, 3, 3)))
             )
         )
     );
@@ -1670,16 +1687,26 @@ __forceinline mat4 mat4_mul1(mat4 a, float b)
 
 __forceinline mat4 mat4_transpose(mat4 m)
 {
-    __m128 tmp0, tmp1, tmp2, tmp3, res0, res1, res2, res3;
-    tmp0 = m128_merge_hi(m.col0.m128, m.col2.m128);
-    tmp1 = m128_merge_hi(m.col1.m128, m.col3.m128);
-    tmp2 = m128_merge_lo(m.col0.m128, m.col2.m128);
-    tmp3 = m128_merge_lo(m.col1.m128, m.col3.m128);
-    res0 = m128_merge_hi(tmp0, tmp1);
-    res1 = m128_merge_lo(tmp0, tmp1);
-    res2 = m128_merge_hi(tmp2, tmp3);
-    res3 = m128_merge_lo(tmp2, tmp3);
-    return mat4_new(vec4_from_m128(res0), vec4_from_m128(res1), vec4_from_m128(res2), vec4_from_m128(res3));
+    const __m128 col0 = m128_from_vec4(m.col0);
+    const __m128 col1 = m128_from_vec4(m.col1);
+    const __m128 col2 = m128_from_vec4(m.col2);
+    const __m128 col3 = m128_from_vec4(m.col3);
+
+    const __m128 tmp0 = m128_merge_hi(col0, col2);
+    const __m128 tmp1 = m128_merge_hi(col1, col3);
+    const __m128 tmp2 = m128_merge_lo(col0, col2);
+    const __m128 tmp3 = m128_merge_lo(col1, col3);
+    const __m128 res0 = m128_merge_hi(tmp0, tmp1);
+    const __m128 res1 = m128_merge_lo(tmp0, tmp1);
+    const __m128 res2 = m128_merge_hi(tmp2, tmp3);
+    const __m128 res3 = m128_merge_lo(tmp2, tmp3);
+
+    return mat4_new(
+        vec4_from_m128(res0), 
+        vec4_from_m128(res1), 
+        vec4_from_m128(res2), 
+        vec4_from_m128(res3)
+    );
 }
 
 
@@ -1694,10 +1721,10 @@ __forceinline mat4 mat4_inverse(mat4 m)
     __m128 sum, Det, RDet;
     __m128 trns0, trns1, trns2, trns3;
 
-    __m128 _L1 = m.col0.m128;
-    __m128 _L2 = m.col1.m128;
-    __m128 _L3 = m.col2.m128;
-    __m128 _L4 = m.col3.m128;
+    __m128 _L1 = m128_from_vec4(m.col0);
+    __m128 _L2 = m128_from_vec4(m.col1);
+    __m128 _L3 = m128_from_vec4(m.col2);
+    __m128 _L4 = m128_from_vec4(m.col3);
     // Calculating the minterms for the first line.
 
     // simdRor is just a macro using _mm_shuffle_ps().
@@ -1787,7 +1814,12 @@ __forceinline mat4 mat4_inverse(mat4 m)
     _L3 = _mm_movelh_ps(trns2, trns3);
     _L4 = _mm_movehl_ps(trns3, trns2);
 
-    return mat4_new(vec4_from_m128(_L1), vec4_from_m128(_L2), vec4_from_m128(_L3), vec4_from_m128(_L4));
+    return mat4_new(
+        vec4_from_m128(_L1), 
+        vec4_from_m128(_L2), 
+        vec4_from_m128(_L3), 
+        vec4_from_m128(_L4)
+    );
 }
 
 
@@ -1797,10 +1829,10 @@ __forceinline float mat4_determinant(mat4 mat)
     __m128 r1, r2, r3, tt, tt2;
     __m128 sum, det;
 
-    __m128 _L1 = mat.col0.m128;
-    __m128 _L2 = mat.col1.m128;
-    __m128 _L3 = mat.col2.m128;
-    __m128 _L4 = mat.col3.m128;
+    __m128 _L1 = m128_from_vec4(mat.col0);
+    __m128 _L2 = m128_from_vec4(mat.col1);
+    __m128 _L3 = m128_from_vec4(mat.col2);
+    __m128 _L4 = m128_from_vec4(mat.col3);
     // Calculating the minterms for the first line.
 
     // sseRor is just a macro using _mm_shuffle_ps().
@@ -2143,7 +2175,7 @@ __forceinline void mat4_decompose(mat4 m, vec3* scalation, quat* quaternion, vec
 {
     if (translation)
     {
-        *translation = vec3_from_m128(m.col3.m128);
+        *translation = vec3_from_vec4(m.col3);
     }
 
     if (!scalation && !quaternion)
@@ -2151,9 +2183,9 @@ __forceinline void mat4_decompose(mat4 m, vec3* scalation, quat* quaternion, vec
         return;
     }
 
-    vec3 xaxis = vec3_from_m128(m.col0.m128);
-    vec3 yaxis = vec3_from_m128(m.col1.m128);
-    vec3 zaxis = vec3_from_m128(m.col2.m128);
+    vec3 xaxis = vec3_from_vec4(m.col0);
+    vec3 yaxis = vec3_from_vec4(m.col1);
+    vec3 zaxis = vec3_from_vec4(m.col2);
 
     const float n11 = m.m00, n12 = m.m10, n13 = m.m20, n14 = m.m30;
     const float n21 = m.m01, n22 = m.m11, n23 = m.m21, n24 = m.m31;
