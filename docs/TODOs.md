@@ -14,3 +14,4 @@
 - Complete empty unit tests
 - Add missing unit tests
 - Add profile, features guidelines
+- Add NEON implementation, for optimize 2D vector operations
