@@ -1093,7 +1093,7 @@ __forceinline vec4 vec4_faceforward(vec4 n, vec4 i, vec4 nref)
 
 
 /// Quaternion multiplication
-__forceinline vec4 quat_mul(vec4 a, vec4 b)
+__forceinline quat quat_mul(quat a, quat b)
 {
     const vec3  a3 = vec3_new(a.x, a.y, a.z);
     const vec3  b3 = vec3_new(b.x, b.y, b.z);
@@ -1106,20 +1106,20 @@ __forceinline vec4 quat_mul(vec4 a, vec4 b)
 
 
 /// Quaternion inversion
-__forceinline vec4 quat_inverse(vec4 q)
+__forceinline quat quat_inverse(vec4 q)
 {
     return vec4_new(q.x, q.y, q.z, -q.w);
 }
 
 
 /// Quaternion conjugate
-__forceinline vec4 quat_conj(vec4 q)
+__forceinline quat quat_conj(vec4 q)
 {
     return vec4_new(-q.x, -q.y, -q.z, q.w);
 }
 
 
-__forceinline vec4 quat_from_axis_angle(vec3 axis, float angle)
+__forceinline quat quat_from_axis_angle(vec3 axis, float angle)
 {
     if (vec3_lensqr(axis) == 0.0f)
     {
@@ -1133,7 +1133,7 @@ __forceinline vec4 quat_from_axis_angle(vec3 axis, float angle)
 }
 
 
-__forceinline vec4 quat_to_axis_angle(vec4 quat)
+__forceinline vec4 quat_to_axis_angle(quat quat)
 {
     vec4 c = quat;
     if (c.w != 0.0f)
@@ -1157,7 +1157,7 @@ __forceinline vec4 quat_to_axis_angle(vec4 quat)
 }
 
 
-__forceinline void quat_to_axis_angle_ref(vec4 quat, vec3* axis, float* angle)
+__forceinline void quat_to_axis_angle_ref(quat quat, vec3* axis, float* angle)
 {
     vec4 axisAngle = quat_to_axis_angle(quat);
     if (axis) *axis = axisAngle.xyz;
@@ -1165,7 +1165,7 @@ __forceinline void quat_to_axis_angle_ref(vec4 quat, vec3* axis, float* angle)
 }
 
 
-__forceinline vec4 quat_from_euler(float x, float y, float z)
+__forceinline quat quat_from_euler(float x, float y, float z)
 {
     float r;
     float p;
@@ -1940,7 +1940,7 @@ __forceinline mat4 mat4_rotation_z(float radians)
 }
 
 
-__forceinline mat4 mat4_rotation_quat(vec4 quaternion)
+__forceinline mat4 mat4_rotation_quat(quat quaternion)
 {
     vec4 axisangle = quat_to_axis_angle(quaternion);
     return mat4_rotation(axisangle.x, axisangle.y, axisangle.z, axisangle.w);
@@ -1958,7 +1958,7 @@ __forceinline mat4 mat4_transform2(vec2 position, float angle, vec2 scale)
 
 
 /// Create 3D transformation matrix
-__forceinline mat4 mat4_transform3(vec3 position, vec4 quat, vec3 scale)
+__forceinline mat4 mat4_transform3(vec3 position, quat quat, vec3 scale)
 {
     const mat4 translation  = mat4_translation_vec3(position);
     const mat4 rotation     = mat4_rotation_quat(quat);
@@ -1967,7 +1967,7 @@ __forceinline mat4 mat4_transform3(vec3 position, vec4 quat, vec3 scale)
 }
 
 
-__forceinline void mat4_decompose(mat4 m, vec3* scalation, vec4* quaternion, vec3* translation)
+__forceinline void mat4_decompose(mat4 m, vec3* scalation, quat* quaternion, vec3* translation)
 {
     if (translation)
     {
@@ -2075,7 +2075,7 @@ __forceinline void mat4_decompose_axis_angle(mat4 m, vec3* scalation, vec3* axis
 {
     if (axis || angle)
     {
-        vec4 quat;
+        quat quat;
         mat4_decompose(m, scalation, &quat, translation);
 
         quat_to_axis_angle_ref(quat, axis, angle);

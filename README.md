@@ -41,7 +41,7 @@
 ## Small taste
 ```C
 vec3 position = vec3_new(100.0f, 200.0f, 10.0f);    // equals to vec3(100.0f, 200.0f, 10.0f)
-vec4 rotation = quat_from_euler(0.0f, 0.0f, 0.0f);
+quat rotation = quat_from_euler(0.0f, 0.0f, 0.0f);
 vec3 scale    = vec3_new1(1.0f);                    // equals to vec3(1.0f)
 mat4 model    = mat4_mul(mat4_mul(mat4_translation_vec3(position),
                                   mat4_rotation_quat(rotation)),
@@ -55,7 +55,7 @@ mat4 proj = mat4_perspective_rh(float_deg2rad(45), WIDTH / HEIGHT, 0.0f, 100.0f)
 
 ```C++
 vec3 position = vec3(100.0f, 200.0f, 10.0f);
-vec4 rotation = quat_from_euler(0.0f, 0.0f, 0.0f); // no quat(0.0f, 0.0f, 0.0f) because this is hidden what it does behind the scene
+quat rotation = quat_from_euler(0.0f, 0.0f, 0.0f); // no quat(0.0f, 0.0f, 0.0f) because this is hidden what it does behind the scene
 vec3 scale    = vec3(1.0f);
 mat4 model    = mat4_translation_vec3(position) * mat4_rotation_quat(rotation) * mat4_scalation_vec3(scale);
              // maybe some function overloading: mat4_translation(position) * mat4_rotation(quat) * mat4_scalation(scale) is appreciated

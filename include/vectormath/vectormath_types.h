@@ -275,6 +275,12 @@ typedef union VECTORMATH_VECTORTYPE(vec4, 16)
 } vec4;
 
 
+/// quat
+/// Quaternion datastructure
+/// Just an alias of vec4
+typedef vec4 quat;
+
+
 /// ivec2
 /// 2D integer vector
 /// Components are 32 bit fixed-size signed integer
