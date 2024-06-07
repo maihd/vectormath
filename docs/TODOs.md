@@ -4,7 +4,6 @@
 - Add project showcases
 - API docs and usage docs
 - Make an example that use full advantages of clang vector extensions
-- Support gcc vector extension
 - Benchmarking
 - Maybe pattern solution for common problem in game/graphics development
 - Support more systems: left/right handed, vertical/horizontal field of view

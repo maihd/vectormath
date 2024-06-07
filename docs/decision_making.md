@@ -6,9 +6,11 @@
 - Theses 2 operators are not commonly used
 - Theses 2 operators are not clearly showing what its does underneath
 
+
 ## Add handed system
 - Many frameworks, game engine use different handed systems
 - Make functions clearly show what its does underneath
+
 
 ## Use matrix row-major instead of column-major
 - Commonly in game framework/engine -> wrong
@@ -22,8 +24,27 @@
     - Reduce cognition overhead, because its common
     - GLSL-like
 
+
 ## Vector constructors
 - Shortname for vecx_new
 - Commonly use when coding
 - The purpose of functions are clear
 - Support some caster between vectors easily
+
+
+## Quaternion constructor
+- High-level construct for quat (underneath is vec4)
+- Faster recognize what code doing
+
+
+## No support gcc vector extension
+- No MSVC support
+- No .x,.y,.z,.w properties
+- Explore in misc/test_gcc_vecext.c
+
+
+## No seperate clang implementations
+- Builtin functions docs is hard to find, hard to understand
+- You can easily convert __m128/float32x4_t to vec3/vec4 and vice versa
+- Use the some implementation mean no runtime differences
+- Shorter time of development
