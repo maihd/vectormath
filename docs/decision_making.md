@@ -48,3 +48,10 @@
 - You can easily convert __m128/float32x4_t to vec3/vec4 and vice versa
 - Use the some implementation mean no runtime differences
 - Shorter time of development
+
+
+## Clang vector extensions support
+- Operators, swizzles on both C and C++
+- Not portable, but clang has compile-targets on all major platforms (include game console)
+- Explore new way of game engine/gameplay coding in pure and only C (no need to compile C with C++ compiler just only for operators overloading)
+- Clang has also well supporting C11/C17, which has _Generic, what constructors are needed to implement
