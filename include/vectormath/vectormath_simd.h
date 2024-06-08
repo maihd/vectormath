@@ -1205,6 +1205,13 @@ __forceinline vec4 vec4_faceforward(vec4 n, vec4 i, vec4 nref)
 }
 
 
+/// Create an identity quaternion
+__forceinline quat quat_identity(void)
+{
+    return vec4_new(0.0f, 0.0f, 0.0f, 1.0f);
+}
+
+
 /// Quaternion multiplication
 __forceinline quat quat_mul(quat a, quat b)
 {
