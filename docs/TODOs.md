@@ -3,6 +3,7 @@
 - Change matrix row-major to column-major
 - Add project showcases
 - API docs and usage docs
+- Docgen
 - Make an example that use full advantages of clang vector extensions
 - Benchmarking
 - Maybe pattern solution for common problem in game/graphics development
@@ -17,3 +18,4 @@
 - Turns as a replace for degrees/radians
 - Quaternion implementation as seperate modules (scalar and simd have the same implementation)
 - Common module -> Vec2 module
+- Remove deprecated functions
