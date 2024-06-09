@@ -40,6 +40,8 @@
 
 ## Small taste
 ```C
+// C
+
 vec3 position = vec3_new(100.0f, 200.0f, 10.0f);    // equals to vec3(100.0f, 200.0f, 10.0f)
 quat rotation = quat_from_euler(0.0f, 0.0f, 0.0f);
 vec3 scale    = vec3_new1(1.0f);                    // equals to vec3(1.0f)
@@ -54,6 +56,8 @@ mat4 proj = mat4_perspective_rh(float_deg2rad(45), WIDTH / HEIGHT, 0.0f, 100.0f)
 ```
 
 ```C++
+// C++
+
 vec3 position = vec3(100.0f, 200.0f, 10.0f);
 quat rotation = quat_from_euler(0.0f, 0.0f, 0.0f); // no quat(0.0f, 0.0f, 0.0f) because this is hidden what it does behind the scene
 vec3 scale    = vec3(1.0f);
@@ -66,6 +70,27 @@ mat4 proj = mat4_perspective_rh(float_deg2rad(45), WIDTH / HEIGHT, 0.0f, 100.0f)
 // ... apply matrix to render, should convert to other systems (handed, row/column major) ...
 ```
 
+
+```C
+// GLSL-like (require Clang with vector extensions support)
+// Exactly it's OpenCL C's vector types, does not .uv
+// Doesnot support in other compilers, use with care
+
+vec2 position;
+vec2 texcoord;
+
+vec4 vert2d;
+vert2d.xy = position;
+vert2d.zw = texcoord;
+
+vec4 red_color;
+color.r = 1.0f;
+color.g = 0.0f;
+color.b = 0.0f;
+color.a = 1.0f;
+
+vec3 red_color_3f = red_color.rgb;
+```
 
 ## Showcase examples
 - Please check folder `examples` to exploring
