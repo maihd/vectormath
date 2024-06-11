@@ -15,7 +15,7 @@
 - Add missing unit tests
 - Add profile, features guidelines
 - Add NEON implementation, for optimize 2D vector operations
-- Turns as a replace for degrees/radians
+- Turns as a replacement for degrees/radians
 - Quaternion implementation as seperate modules (scalar and simd have the same implementation)
 - Common module -> Vec2 module
 - Remove deprecated functions

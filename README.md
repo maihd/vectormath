@@ -1,4 +1,4 @@
-# Vector Math library based on Sony's Math library (Write new, not mod, cause different from origin version)
+# VectorMath library based on Sony's Math library (Write new, not mod, cause different from origin version)
 
 ## Contents
 - [Features and Design philosophy](#features)
@@ -36,6 +36,16 @@
 - Run premake5 or GENie (WIP) to generate projects
 - Build with your chosen build system
 - (WIP) Planning to add cmake
+
+
+## Contributing
+All pull requests are welcome:
+- Add more examples
+- Reporting and fixing bugs
+- Unit tests
+- Add functions implementations: NEON (other simd intrinsics), handedness, reverse z-order, turns
+- Add docs, fixing typo
+- Find contributing guides as CONTRIBUING.md
 
 
 ## Small taste
