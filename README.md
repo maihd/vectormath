@@ -69,6 +69,7 @@ mat4 proj = mat4_perspective_rh(float_deg2rad(45), WIDTH / HEIGHT, 0.0f, 100.0f)
 
 ## Showcase examples
 - Please check folder `examples` to exploring
+- [Pixel Adventure, Mai clone of that game](https://github.com/maihd/pixel_adventure)
 
 
 ## Language bindings
@@ -94,7 +95,7 @@ so other languages you should use the libraries written specifily for thoses lan
 
 - More about performance? Not the fastest, but enough to use with small project.
 
-- Is it stable yet? No. This library need to make some big decisions, some decisions are mistaked in beginning.
+- Is it stable yet? No. But the API will stable soon (which is still missing needed features).
 
 
 ## Meta
