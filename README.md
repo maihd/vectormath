@@ -76,7 +76,7 @@ mat4 proj = mat4_perspective_rh(float_deg2rad(45), WIDTH / HEIGHT, 0.0f, 100.0f)
 Language bindings only prefer transpiling language like Haxe (maybe only), that use C++ code to compile, which may using the advantages of inlining optimization. Other languages may need FFI, C ABI to call functions (not inlining),
 so other languages you should use the libraries written specifily for thoses languages. (Like Zig have zmath, Odin have native support for vector/matrix types)
 - Haxe Reflaxe.CPP (bindgen with nodejs script)
-
+- Carbon was said that can include C++ header without changing the source code. No experiment yet.
 
 ## FAQs
 - Why another math library? I'm a big fan of The-Forge renderer, when I read the source, discovered Sony's Math library. But the Sony's Math was support C++ only, then I write a port to support both C and C++ for learning purposes.

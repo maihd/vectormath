@@ -19,3 +19,4 @@
 - Quaternion implementation as seperate modules (scalar and simd have the same implementation)
 - Common module -> Vec2 module
 - Remove deprecated functions
+- (Low priority) Carbon and Haxe examples
