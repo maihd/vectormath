@@ -40,7 +40,7 @@
 
 
 // constexpr is helpful
-#if !defined(__cplusplus) && !defined(constexpr) && __STDC_VERSION__ <= 201710L
+#if !defined(__cplusplus) && !defined(constexpr) && __STDC_VERSION__ <= 201710L && !(defined(__clang__) || defined(__GNUC__))
 #   define constexpr static const
 #endif
 
