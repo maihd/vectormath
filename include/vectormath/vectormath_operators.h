@@ -552,23 +552,44 @@ __forceinline mat4 operator*(mat4 a, mat4 b)
 
 
 // @todo: expr to use `const mat4&` instead of `mat4`
-__forceinline vec2 operator*(mat4 a, vec2 b)
-{
-    return mat4_mul_vec2(a, b);
-}
+// __forceinline vec2 operator*(mat4 a, vec2 b)
+// {
+//     return mat4_mul_vec2(a, b);
+// }
 
 
 // @todo: expr to use `const mat4&` instead of `mat4`
-__forceinline vec3 operator*(mat4 a, vec3 b)
-{
-    return mat4_mul_vec3(a, b);
-}
+// __forceinline vec3 operator*(mat4 a, vec3 b)
+// {
+//     return mat4_mul_vec3(a, b);
+// }
 
 
 // @todo: expr to use `const mat4&` instead of `mat4`
 __forceinline vec4 operator*(mat4 a, vec4 b)
 {
     return mat4_mul_vec4(a, b);
+}
+
+
+// @todo: expr to use `const mat4&` instead of `mat4`
+// __forceinline vec2 operator*(vec2 a, mat4 b)
+// {
+//     return vec2_mul_mat4(a, b);
+// }
+
+
+// @todo: expr to use `const mat4&` instead of `mat4`
+// __forceinline vec3 operator*(vec3 a, mat4 b)
+// {
+//     return vec3_mul_mat4(a, b);
+// }
+
+
+// @todo: expr to use `const mat4&` instead of `mat4`
+__forceinline vec4 operator*(vec4 a, mat4 b)
+{
+    return vec4_mul_mat4(a, b);
 }
 
 
