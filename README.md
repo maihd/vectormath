@@ -1,7 +1,5 @@
 # VectorMath library based on Sony's Math library (Write new, not mod, cause different from origin version)
 [!["Buy Me A Coffee"](https://www.buymeacoffee.com/assets/img/custom_images/orange_img.png)](https://www.buymeacoffee.com/maihd)
-[![Version](https://badge.fury.io/gh/tterb%2FHyde.svg)](https://badge.fury.io/gh/tterb%2FHyde)
-[![GitHub Release](https://img.shields.io/github/release/tterb/PlayMusic.svg?style=flat)]()  
 
 ## Contents
 - [Features and Design philosophy](#features)
