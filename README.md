@@ -84,8 +84,6 @@ mat4 proj = mat4_perspective_rh(float_deg2rad(45), WIDTH / HEIGHT, 0.0f, 100.0f)
 
 ```C
 // GLSL-like (require Clang with vector extensions support)
-// Exactly it's OpenCL C's vector types, does not .uv
-// Doesnot support in other compilers, use with care
 
 vec2 position;
 vec2 texcoord;
