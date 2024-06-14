@@ -1,4 +1,5 @@
-# Vector Math library based on Sony's Math library (Write new, not mod, cause different from origin version)
+# VectorMath library based on Sony's Math library (Write new, not mod, cause different from origin version)
+[!["Buy Me A Coffee"](https://www.buymeacoffee.com/assets/img/custom_images/orange_img.png)](https://www.buymeacoffee.com/maihd)
 
 ## Contents
 - [Features and Design philosophy](#features)
@@ -36,6 +37,16 @@
 - Run premake5 or GENie (WIP) to generate projects
 - Build with your chosen build system
 - (WIP) Planning to add cmake
+
+
+## Contributing
+All pull requests are welcome:
+- Add more examples
+- Reporting and fixing bugs
+- Unit tests
+- Add functions implementations: NEON (other simd intrinsics), handedness, reverse z-order, turns
+- Add docs, fixing typo
+- Find contributing guides as CONTRIBUING.md
 
 
 ## Small taste
@@ -94,13 +105,14 @@ vec3 red_color_3f = red_color.rgb;
 
 ## Showcase examples
 - Please check folder `examples` to exploring
+- [Pixel Adventure, Mai clone of that game](https://github.com/maihd/pixel_adventure)
 
 
 ## Language bindings
 Language bindings only prefer transpiling language like Haxe (maybe only), that use C++ code to compile, which may using the advantages of inlining optimization. Other languages may need FFI, C ABI to call functions (not inlining),
 so other languages you should use the libraries written specifily for thoses languages. (Like Zig have zmath, Odin have native support for vector/matrix types)
 - Haxe Reflaxe.CPP (bindgen with nodejs script)
-
+- Carbon was said that can include C++ header without changing the source code. No experiment yet.
 
 ## FAQs
 - Why another math library? I'm a big fan of The-Forge renderer, when I read the source, discovered Sony's Math library. But the Sony's Math was support C++ only, then I write a port to support both C and C++ for learning purposes.
@@ -119,7 +131,7 @@ so other languages you should use the libraries written specifily for thoses lan
 
 - More about performance? Not the fastest, but enough to use with small project.
 
-- Is it stable yet? No. This library need to make some big decisions, some decisions are mistaked in beginning.
+- Is it stable yet? No. But the API will stable soon (which is still missing needed features).
 
 
 ## Meta

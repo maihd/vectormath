@@ -457,12 +457,14 @@ typedef union VECTORMATH_VECTORTYPE(mat4, 16)
 
 
 // -------------------------------------------------------------
-// Type size and align verification
+// Type size and alignment verification
 // -------------------------------------------------------------
 
 #if !defined(__cplusplus) && !defined(static_assert)
 #   if __STDC_VERSION__ >= 201112L
-#       define static_assert _Static_assert             
+#       define static_assert _Static_assert            
+#   elif __STDC_VERSION__ == 199901L
+#       define __static_assert_2(cond, msg, x)  ((void)((char[(cond) ? 1 : -1]){ 0 })) // can use as expression
 #   else
 #       define __static_assert_2(cond, msg, x)  static const int __static_assert_##x[(cond) ? 1 : -1] = { 0 }
 #       define __static_assert_1(cond, msg, x)  __static_assert_2(cond, msg, x)

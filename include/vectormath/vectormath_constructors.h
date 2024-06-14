@@ -171,7 +171,7 @@ __forceinline mat4 __mat4_copy(mat4 m)
 #define mat4(...) mat4_new(__VA_ARGS__)
 
 
-#else
+#elif __STDC_VERSION__ >= 201112L
 
 
 /// mark as no argument for macro expansion
@@ -276,6 +276,23 @@ struct __vectormath_no_arg { int _; };
 ///     - mat4(mat4):       dummy cast
 #define mat4(...) __mat4_ctor((__VA_ARGS__), ##__VA_ARGS__, (struct __vectormath_no_arg){0}, (struct __vectormath_no_arg){0}, ~)
 
+
+#else
+
+// Does not supported in this compiler version
+#define vec2(...) (static_assert(false, "vec2 constructor is not supported in this compiler version"), (vec2){0})
+
+// Does not supported in this compiler version
+#define vec3(...) (static_assert(false, "vec3 constructor is not supported in this compiler version"), (vec3){0})
+
+// Does not supported in this compiler version
+#define vec4(...) (static_assert(false, "vec4 constructor is not supported in this compiler version"), (vec4){0})
+
+// Does not supported in this compiler version
+#define quat(...) (static_assert(false, "quat constructor is not supported in this compiler version"), (quat){0})
+
+// Does not supported in this compiler version
+#define mat4(...) (static_assert(false, "mat4 constructor is not supported in this compiler version"), (mat4){0})
 
 #endif
 
