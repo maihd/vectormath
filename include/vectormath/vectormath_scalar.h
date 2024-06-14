@@ -39,6 +39,13 @@ __forceinline vec3 vec3_new1(float s)
 }
 
 
+/// Create a new vector 3D, with vec2 and z component
+__forceinline vec3 vec3_new_vec2(vec2 v, float z)
+{
+    return vec3_new(v.x, v.y, z);
+}
+
+
 /// Create a new vector 3D with 3 components are zero
 __forceinline vec3 vec3_zero(void)
 {
@@ -88,6 +95,30 @@ __forceinline vec4 vec4_new1(float s)
     result.y = s;
     result.z = s;
     result.w = s;
+    return result;
+}
+
+
+/// Create a new vector 4D
+__forceinline vec4 vec4_new_vec2(vec2 v, float z, float w)
+{
+    vec4 result;
+    result.x = v.x;
+    result.y = v.y;
+    result.z = z;
+    result.w = w;
+    return result;
+}
+
+
+/// Create a new vector 4D
+__forceinline vec4 vec4_new_vec3(vec3 v, float w)
+{
+    vec4 result;
+    result.x = v.x;
+    result.y = v.y;
+    result.z = v.z;
+    result.w = w;
     return result;
 }
 

@@ -15,22 +15,22 @@ DEFINE_UNIT_TEST("vec4 constructor with 4 scalars, component-based initialize")
 }
 
 
-// DEFINE_UNIT_TEST("use vec4 constructor for vec2 cast to vec4")
-// {
-//     const vec2 v2 = vec2_new(3.0f, 4.0f);
-//     const vec3 v3 = vec3(v2);
-//     TEST(v3.x == v2.x && v3.y == v2.y);
-//     TEST(v3.x == 3.0f && v3.y == 4.0f && v3.z == 0.0f);
-// }
+DEFINE_UNIT_TEST("use vec4 constructor for vec2 cast to vec4")
+{
+    const vec2 v2 = vec2_new(3.0f, 4.0f);
+    const vec4 v4 = vec4(v2, 0.0f, 0.0f);
+    TEST(v4.x == v2.x && v4.y == v2.y);
+    TEST(v4.x == 3.0f && v4.y == 4.0f && v4.z == 0.0f && v4.w == 0.0f);
+}
 
 
-// DEFINE_UNIT_TEST("use vec4 construct for vec3 cast to vec4")
-// {
-//     const vec4 v4 = vec4_new(3.0f, 4.0f, 5.0f, 6.0f);
-//     const vec3 v3 = vec3(v4);
-//     TEST(v3.x == v4.x && v3.y == v4.y && v3.z == v4.z);
-//     TEST(v3.x == 3.0f && v3.y == 4.0f && v3.z == 5.0f);
-// }
+DEFINE_UNIT_TEST("use vec4 construct for vec3 cast to vec4")
+{
+    const vec3 v3 = vec3_new(3.0f, 4.0f, 5.0f);
+    const vec4 v4 = vec4(v3, 0.0f);
+    TEST(v3.x == v4.x && v3.y == v4.y && v3.z == v4.z);
+    TEST(v4.x == 3.0f && v4.y == 4.0f && v4.z == 5.0f && v4.w == 0.0f);
+}
 
 
 DEFINE_UNIT_TEST("use vec4 construct for redundant cast of vec4 to vec4")

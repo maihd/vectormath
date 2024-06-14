@@ -27,7 +27,7 @@ int main()
 
     vec2 v2_v3 = vec2(v3);      // vec2_from_vec3(v3)
     vec2 v2_v4 = vec2(v4);      // vec2_from_vec4(v4)
-    vec3 v3_v2 = vec3(v);       // vec3_from_vec2(v)
+    vec3 v3_v2 = vec3(v, 0.0f);       // vec3_from_vec2(v)
     vec3 v3_v4 = vec3(v4);      // vec3_from_vec4(v4)
 
     printf("v2_v3 = { %f, %f }\n", v2_v3.x, v2_v3.y);

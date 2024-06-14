@@ -52,6 +52,13 @@ __forceinline vec3 vec3_new1(float s)
 }
 
 
+/// Create a new vector 3D, with vec2 and z component
+__forceinline vec3 vec3_new_vec2(vec2 v, float z)
+{
+    return vec3_new(v.x, v.y, z);
+}
+
+
 /// Create a new vector 3D with 3 components are zero
 __forceinline vec3 vec3_zero(void)
 {
@@ -124,6 +131,20 @@ __forceinline vec4 vec4_new(float x, float y, float z, float w)
 #endif
 
     return result;
+}
+
+
+/// Create a new vector 4D
+__forceinline vec4 vec4_new_vec2(vec2 v, float z, float w)
+{
+    return vec4_new(v.x, v.y, z, w);
+}
+
+
+/// Create a new vector 4D
+__forceinline vec4 vec4_new_vec3(vec3 v, float w)
+{
+    return vec4_new(v.x, v.y, v.z, w);
 }
 
 
@@ -1701,6 +1722,17 @@ __forceinline vec4 mat4_mul_vec4(mat4 a, vec4 b)
                 _mm_mul_ps(m128_from_vec4(a.col3), _mm_shuffle_ps(b128, b128, _MM_SHUFFLE(3, 3, 3, 3)))
             )
         )
+    );
+}
+
+
+__forceinline vec4 vec4_mul_mat4(vec4 v, mat4 m)
+{
+    return vec4_new(
+        vec4_dot(v, m.col0),
+        vec4_dot(v, m.col1),
+        vec4_dot(v, m.col2),
+        vec4_dot(v, m.col3)
     );
 }
 

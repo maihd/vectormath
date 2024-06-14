@@ -18,7 +18,7 @@ DEFINE_UNIT_TEST("vec3 constructor with 3 scalars, component-based initialize")
 DEFINE_UNIT_TEST("use vec3 constructor for vec2 cast to vec3")
 {
     const vec2 v2 = vec2_new(3.0f, 4.0f);
-    const vec3 v3 = vec3(v2);
+    const vec3 v3 = vec3(v2, 0.0f);
     TEST(v3.x == v2.x && v3.y == v2.y);
     TEST(v3.x == 3.0f && v3.y == 4.0f && v3.z == 0.0f);
 }

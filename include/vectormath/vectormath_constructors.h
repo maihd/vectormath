@@ -43,9 +43,9 @@ __forceinline vec2 vec2_new(vec4 v4)
 }
 
 
-__forceinline vec3 vec3_new(vec2 v2)
+__forceinline vec3 vec3_new(vec2 v2, float z)
 {
-    return vec3_from_vec2(v2);
+    return vec3_new_vec2(v2, z);
 }
 
 
@@ -64,6 +64,18 @@ __forceinline vec3 vec3_new(vec4 v4)
 __forceinline vec4 vec4_new(vec4 v)
 {
     return v;
+}
+
+
+__forceinline vec4 vec4_new(vec2 v, float z, float w)
+{
+	return vec4_new_vec2(v, z, w);
+}
+
+
+__forceinline vec4 vec4_new(vec3 v, float w)
+{
+	return vec4_new_vec3(v, w);
 }
 
 
@@ -208,7 +220,7 @@ struct __vectormath_no_arg { int _; };
 #define __vec3_ctor(args, x, y, ...)                        \
     _Generic((x)                                            \
         , vec3: __vec3_copy                                 \
-        , vec2: vec3_from_vec2                              \
+        , vec2: vec3_new_vec2                               \
         , vec4: vec3_from_vec4                              \
         , default:                                          \
             _Generic((y)                                    \
@@ -232,6 +244,8 @@ struct __vectormath_no_arg { int _; };
 #define __vec4_ctor(args, x, y, ...)                        \
     _Generic((x)                                            \
         , vec4: __vec4_copy                                 \
+        , vec2: vec4_new_vec2                               \
+        , vec3: vec4_new_vec3                               \
         , default:                                          \
             _Generic((y)                                    \
                 , struct __vectormath_no_arg: vec4_new1     \
