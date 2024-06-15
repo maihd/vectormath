@@ -117,7 +117,7 @@ so other languages you should use the libraries written specifily for thoses lan
 
 - Why Unlicense? Mostly source codes were re-written from The-Forge's VectorMath library, so I don't own the code. (I found the code with the same design with this library, but older: https://github.com/zauonlok/renderer/blob/master/renderer/core/maths.h)
 
-- Where the functions docs, and tutorials? WIP.
+- Where the functions docs, and tutorials? WIP. All functions should got a simple description for the works.
 
 - Advance usages, configs, build flags docs? Find out in [build_flags](docs/build_flags.md).
 
