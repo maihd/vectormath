@@ -1,6 +1,7 @@
 # VectorMath library based on Sony's Math library (Write new, not mod, cause different from origin version)
 [!["Buy Me A Coffee"](https://www.buymeacoffee.com/assets/img/custom_images/orange_img.png)](https://www.buymeacoffee.com/maihd)
 
+
 ## Contents
 - [Features and Design philosophy](#features)
 - [Import/include instructions](#include-instructions)
@@ -10,6 +11,7 @@
 - [Language bindings](#language-bindings)
 - [FAQs](#faqs)
 - [Meta](#meta)
+
 
 ## Features and Design philosophy <a name="features" />
 - Scalar math for graphics/game: `int32_t`, `uint32_t`, `float`
@@ -112,6 +114,7 @@ so other languages you should use the libraries written specifily for thoses lan
 - Haxe Reflaxe.CPP (bindgen with nodejs script)
 - Carbon was said that can include C++ header without changing the source code. No experiment yet.
 
+
 ## FAQs
 - Why another math library? I'm a big fan of The-Forge renderer, when I read the source, discovered Sony's Math library. But the Sony's Math was support C++ only, then I write a port to support both C and C++ for learning purposes.
 
@@ -127,7 +130,7 @@ so other languages you should use the libraries written specifily for thoses lan
     - Solution 1: replace struct definition of VectorX with typedef and it will work. Matrix should be converted.
     - Solution 2: create some helper functions to convert between two types, fear not about performance penalty, compiler will do the work for you. This work for other framework too. Recommended.
 
-- More about performance? Not the fastest, but enough to use with small project.
+- More about performance? Not the fastest, but enough to use with small projects.
 
 - Is it stable yet? No. But the API will stable soon (which is still missing needed features).
 
@@ -135,4 +138,4 @@ so other languages you should use the libraries written specifily for thoses lan
 ## Meta
 - Version: v0.9.0-dev (nearly stable)
 - License: UNLICENSED
-- Copyright: MaiHD @ 2022 - 2024
+- Copyright: MaiHD @ 2022 - 2025

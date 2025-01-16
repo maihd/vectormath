@@ -6,10 +6,15 @@
 - Add third party if needed
 
 
+## Add API docs
+- Simplicity is prefer
+- Decribe what its does, purpose
+
+
 ## Add functions implementation
-- Only theses features are accepted: NEON (other simd intrinsics), handedness, reverse z-order, turns
+- Only theses features are accepted: NEON (or other simd intrinsics set), handedness, reverse z-order, turns
 - The function API and implementation must be met the coding_standards.md requirement
-- Add an explainment to decision_making.md if the implementation, used features are hard to understand
+- Add an explainment to docs/decision_making.md if the implementation, used features are hard to understand
 - Please add unit tests
 
 
