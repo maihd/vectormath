@@ -113,6 +113,7 @@ Language bindings only prefer transpiling language like Haxe (maybe only), that 
 so other languages you should use the libraries written specifily for thoses languages. (Like Zig have zmath, Odin have native support for vector/matrix types)
 - Haxe Reflaxe.CPP (bindgen with nodejs script)
 - Carbon was said that can include C++ header without changing the source code. No experiment yet.
+- Luau (with support native Vector4 in languages). And I'm written a simple, light library to bindings Luau and Lua runtime in C.
 
 
 ## FAQs
