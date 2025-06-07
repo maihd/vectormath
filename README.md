@@ -113,6 +113,7 @@ Language bindings only prefer transpiling language like Haxe (maybe only), that 
 so other languages you should use the libraries written specifily for thoses languages. (Like Zig have zmath, Odin have native support for vector/matrix types)
 - Haxe Reflaxe.CPP (bindgen with nodejs script)
 - Carbon was said that can include C++ header without changing the source code. No experiment yet.
+- Beef: Only type definitions must be same with this library (same size, same layout). Naming and functions implement must be done in Beef side. I'm researching a way to transpile C source code to Beef.
 
 
 ## FAQs
