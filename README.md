@@ -114,6 +114,7 @@ so other languages you should use the libraries written specifily for thoses lan
 - Haxe Reflaxe.CPP (bindgen with nodejs script)
 - Carbon was said that can include C++ header without changing the source code. No experiment yet.
 - Beef: Only type definitions must be same with this library (same size, same layout). Naming and functions implement must be done in Beef side. I'm researching a way to transpile C source code to Beef.
+- Luau (with support native Vector4 in languages). And I'm written a simple, light library to bindings Luau and Lua runtime in C.
 
 
 ## FAQs
