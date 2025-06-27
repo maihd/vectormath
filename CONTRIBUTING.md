@@ -8,7 +8,7 @@
 
 ## Add API docs
 - Simplicity is prefer
-- Decribe what its does, purpose
+- Decribe what its does, its' purposes
 
 
 ## Add functions implementation

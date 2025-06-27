@@ -44,7 +44,7 @@ Compiler and Language Standards
 - Use C99 and C++0x. C89 and >=C++11 should works. Does not force use C89, because pass-by-value may cause performance problems.
 - Treat warnings as errors.
 - Does not force to use C99 in examples, maybe using C++ is better purposing, show the code to the end-users. 
-- C11 only require when use constructors
+- C11 only require when use constructors in C
 
 
 Physically architecture for source files

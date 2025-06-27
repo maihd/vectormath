@@ -18,5 +18,16 @@
 - Turns as a replacement for degrees/radians
 - Quaternion implementation as seperate modules (scalar and simd have the same implementation)
 - Common module -> Vec2 module
-- Remove deprecated functions
-- (Low priority) Carbon and Haxe examples
+
+- Development using:
+    - Full shorthands versions for GLSL-like
+    - Raylib/sokol templates
+
+- (Low priority) Remove deprecated functions
+
+- (Low priority) Haxe examples
+
+- (Low priority) Building:
+    - Single header library
+    - Features cutting
+    - Implemetation cutting

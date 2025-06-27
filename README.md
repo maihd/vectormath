@@ -29,6 +29,17 @@
 - Find out more in `docs/coding_standards.md`
 
 
+## Limitations
+- Focus on more modern compilers
+    - C min requirement is C99
+    - C++ min requirement is C++11
+- No SoA structures
+- No battle-tested showcases
+- No stable releases, unproductive usages
+- No widely known, used by community
+- No complete docs
+
+
 ## Import/include instructions <a name="include-instructions" />
 - This library is headers only, you can easily import to your projects
 - Use scripts/vectormath.genie.lua (WIP) to import to projects that support GENie
@@ -126,7 +137,7 @@ so other languages you should use the libraries written specifily for thoses lan
 
 - Advance usages, configs, build flags docs? Find out in [build_flags](docs/build_flags.md).
 
-- More examples on some popular renderers (bgfx, The-Forge)? Learning.
+- More examples on some popular renderers (bgfx, The-Forge, sokol)? Learning.
 
 - I want to use it with Raylib? 
     - Solution 1: replace struct definition of VectorX with typedef and it will work. Matrix should be converted.

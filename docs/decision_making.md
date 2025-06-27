@@ -33,7 +33,7 @@
 
 
 ## Quaternion constructor
-- High-level construct for quat (underneath is vec4)
+- High-level construct for quat (underlying is vec4)
 - Faster recognize what code doing
 
 
