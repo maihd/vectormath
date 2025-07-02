@@ -19,6 +19,9 @@
 - Quaternion implementation as seperate modules (scalar and simd have the same implementation)
 - Common module -> Vec2 module
 
+- Bugs:
+    - MacOS m128_acos
+
 - Development using:
     - Full shorthands versions for GLSL-like
     - Raylib/sokol templates

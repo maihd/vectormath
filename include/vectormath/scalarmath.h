@@ -47,7 +47,7 @@
 
 
 // deprecated is helpful
-#if !defined(__deprecated)
+#if !defined(__deprecated_msg)
 #   if defined(_MSC_VER)
 #      define __deprecated(alternative, ...) __declspec(deprecated("Please use " alternative " instead." ##__VA_ARGS__))
 #   elif defined(__GCC__)

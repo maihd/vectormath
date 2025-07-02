@@ -264,7 +264,7 @@ __forceinline mat4 mat4_new_16f(
 
 
 // Create a new matrix 4x4, specify the components with 16 scalars
-__deprecated("mat4_new_16f")
+__deprecated_msg("mat4_new_16f")
 __forceinline mat4 mat4_new_f16(
     float m00, float m01, float m02, float m03,
     float m10, float m11, float m12, float m13,
@@ -587,7 +587,11 @@ __forceinline vec3 vec3_tanh(vec3 v)
 /// Computes inverse cosine
 __forceinline vec3 vec3_acos(vec3 v)
 {
+#if VECTORMATH_NEON_SUPPORT
+    return vec3_new(float_acos(v.x), float_acos(v.y), float_acos(v.z));
+#else
     return vec3_from_m128(m128_acosf(m128_from_vec3(v)));
+#endif
 }
 
 
@@ -2010,7 +2014,7 @@ __forceinline mat4 mat4_ortho_rh(float left, float right, float bottom, float to
 }
 
 
-__deprecated("mat4_frustum_rh")
+__deprecated_msg("mat4_frustum_rh")
 __forceinline mat4 mat4_ortho(float left, float right, float bottom, float top, float z_near, float z_far)
 {
     return mat4_ortho_rh(left, right, bottom, top, z_near, z_far);
@@ -2051,7 +2055,7 @@ __forceinline mat4 mat4_frustum_rh(float left, float right, float bottom, float 
 }
 
 
-__deprecated("mat4_frustum_rh")
+__deprecated_msg("mat4_frustum_rh")
 __forceinline mat4 mat4_frustum(float left, float right, float bottom, float top, float z_near, float z_far)
 {
     return mat4_frustum_rh(left, right, bottom, top, z_near, z_far);
@@ -2075,7 +2079,7 @@ __forceinline mat4 mat4_perspective_rh(float fov_radians, float aspect, float z_
 }
 
 
-__deprecated("mat4_perspective_rh")
+__deprecated_msg("mat4_perspective_rh")
 __forceinline mat4 mat4_perspective(float fov_radians, float aspect, float z_near, float z_far)
 {
     return mat4_perspective_rh(fov_radians, aspect, z_near, z_far);
@@ -2097,7 +2101,7 @@ __forceinline mat4 mat4_lookat_rh(vec3 eye, vec3 target, vec3 up)
 }
 
 
-__deprecated("mat4_lookat_rh")
+__deprecated_msg("mat4_lookat_rh")
 __forceinline mat4 mat4_lookat(vec3 eye, vec3 target, vec3 up)
 {
     return mat4_lookat_rh(eye, target, up);
