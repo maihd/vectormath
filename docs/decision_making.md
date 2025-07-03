@@ -21,7 +21,7 @@
 - Decided to change to column-major:
     - Commonly in game framework/engine: BGFX, The Forge, Raylib
     - Faster computing: https://www.modular.com/blog/row-major-vs-column-major-matrices-a-performance-analysis-in-mojo-and-numpy
-    - Reduce cognition overhead, because its common
+    - Reduce cognition overhead, because it's common
     - GLSL-like
 
 
