@@ -22,19 +22,18 @@ DEFINE_UNIT_TEST("glslmath: BLINN PHONG")
     }
     */
 
-    // vec3 inputPosition;
-    // vec3 inputNormal;
+    vec3 inputPosition = {};
+    vec3 inputNormal = {};
     
-    // mat4 projection, modelview, normalMat;
+    mat4 projection = {}, modelview = {}, normalMat = {};
 
-    // vec3 normalInterp;
-    // vec3 vertPos;
+    vec3 normalInterp;
+    vec3 vertPos;
 
-    // vec4 x = projection * modelview;
-    // vec4 gl_Position = (projection * modelview) * vec4(inputPosition, 1.0f);
-    // vec4 vertPos4 = modelview * vec4(inputPosition, 1.0f);
-    // vertPos = vec3(vertPos4) / vertPos4.w;
-    // normalInterp = vec3(normalMat * vec4(inputNormal, 0.0f));
+    vec4 gl_Position = (projection * modelview) * vec4(inputPosition, 1.0f);
+    vec4 vertPos4 = modelview * vec4(inputPosition, 1.0f);
+    vertPos = vec3(vertPos4) / vertPos4.w;
+    normalInterp = vec3(normalMat * vec4(inputNormal, 0.0f));
 }
 
 //! EOF

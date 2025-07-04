@@ -3,7 +3,7 @@ CC=gcc
 RUN_ALLS=false
 
 # Build flags
-CFLAGS=-Wall -DVECTORMATH_USE_CLANG_EXT -Wno-unused-function -Wno-unused-variable
+CFLAGS=-Wall -DVECTORMATH_USE_CLANG_EXT -Wno-unused-function -Wno-unused-variable -std=c++14 -fno-rtti -fno-exceptions
 LFLAGS=
 ifneq ($(OS),Windows_NT)
 LFLAGS+=-lm
@@ -15,7 +15,7 @@ INC_DIR=../include
 UNIT_TESTS_DIR=cases
 UNIT_TESTS_SRC=$(wildcard $(UNIT_TESTS_DIR)/*.cpp)
 UNIT_TESTS_EXE=$(patsubst $(UNIT_TESTS_DIR)/%.cpp,$(OUT_DIR)/%.exe,$(UNIT_TESTS_SRC))
-UNIT_TESTS_CFLAGS=-DRUN_UNIT_TESTS -std=c++14 -fno-rtti -fno-exceptions
+UNIT_TESTS_CFLAGS=-DRUN_UNIT_TESTS
 
 ifeq ($(RUN_ALLS),true)
 UNIT_TESTS_CFLAGS+=-DCONTINUE_UNIT_TEST_ON_FAIL

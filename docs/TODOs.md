@@ -25,14 +25,15 @@
     - Make unit tests with better values, meaning results
     - Complete empty unit tests
     - Add missing unit tests
-    - Add profile, features guidelines
 
 - Bugs:
     - MacOS m128_acos
 
-- Development using:
+- Platforms and Development:
     - Full shorthands versions for GLSL-like
     - Raylib/sokol templates
+    - Add profile, features guidelines
+    - Independent from -lm (Unix math library)
 
 - (Low priority) Remove deprecated functions
 

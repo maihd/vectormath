@@ -3,6 +3,7 @@
 #include <type_traits>
 static_assert(std::is_standard_layout<mat4>::value, "mat4 is not standard layout, cannot mempcy");
 
+
 DEFINE_UNIT_TEST("mat4 translation")
 {
     const vec3 position = vec3_new(1.0f, 1.0f, 1.0f);
@@ -11,6 +12,7 @@ DEFINE_UNIT_TEST("mat4 translation")
 
     TEST(newPosition.x == 2.0f && newPosition.y == 2.0f && newPosition.z == 2.0f);
 }
+
 
 DEFINE_UNIT_TEST("mat4 translation 2")
 {
@@ -21,6 +23,7 @@ DEFINE_UNIT_TEST("mat4 translation 2")
     TEST(newPosition.x == 4.0f && newPosition.y == 4.0f && newPosition.z == 4.0f);
 }
 
+
 DEFINE_UNIT_TEST("mat4 scalation")
 {
     const vec3 size = vec3_new(1.0f, 1.0f, 1.0f);
@@ -29,6 +32,7 @@ DEFINE_UNIT_TEST("mat4 scalation")
 
     TEST(newSize.x == 2.0f && newSize.y == 2.0f && newSize.z == 2.0f);
 }
+
 
 DEFINE_UNIT_TEST("mat4 scalation 2")
 {
@@ -39,6 +43,7 @@ DEFINE_UNIT_TEST("mat4 scalation 2")
     TEST(newSize.x == 4.0f && newSize.y == 10.0f && newSize.z == 18.0f);
 }
 
+
 DEFINE_UNIT_TEST("mat4 ortho")
 {
     const vec3 a = vec3_new(1.0f, 1.0f, 1.0f);
@@ -47,3 +52,15 @@ DEFINE_UNIT_TEST("mat4 ortho")
 
     TEST(b.x == 2.0f && b.y == 2.0f && b.z == 2.0f);
 }
+
+
+DEFINE_UNIT_TEST("mat4 operator+(mat4 a, mat4)")
+{
+    const mat4 a = mat4_new_1f(1.0f);
+    const mat4 b = mat4_new_1f(2.0f);
+    const mat4 c = mat4_add(a, b);
+    const mat4 d = a + b;
+    
+}
+
+//! EOF

@@ -4,7 +4,7 @@
 // Operators overloading, only support on C++
 // -------------------------------------------------------------
 
-#if !defined(VECTORMATH_OPERATORS_DISABLED) && defined(__cplusplus) && !VECTORMATH_ENABLE_CLANG_EXT
+#if !defined(VECTORMATH_OPERATORS_DISABLED) && defined(__cplusplus)
 
 // Make sure we have vector_math types
 #ifndef VECTORMATH_TYPES_DEFINED
@@ -21,6 +21,7 @@
 #define VECTORMATH_OPERATORS_DEFINED
 #endif
 
+#if !VECTORMATH_ENABLE_CLANG_EXT
 
 __forceinline vec2 operator-(vec2 v)
 {
@@ -452,6 +453,7 @@ __forceinline bool operator!=(vec4 a, vec4 b)
 {
     return vec4_not_equal(a, b);
 }
+#endif // !VECTORMATH_ENABLE_CLANG_EXT
 
 
 __forceinline mat4 operator-(mat4 m)
