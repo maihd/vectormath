@@ -1,0 +1,5 @@
+#pragma once
+
+
+
+//! LEAVE AN EMPTY LINE HERE, REQUIRE BY GCC/G++
