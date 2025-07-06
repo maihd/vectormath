@@ -10,6 +10,7 @@
 - Performance:
     - Benchmarking
     - Fast trigonometric with simd instructions
+    - Avoid branching programming
 
 - Examples:
     - Make an example that use full advantages of clang vector extensions
@@ -33,7 +34,11 @@
     - Full shorthands versions for GLSL-like
     - Raylib/sokol templates
     - Add profile, features guidelines
+    - Use full scalarmath.h functions for vectormath.h implementations
+    - Direct use of NEON instrinsics
     - Independent from -lm (Unix math library)
+    - A layer to create a HLSL-like math library
+
 
 - (Low priority) Remove deprecated functions
 
