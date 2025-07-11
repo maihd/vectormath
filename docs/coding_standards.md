@@ -23,6 +23,7 @@ Function naming semantics
 - Use function names postfix for describe overloading functions.
 - Postfix should be describing type. Ex: `vec3_from_vec2` mean create new `vec3` from 1 `vec2`
 - Postfix should be describing number of parameters of that type. Ex: `mat4_new_16f32` mean create new `mat4` with 16 single-precision floating-point number (f32), `mat4_new_16f` is acceptable because `mat4` have been known the components precision (single-precision floating-point number).
+- Use shorthands version for name that commonly used, for faster coding, reduce typing. Ex: `vec3_len`, `vec3_norm`, ...
 
 
 Function implementation philosophy
