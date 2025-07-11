@@ -20,4 +20,10 @@ typedef mat2 float2x2;
 typedef mat3 float3x3;
 typedef mat4 float4x4;
 
+#define float2(...)     vec2(##__VA_ARGS__)
+#define float3(...)     vec3(##__VA_ARGS__)
+#define float4(...)     vec4(##__VA_ARGS__)
+
+#define float4x4(...)   mat4(##__VA_ARGS__)
+
 //! LEAVE AN EMPTY LINE HERE, REQUIRE BY GCC/G++
