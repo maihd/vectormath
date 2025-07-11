@@ -9,18 +9,19 @@
 // Remove stupid stuffs
 // -------------------------------------------------------------
 
+#ifdef _WIN32
 #undef min      // When Windows.h was included, `min` is an macro
 #undef max      // When Windows.h was included, `max` is an macro
 #undef far      // When Windows.h was included, `far` is an macro
 #undef near     // When Windows.h was included, `near` is an macro
-
+#endif
 
 // -------------------------------------------------------------
 // Compiler settings
 // -------------------------------------------------------------
 
 #if !defined(_MSC_VER) && !defined(__vectorcall)
-#   if defined(__GNUC__)
+#   if defined(__GNUC__) 
 #       define __vectorcall  /* NO VECTORCALL SUPPORTED */
 #   else
 #       define __vectorcall  /* NO VECTORCALL SUPPORTED */
@@ -46,16 +47,18 @@
 #endif
 
 
-// deprecated is helpful
-#if !defined(__deprecated_msg)
+// VECTORMATH_DEPRECATED is helpful
+#if !defined(VECTORMATH_DEPRECATED)
 #   if defined(_MSC_VER)
-#      define __deprecated(alternative, ...) __declspec(deprecated("Please use " alternative " instead." ##__VA_ARGS__))
-#   elif defined(__GCC__)
-#      define __deprecated(alternative, ...) __deprecated_msg("Please use " alternative " instead." ##__VA_ARGS__)
+#      define VECTORMATH_DEPRECATED(alternative, ...) __declspec(deprecated("Please use " alternative " instead." ##__VA_ARGS__))
+// #   elif defined(__APPLE__)
+// #      define VECTORMATH_DEPRECATED(alternative, ...) __deprecated_msg("Please use " alternative " instead." ##__VA_ARGS__)
+#   elif defined(__GNUC__)
+#      define VECTORMATH_DEPRECATED(alternative, ...) __attribute__((deprecated("Please use " alternative " instead." ##__VA_ARGS__)))
 #   elif defined(__cplusplus) && __cplusplus >= 201402L
-#      define __deprecated(alternative, ...) [[deprecated("Please use " alternative " instead." ##__VA_ARGS__)]]
+#      define VECTORMATH_DEPRECATED(alternative, ...) [[deprecated("Please use " alternative " instead." ##__VA_ARGS__)]]
 #   else
-#      define __deprecated(alternative, ...)
+#      define VECTORMATH_DEPRECATED(alternative, ...)
 #   endif
 #endif
 

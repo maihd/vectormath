@@ -1,8 +1,13 @@
 #include "../test_framework.h"
 
-#include <type_traits>
-static_assert(std::is_standard_layout<mat4>::value, "mat4 is not standard layout, cannot mempcy");
+// C++ struct layout with traits
 
+#include <type_traits>
+static_assert(std::is_trivial<mat4>::value, "mat4 is not trivial");
+static_assert(std::is_standard_layout<mat4>::value, "mat4 is not standard layout, cannot mempcy");
+static_assert(std::is_trivially_copyable<mat4>::value, "mat4 is not trivial copyable");
+
+// Functions test
 
 DEFINE_UNIT_TEST("mat4 translation")
 {
