@@ -28,9 +28,10 @@ Function naming semantics
 Function implementation philosophy
 ----------------------------------
 - Avoid branching!
+- When have language features that support to solve the problem, please avoid macros. Like prefer functions over macros, prefer constants over predefined textual values. 
 - Please avoid std version of floating-point math. Use scalarmath.h instead. (By now, there no implement for floating-point math functions. So we need std version, but its just a backend.)
 - Donot add more SIMD implementation module, instead add a wrapper, like sse_to_neon.h do!
-- Support both C and C++. But avoid C++ function overloading.
+- Support both C and C++. But avoid C++ function overloading (exceptions are GLSL-like and HLSL-like).
 - Only add basic operator overloading (+, -, *, /), with SIMD meaning (component-wise).
 - Prefer fast with simple implementations over fastest with complex implementations.
 - Based on the above rule, implement scalar version first, test it work, simd version later.
@@ -50,7 +51,7 @@ Compiler and Language Standards
 
 Physically architecture for source files
 ----------------------------------------
-- Avoid introdue new include files without reasons.
+- Avoid introducing new include files without reasons.
 - Minimal include files.
 - Seperate data types and functions.
 - One file that include all for fast prototype.
