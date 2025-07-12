@@ -31,6 +31,7 @@
     - MacOS m128_acos
 
 - Platforms and Development:
+    - Complete v0.10.0-dev, targeting a stable API
     - Constructors for ivecX, uvecX
     - Raylib/sokol templates
     - Add profile, features guidelines
