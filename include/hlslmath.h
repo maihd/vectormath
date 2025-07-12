@@ -1,6 +1,7 @@
 #pragma once
 
-#include "glslmath.h"
+#include "vectormath.h"
+#include "vectormath/vectormath_shorthands.h"
 
 typedef uint32_t uint;
 

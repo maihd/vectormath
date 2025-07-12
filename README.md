@@ -36,6 +36,7 @@
 - No SoA structures
 - No battle-tested showcases
 - No stable releases, unproductive usages
+- No C stable API, please use GLSL-like or HLSL-like for stable API
 - No widely known, used by community
 - No complete docs
 
@@ -54,6 +55,7 @@
 
 ## Contributing
 All pull requests are welcome:
+- Use this library on your projects is enough!
 - Add more examples
 - Reporting and fixing bugs
 - Unit tests
