@@ -426,7 +426,7 @@ __forceinline float float_step(float y, float x)
 }
 
 
-/// Performs x linear interpolation.
+/// Performs x linear interpolation inbetween two values
 __forceinline float float_lerp(float x, float y, float s)
 {
     return x + (y - x) * s;
@@ -476,6 +476,9 @@ __forceinline float float_smoothstep(float min, float max, float x)
 {
     return (float_clamp(x, min, max) - min) / (max - min);
 }
+
+
+
 
 
 /// Test is two values are closely equal

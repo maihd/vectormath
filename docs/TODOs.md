@@ -37,6 +37,7 @@
     - Use full scalarmath.h functions for vectormath.h implementations
     - Direct use of NEON instrinsics
     - Independent from -lm (Unix math library)
+    - VECTORMATH_USE_EXACT_PRECISION -> VECTORMATH_HIGH_PRECISION
 
 - (Low priority) Remove deprecated functions
 

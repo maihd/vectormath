@@ -37,6 +37,7 @@
 - No battle-tested showcases
 - No stable releases, unproductive usages
 - No C stable API, please use GLSL-like or HLSL-like for stable API
+- Only SSE2 for now (NEON are use wrapper, later SSE or AVX are no)
 - No widely known, used by community
 - No complete docs
 

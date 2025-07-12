@@ -467,7 +467,7 @@ __forceinline ivec3 vec3_sign(vec3 v)
 /// Computes absolute value
 __forceinline vec3 vec3_abs(vec3 v)
 {
-    return vec3_new(fabsf(v.x), fabsf(v.y), fabsf(v.z));
+    return vec3_new(float_abs(v.x), float_abs(v.y), float_abs(v.z));
 }
 
 
