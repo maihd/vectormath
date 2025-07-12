@@ -41,6 +41,13 @@ __forceinline float mod(float x, float y)
 }
 
 
+/// Performs x linear interpolation.
+__forceinline float mix(float x, float y, float s)
+{
+    return float_lerp(x, y, s);
+}
+
+
 /// Computes inverse square root of 'x', using FastInvSqrt algorithm.
 __forceinline float inversesqrt(float x)
 {
@@ -59,6 +66,20 @@ __forceinline vec2 fract(vec2 v)
 __forceinline vec2 mod(vec2 a, vec2 b)
 {
     return vec2_mod(a, b);
+}
+
+
+/// Performs a linear interpolation.
+__forceinline vec2 mix(vec2 a, vec2 b, vec2 t)
+{
+    return vec2_lerp(a, b, t);
+}
+
+
+/// Performs a linear interpolation.
+__forceinline vec2 mix(vec2 a, vec2 b, float t)
+{
+    return vec2_lerp1(a, b, t);
 }
 
 
@@ -83,6 +104,20 @@ __forceinline vec3 mod(vec3 a, vec3 b)
 }
 
 
+/// Performs a linear interpolation.
+__forceinline vec3 mix(vec3 a, vec3 b, vec3 t)
+{
+    return vec3_lerp(a, b, t);
+}
+
+
+/// Performs a linear interpolation.
+__forceinline vec3 mix(vec3 a, vec3 b, float t)
+{
+    return vec3_lerp1(a, b, t);
+}
+
+
 /// Computes inverse square root of 'x'.
 __forceinline vec3 inversesqrt(vec3 v)
 {
@@ -104,6 +139,20 @@ __forceinline vec4 mod(vec4 a, vec4 b)
 }
 
 
+/// Performs a linear interpolation.
+__forceinline vec4 mix(vec4 a, vec4 b, vec4 t)
+{
+    return vec4_lerp(a, b, t);
+}
+
+
+/// Performs a linear interpolation.
+__forceinline vec4 mix(vec4 a, vec4 b, float t)
+{
+    return vec4_lerp1(a, b, t);
+}
+
+
 /// Computes inverse square root of 'x'.
 __forceinline vec4 inversesqrt(vec4 v)
 {
@@ -122,6 +171,20 @@ __forceinline mat4 fract(mat4 m)
 __forceinline mat4 mod(mat4 a, mat4 b)
 {
     return mat4_fmod(a, b);
+}
+
+
+/// Performs a linear interpolation.
+__forceinline mat4 mix(mat4 a, mat4 b, mat4 t)
+{
+    return mat4_lerp(a, b, t);
+}
+
+
+/// Performs a linear interpolation.
+__forceinline mat4 mix(mat4 a, mat4 b, float t)
+{
+    return mat4_lerp1(a, b, t);
 }
 
 

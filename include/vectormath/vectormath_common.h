@@ -422,6 +422,13 @@ __forceinline vec2 vec2_rsqrt(vec2 v)
 }
 
 
+/// Computes inverse square root of 'x'.
+__forceinline vec2 vec2_fast_rsqrt(vec2 v)
+{
+    return vec2_new(float_fast_rsqrt(v.x), float_fast_rsqrt(v.y));
+}
+
+
 /// Compute dot product of two vectors
 __forceinline float vec2_dot(vec2 a, vec2 b)
 {
