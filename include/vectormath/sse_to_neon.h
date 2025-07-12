@@ -189,7 +189,7 @@ typedef uint32x4_t  __m128u;
 /// pointer to this union and used to access individual components.  The use of this union should
 /// be hidden behind a macro that is used throughout the codebase to access the members instead
 /// of always declaring this type of variable.
-typedef union alignas(16) SIMDVec
+typedef union __attribute__((aligned(16))) SIMDVec
 {
     float       m128_f32[4];    // as floats - do not to use this.  Added for convenience.
     int8_t      m128_i8[16];    // as signed 8-bit integers.
@@ -1889,6 +1889,7 @@ __forceinline __m128i foo ## _dynamic(__m128i _v, int bits) { \
 	return _v; \
 }
 
+#include <assert.h>
 CONST_TO_DYNAMIC32(_mm_slli_epi32);
 CONST_TO_DYNAMIC32(_mm_srai_epi32);
 CONST_TO_DYNAMIC32(_mm_srli_epi32);

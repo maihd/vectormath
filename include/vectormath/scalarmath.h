@@ -427,7 +427,7 @@ __forceinline float float_sqrt(float x)
 /// Computes inverse square root of 'x'.
 __forceinline float float_rsqrt(float x)
 {
-    return 1.0f / sqrtf(x);
+    return 1.0f / float_sqrt(x);
 }
 
 
@@ -461,7 +461,7 @@ __forceinline float float_smoothstep(float min, float max, float x)
 /// Test is two values are closely equal
 __forceinline bool float_isclose(float x, float y)
 {
-    return fabsf(x - y) <= FLOAT_EPSILON;
+    return float_abs(x - y) <= FLOAT_EPSILON;
 }
 
 //! LEAVE AN EMPTY LINE HERE, REQUIRE BY GCC/G++

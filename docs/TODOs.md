@@ -31,14 +31,11 @@
     - MacOS m128_acos
 
 - Platforms and Development:
-    - Full shorthands versions for GLSL-like
     - Raylib/sokol templates
     - Add profile, features guidelines
     - Use full scalarmath.h functions for vectormath.h implementations
     - Direct use of NEON instrinsics
     - Independent from -lm (Unix math library)
-    - A layer to create a HLSL-like math library
-
 
 - (Low priority) Remove deprecated functions
 

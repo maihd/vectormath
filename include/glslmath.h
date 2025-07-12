@@ -27,4 +27,109 @@
 #include "vectormath/vectormath_shorthands.h"
 
 
+/// Get the fractal part of floating point
+__forceinline float fract(float x)
+{
+    return float_frac(x);
+}
+
+
+/// Computes the floating-point remainder of the division operation x/y
+__forceinline float mod(float x, float y)
+{
+    return float_fmod(x, y);
+}
+
+
+/// Computes inverse square root of 'x', using FastInvSqrt algorithm.
+__forceinline float inversesqrt(float x)
+{
+    return float_fast_rsqrt(x);
+}
+
+
+/// Get the fractal part of floating point
+__forceinline vec2 fract(vec2 v)
+{
+    return vec2_frac(v);
+}
+
+
+/// Computes the floating-point remainder of the division operation x/y
+__forceinline vec2 mod(vec2 a, vec2 b)
+{
+    return vec2_fmod(a, b);
+}
+
+
+/// Computes inverse square root of 'x'.
+__forceinline vec2 inversesqrt(vec2 v)
+{
+    return vec2_rsqrt(v);
+}
+
+
+/// Get the fractal part of floating point
+__forceinline vec3 fract(vec3 v)
+{
+    return vec3_frac(v);
+}
+
+
+/// Computes the floating-point remainder of the division operation x/y
+__forceinline vec3 mod(vec3 a, vec3 b)
+{
+    return vec3_fmod(a, b);
+}
+
+
+/// Computes inverse square root of 'x'.
+__forceinline vec3 inversesqrt(vec3 v)
+{
+    return vec3_rsqrt(v);
+}
+
+
+/// Get the fractal part of floating point
+__forceinline vec4 fract(vec4 v)
+{
+    return vec4_frac(v);
+}
+
+
+/// Computes the floating-point remainder of the division operation x/y
+__forceinline vec4 mod(vec4 a, vec4 b)
+{
+    return vec4_fmod(a, b);
+}
+
+
+/// Computes inverse square root of 'x'.
+__forceinline vec4 inversesqrt(vec4 v)
+{
+    return vec4_rsqrt(v);
+}
+
+
+/// Get the fractal part of floating point
+__forceinline mat4 fract(mat4 m)
+{
+    return mat4_frac(m);
+}
+
+
+/// Computes the floating-point remainder of the division operation x/y
+__forceinline mat4 mod(mat4 a, mat4 b)
+{
+    return mat4_fmod(a, b);
+}
+
+
+/// Computes inverse square root of 'x'.
+__forceinline mat4 inversesqrt(mat4 m)
+{
+    return mat4_rsqrt(m);
+}
+
+
 //! EOF

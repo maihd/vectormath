@@ -219,20 +219,6 @@ __forceinline int32_t sign(float x)
 // }
 
 
-/// Get the fractal part of floating point
-__forceinline float fract(float x)
-{
-    return float_frac(x);
-}
-
-
-/// Computes the floating-point remainder of the division operation x/y
-__forceinline float mod(float x, float y)
-{
-    return float_fmod(x, y);
-}
-
-
 /// Computes the floating-point remainder of the division operation x/y
 // __forceinline float modf(float x, float* y)
 // {
@@ -332,13 +318,6 @@ __forceinline float smoothstep(float min, float max, float x)
 // {
 //     return 1.0f / sqrtf(x);
 // }
-
-
-/// Computes inverse square root of 'x', using FastInvSqrt algorithm.
-__forceinline float inversesqrt(float x)
-{
-    return float_fast_rsqrt(x);
-}
 
 
 // -------------------------------------------------------------
@@ -479,20 +458,6 @@ __forceinline vec2 pow(vec2 a, vec2 b)
 }
 
 
-/// Get the fractal part of floating point
-__forceinline vec2 fract(vec2 v)
-{
-    return vec2_new(float_frac(v.x), float_frac(v.y));
-}
-
-
-/// Computes the floating-point remainder of the division operation x/y
-__forceinline vec2 mod(vec2 a, vec2 b)
-{
-    return vec2_new(fmodf(a.x, b.x), fmodf(a.y, b.y));
-}
-
-
 /// Computes the smallest integer value not less than 'x'
 __forceinline vec2 ceil(vec2 v)
 {
@@ -581,13 +546,6 @@ __forceinline vec2 smoothstep(vec2 a, vec2 b, vec2 t)
 __forceinline vec2 sqrt(vec2 v)
 {
     return vec2_sqrt(v);
-}
-
-
-/// Computes inverse square root of 'x'.
-__forceinline vec2 inversesqrt(vec2 v)
-{
-    return vec2_rsqrt(v);
 }
 
 
@@ -780,20 +738,6 @@ __forceinline vec3 pow(vec3 a, vec3 b)
 }
 
 
-/// Get the fractal part of floating point
-__forceinline vec3 fract(vec3 v)
-{
-    return vec3_frac(v);
-}
-
-
-/// Computes the floating-point remainder of the division operation x/y
-__forceinline vec3 mod(vec3 a, vec3 b)
-{
-    return vec3_fmod(a, b);
-}
-
-
 /// Computes the smallest integer value not less than 'x'
 __forceinline vec3 ceil(vec3 v)
 {
@@ -882,13 +826,6 @@ __forceinline vec3 smoothstep(vec3 a, vec3 b, vec3 t)
 __forceinline vec3 sqrt(vec3 v)
 {
     return vec3_sqrt(v);
-}
-
-
-/// Computes inverse square root of 'x'.
-__forceinline vec3 inversesqrt(vec3 v)
-{
-    return vec3_rsqrt(v);
 }
 
 
@@ -1088,20 +1025,6 @@ __forceinline vec4 pow(vec4 a, vec4 b)
 }
 
 
-/// Get the fractal part of floating point
-__forceinline vec4 fract(vec4 v)
-{
-    return vec4_frac(v);
-}
-
-
-/// Computes the floating-point remainder of the division operation x/y
-__forceinline vec4 mod(vec4 a, vec4 b)
-{
-    return vec4_fmod(a, b);
-}
-
-
 /// Computes the smallest integer value not less than 'x'
 __forceinline vec4 ceil(vec4 v)
 {
@@ -1190,13 +1113,6 @@ __forceinline vec4 smoothstep(vec4 a, vec4 b, vec4 t)
 __forceinline vec4 sqrt(vec4 v)
 {
     return vec4_sqrt(v);
-}
-
-
-/// Computes inverse square root of 'x'.
-__forceinline vec4 inversesqrt(vec4 v)
-{
-    return vec4_rsqrt(v);
 }
 
 
@@ -1382,20 +1298,6 @@ __forceinline mat4 pow(mat4 a, mat4 b)
 }
 
 
-/// Get the fractal part of floating point
-__forceinline mat4 fract(mat4 m)
-{
-    return mat4_frac(m);
-}
-
-
-/// Computes the floating-point remainder of the division operation x/y
-__forceinline mat4 mod(mat4 a, mat4 b)
-{
-    return mat4_fmod(a, b);
-}
-
-
 /// Computes the smallest integer value not less than 'x'
 __forceinline mat4 ceil(mat4 m)
 {
@@ -1486,12 +1388,6 @@ __forceinline mat4 sqrt(mat4 m)
     return mat4_sqrt(m);
 }
 
-
-/// Computes inverse square root of 'x'.
-__forceinline mat4 inversesqrt(mat4 m)
-{
-    return mat4_rsqrt(m);
-}
 
 //! LEAVE AN EMPTY LINE HERE, REQUIRE BY GCC/G++
 

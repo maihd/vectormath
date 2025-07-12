@@ -171,119 +171,119 @@ __forceinline ivec2 vec2_sign(vec2 v)
 /// Computes absolute value
 __forceinline vec2 vec2_abs(vec2 v)
 {
-    return vec2_new(fabsf(v.x), fabsf(v.y));
+    return vec2_new(float_abs(v.x), float_abs(v.y));
 }
 
 
 /// Computes cosine
 __forceinline vec2 vec2_cos(vec2 v)
 {
-    return vec2_new(cosf(v.x), cosf(v.y));
+    return vec2_new(float_cos(v.x), float_cos(v.y));
 }
 
 
 /// Computes sine
 __forceinline vec2 vec2_sin(vec2 v)
 {
-    return vec2_new(sinf(v.x), sinf(v.y));
+    return vec2_new(float_sin(v.x), float_sin(v.y));
 }
 
 
 /// Computes tangent
 __forceinline vec2 vec2_tan(vec2 v)
 {
-    return vec2_new(tanf(v.x), tanf(v.y));
+    return vec2_new(float_tan(v.x), float_tan(v.y));
 }
 
 
 /// Computes hyperbolic cosine
 __forceinline vec2 vec2_cosh(vec2 v)
 {
-    return vec2_new(coshf(v.x), coshf(v.y));
+    return vec2_new(float_cosh(v.x), float_cosh(v.y));
 }
 
 
 /// Computes hyperbolic sine
 __forceinline vec2 vec2_sinh(vec2 v)
 {
-    return vec2_new(sinhf(v.x), sinhf(v.y));
+    return vec2_new(float_sinh(v.x), float_sinh(v.y));
 }
 
 
 /// Computes hyperbolic tangent
 __forceinline vec2 vec2_tanh(vec2 v)
 {
-    return vec2_new(tanhf(v.x), tanhf(v.y));
+    return vec2_new(float_tanh(v.x), float_tanh(v.y));
 }
 
 
 /// Computes inverse cosine
 __forceinline vec2 vec2_acos(vec2 v)
 {
-    return vec2_new(acosf(v.x), acosf(v.y));
+    return vec2_new(float_acos(v.x), float_acos(v.y));
 }
 
 
 /// Computes inverse sine
 __forceinline vec2 vec2_asin(vec2 v)
 {
-    return vec2_new(asinf(v.x), asinf(v.y));
+    return vec2_new(float_asin(v.x), float_asin(v.y));
 }
 
 
 /// Computes inverse tangent
 __forceinline vec2 vec2_atan(vec2 v)
 {
-    return vec2_new(atanf(v.x), atanf(v.y));
+    return vec2_new(float_atan(v.x), float_atan(v.y));
 }
 
 
 /// Computes inverse tangent with 2 args
 __forceinline vec2 vec2_atan2(vec2 a, vec2 b)
 {
-    return vec2_new(atan2f(a.x, b.x), atan2f(a.y, b.y));
+    return vec2_new(float_atan2(a.x, b.x), float_atan2(a.y, b.y));
 }
 
 
 /// Computes Euler number raised to the power 'x'
 __forceinline vec2 vec2_exp(vec2 v)
 {
-    return vec2_new(expf(v.x), expf(v.y));
+    return vec2_new(float_exp(v.x), float_exp(v.y));
 }
 
 
 /// Computes 2 raised to the power 'x'
 __forceinline vec2 vec2_exp2(vec2 v)
 {
-    return vec2_new(exp2f(v.x), exp2f(v.y));
+    return vec2_new(float_exp2(v.x), float_exp2(v.y));
 }
 
 
 /// Computes the base Euler number logarithm
 __forceinline vec2 vec2_log(vec2 v)
 {
-    return vec2_new(logf(v.x), logf(v.y));
+    return vec2_new(float_log(v.x), float_log(v.y));
 }
 
 
 /// Computes the base 2 logarithm
 __forceinline vec2 vec2_log2(vec2 v)
 {
-    return vec2_new(log2f(v.x), log2f(v.y));
+    return vec2_new(float_log2(v.x), float_log2(v.y));
 }
 
 
 /// Computes the base 10 logarithm
 __forceinline vec2 vec2_log10(vec2 v)
 {
-    return vec2_new(log10f(v.x), log10f(v.y));
+    return vec2_new(float_log10(v.x), float_log10(v.y));
 }
 
 
 /// Computes the value of base raised to the power exponent
 __forceinline vec2 vec2_pow(vec2 a, vec2 b)
 {
-    return vec2_new(powf(a.x, b.x), powf(a.y, b.y));
+    return vec2_new(float_pow(a.x, b.x), float_pow(a.y, b.y));
 }
 
 
@@ -297,35 +297,35 @@ __forceinline vec2 vec2_frac(vec2 v)
 /// Computes the floating-point remainder of the division operation x/y
 __forceinline vec2 vec2_fmod(vec2 a, vec2 b)
 {
-    return vec2_new(fmodf(a.x, b.x), fmodf(a.y, b.y));
+    return vec2_new(float_fmod(a.x, b.x), float_fmod(a.y, b.y));
 }
 
 
 /// Computes the smallest integer value not less than 'x'
 __forceinline vec2 vec2_ceil(vec2 v)
 {
-    return vec2_new(ceilf(v.x), ceilf(v.y));
+    return vec2_new(float_ceil(v.x), float_ceil(v.y));
 }
 
 
 /// Computes the largest integer value not greater than 'x'
 __forceinline vec2 vec2_floor(vec2 v)
 {
-    return vec2_new(floorf(v.x), floorf(v.y));
+    return vec2_new(float_floor(v.x), float_floor(v.y));
 }
 
 
 /// Computes the nearest integer value
 __forceinline vec2 vec2_round(vec2 v)
 {
-    return vec2_new(roundf(v.x), roundf(v.y));
+    return vec2_new(float_round(v.x), float_round(v.y));
 }
 
 
 /// Computes the nearest integer not greater in magnitude than 'x'
 __forceinline vec2 vec2_trunc(vec2 v)
 {
-    return vec2_new(truncf(v.x), truncf(v.y));
+    return vec2_new(float_trunc(v.x), float_trunc(v.y));
 }
 
 
@@ -388,7 +388,7 @@ __forceinline vec2 vec2_smoothstep(vec2 a, vec2 b, vec2 t)
 /// Computes square root of 'x'.
 __forceinline vec2 vec2_sqrt(vec2 v)
 {
-    return vec2_new(sqrtf(v.x), sqrtf(v.y));
+    return vec2_new(float_sqrt(v.x), float_sqrt(v.y));
 }
 
 
@@ -414,16 +414,32 @@ __forceinline float vec2_lensqr(vec2 v)
 
 
 /// Compute length of vector
+__forceinline float vec2_len(vec2 v)
+{
+    return float_sqrt(vec2_lensqr(v));
+}
+
+
+/// Compute length of vector
+VECTORMATH_DEPRECATED("vec2_len")
 __forceinline float vec2_length(vec2 v)
 {
-    return sqrtf(vec2_lensqr(v));
+    return vec2_len(v);
 }
 
 
 /// Compute distance from 'a' to b
+__forceinline float vec2_dist(vec2 a, vec2 b)
+{
+    return vec2_len(vec2_sub(a, b));
+}
+
+
+/// Compute distance from 'a' to b
+VECTORMATH_DEPRECATED("vec2_dist")
 __forceinline float vec2_distance(vec2 a, vec2 b)
 {
-    return vec2_length(vec2_sub(a, b));
+    return vec2_dist(a, b);
 }
 
 
@@ -435,18 +451,27 @@ __forceinline float vec2_distsqr(vec2 a, vec2 b)
 
 
 /// Compute normalized vector
-__forceinline vec2 vec2_normalize(vec2 v)
+__forceinline vec2 vec2_norm(vec2 v)
 {
     const float lsqr = vec2_lensqr(v);
-    if (lsqr > 0.0f)
-    {
-        const float f = 1.0f / sqrtf(lsqr);
-        return vec2_new(v.x * f, v.y * f);
-    }
-    else
-    {
-        return v;
-    }
+    return vec2_mul1(v, float_fast_rsqrt(lsqr + 1e-37f));
+    // if (lsqr > 0.0f)
+    // {
+    //     const float f = float_rsqrt(lsqr);
+    //     return vec2_new(v.x * f, v.y * f);
+    // }
+    // else
+    // {
+    //     return v;
+    // }
+}
+
+
+/// Compute normalized vector
+VECTORMATH_DEPRECATED("vec2_norm")
+__forceinline vec2 vec2_normalize(vec2 v)
+{
+    return vec2_norm(v);
 }
 
 
@@ -460,10 +485,11 @@ __forceinline vec2 vec2_reflect(vec2 v, vec2 n)
 /// Compute refraction vector
 __forceinline vec2 vec2_refract(vec2 v, vec2 n, float eta)
 {
+    // @todos(maihd): use branchless for this algorithm
     const float k = 1.0f - eta * eta * (1.0f - vec2_dot(v, n) * vec2_dot(v, n));
     return k < 0.0f
         ? vec2_new1(0.0f)
-        : vec2_sub(vec2_mul1(v, eta), vec2_mul1(v, (eta * vec2_dot(v, n) + sqrtf(k))));
+        : vec2_sub(vec2_mul1(v, eta), vec2_mul1(v, (eta * vec2_dot(v, n) + float_sqrt(k))));
 }
 
 
@@ -491,7 +517,7 @@ __forceinline float vec2_angle_deg(vec2 v)
 /// Create new vector with angle and length
 __forceinline vec2 vec2_from_angle(float angle, float length)
 {
-    return vec2_new(cosf(angle) * length, sinf(angle) * length);
+    return vec2_new(float_cos(angle) * length, float_sin(angle) * length);
 }
 
 

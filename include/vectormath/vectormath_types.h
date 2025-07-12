@@ -33,7 +33,7 @@
 #   if defined(__cplusplus)
 #       define VECTORMATH_ALIGNAS(TYPE_NAME, ALIGNMENT) alignas(ALIGNMENT) TYPE_NAME
 #   elif defined(__GNUC__)
-#       define VECTORMATH_ALIGNAS(TYPE_NAME, ALIGNMENT) TYPE_NAME __attribute__((aligned(ALIGNMENT)))
+#       define VECTORMATH_ALIGNAS(TYPE_NAME, ALIGNMENT) __attribute__((aligned(ALIGNMENT))) TYPE_NAME
 #   elif defined(_MSC_VER)
 #       define VECTORMATH_ALIGNAS(TYPE_NAME, ALIGNMENT) __declspec(align(ALIGNMENT)) TYPE_NAME
 #   else
