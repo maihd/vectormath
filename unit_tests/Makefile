@@ -6,7 +6,11 @@ RUN_ALLS=false
 CFLAGS=-Wall -DVECTORMATH_USE_CLANG_EXT -Wno-unused-function -Wno-unused-variable -std=c++14 -fno-rtti -fno-exceptions
 LFLAGS=
 ifneq ($(OS),Windows_NT)
-LFLAGS+=-lm
+LFLAGS+= -lm
+endif
+
+ifeq ($(SIMD_ENABLE),false)
+CFLAGS+= -DVECTORMATH_SIMD_ENABLE
 endif
 
 OUT_DIR=out
@@ -18,7 +22,7 @@ UNIT_TESTS_EXE=$(patsubst $(UNIT_TESTS_DIR)/%.cpp,$(OUT_DIR)/%.exe,$(UNIT_TESTS_
 UNIT_TESTS_CFLAGS=-DRUN_UNIT_TESTS
 
 ifeq ($(RUN_ALLS),true)
-UNIT_TESTS_CFLAGS+=-DCONTINUE_UNIT_TEST_ON_FAIL
+UNIT_TESTS_CFLAGS+= -DCONTINUE_UNIT_TEST_ON_FAIL
 endif
 
 .PHONY: clean all

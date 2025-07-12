@@ -3,8 +3,8 @@
 #include "vectormath_types.h"
 
 // Make sure m128 is enable
-#if !VECTORMATH_SIMD_ENABLE && !VECTORMATH_USE_CLANG_EXT
-#error The vectormath support for simd is not enable, please use vector_math_scalar.h instead
+#if !VECTORMATH_SIMD_ENABLE
+#error The vectormath support for simd is not enable, please use vectormath_scalar.h instead
 #endif
 
 // -------------------------------------------------------------
@@ -73,12 +73,14 @@ __forceinline __m128 m128_select(__m128 a, __m128 b, __m128 mask)
 }
 
 
+/// Compute negatef for SIMD 128 (all 4 components)
 __forceinline __m128 m128_negatef(__m128 x)
 {
     return _mm_sub_ps(_mm_setzero_ps(), x);
 }
 
 
+/// Compute fabsf for SIMD 128 (all 4 components)
 __forceinline __m128 m128_fabsf(__m128 x)
 {
     return _mm_and_ps(x, _mm_castsi128_ps(_mm_set1_epi32(0x7FFFFFFF)));
@@ -86,17 +88,17 @@ __forceinline __m128 m128_fabsf(__m128 x)
 }
 
 
+/// Compute acosf for SIMD 128 (all 4 components)
 __forceinline __m128 m128_acosf(__m128 x)
 {
     const __m128 xabs   = m128_fabsf(x);
     const __m128 select = _mm_cmplt_ps(x, _mm_setzero_ps());
     const __m128 t1     = _mm_sqrt_ps(_mm_sub_ps(_mm_set1_ps(1.0f), xabs));
 
-    /* Instruction counts can be reduced if the polynomial was
-     * computed entirely from nested (dependent) fma's. However,
-     * to reduce the number of pipeline stalls, the polygon is evaluated
-     * in two halves (hi and lo).
-     */
+    // Instruction counts can be reduced if the polynomial was
+    // computed entirely from nested (dependent) fma's. However,
+    // to reduce the number of pipeline stalls, the polygon is evaluated
+    // in two halves (hi and lo).
     const __m128 xabs2 = _mm_mul_ps(xabs, xabs);
     const __m128 xabs4 = _mm_mul_ps(xabs2, xabs2);
 
@@ -114,14 +116,14 @@ __forceinline __m128 m128_acosf(__m128 x)
 
     // Adjust the result if x is negative.
     return m128_select(
-        _mm_mul_ps(t1, result),                                     // Positive
-        m128_mul_sub(t1, result, _mm_set1_ps(3.1415926535898f)),    // Negative
+        _mm_mul_ps(t1, result),                                         // Positive
+        m128_mul_sub(t1, result, _mm_set1_ps(3.1415926535898f)),   // Negative
         select
     );
 }
 
 
-/// Compute cosf for SIMD 128
+/// Compute cosf for SIMD 128 (all 4 components)
 __forceinline __m128 m128_cosf(__m128 x)
 {
     // Range reduction
@@ -174,7 +176,7 @@ __forceinline __m128 m128_cosf(__m128 x)
 }
 
 
-/// Compute sinf for SIMD 128
+/// Compute sinf for SIMD 128 (all 4 components)
 __forceinline __m128 m128_sinf(__m128 x)
 {
     // Range reduction
@@ -226,7 +228,7 @@ __forceinline __m128 m128_sinf(__m128 x)
 }
 
 
-/// Compute cosf and sinf for SIMD 128 in one function call
+/// Compute cosf and sinf for SIMD 128 (all 4 components) in one function call
 __forceinline void m128_sinf_cosf(__m128 x, __m128* out_sin, __m128* out_cos)
 {
     // Range reduction

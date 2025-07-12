@@ -1081,7 +1081,7 @@ __forceinline float vec4_length(vec4 v)
 
 
 /// Compute distance from 'a' to b
-__forceinline float distance(vec4 a, vec4 b)
+__forceinline float vec4_distance(vec4 a, vec4 b)
 {
     return vec4_length(vec4_sub(a, b));
 }
