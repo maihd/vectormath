@@ -31,6 +31,7 @@
     - MacOS m128_acos
 
 - Platforms and Development:
+    - Constructors for ivecX, uvecX
     - Raylib/sokol templates
     - Add profile, features guidelines
     - Use full scalarmath.h functions for vectormath.h implementations
