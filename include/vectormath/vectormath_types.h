@@ -472,6 +472,12 @@ typedef union VECTORMATH_VECTORTYPE(mat4, 16)
 #   endif
 #endif
 
+typedef uint32_t uint;
+
+static_assert(sizeof(int)   ==  4, "sizeof(int) must be 4 bytes");
+static_assert(sizeof(uint)  ==  4, "sizeof(uint) must be 4 bytes");
+static_assert(sizeof(float) ==  4, "sizeof(float) must be 4 bytes");
+
 static_assert(sizeof(vec2)  ==  8, "sizeof(vec2) must be 8 bytes");
 static_assert(sizeof(vec3)  == 16, "sizeof(vec3) must be 16 bytes");
 static_assert(sizeof(vec4)  == 16, "sizeof(vec4) must be 16 bytes");
@@ -495,6 +501,10 @@ static_assert(sizeof(mat4)  == 64, "sizeof(mat4) must be 64 bytes");
 #define alignof __alignof__
 #endif
 #endif
+
+static_assert(alignof(int)   ==  4, "alignof(int) must be 4 bytes");
+static_assert(alignof(uint)  ==  4, "alignof(uint) must be 4 bytes");
+static_assert(alignof(float) ==  4, "alignof(float) must be 4 bytes");
 
 static_assert(alignof(vec2)  ==  4, "alignof(vec2) must be 4 bytes");
 static_assert(alignof(vec3)  == 16, "alignof(vec3) must be 16 bytes");

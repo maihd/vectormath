@@ -288,16 +288,32 @@ __forceinline vec2 vec2_pow(vec2 a, vec2 b)
 
 
 /// Get the fractal part of floating point
+__forceinline vec2 vec2_fract(vec2 v)
+{
+    return vec2_new(float_fract(v.x), float_fract(v.y));
+}
+
+
+/// Get the fractal part of floating point
+VECTORMATH_DEPRECATED("vec2_fract")
 __forceinline vec2 vec2_frac(vec2 v)
 {
-    return vec2_new(float_frac(v.x), float_frac(v.y));
+    return vec2_fract(v);
 }
 
 
 /// Computes the floating-point remainder of the division operation x/y
+__forceinline vec2 vec2_mod(vec2 a, vec2 b)
+{
+    return vec2_new(float_mod(a.x, b.x), float_mod(a.y, b.y));
+}
+
+
+/// Computes the floating-point remainder of the division operation x/y
+VECTORMATH_DEPRECATED("vec2_mod")
 __forceinline vec2 vec2_fmod(vec2 a, vec2 b)
 {
-    return vec2_new(float_fmod(a.x, b.x), float_fmod(a.y, b.y));
+    return vec2_mod(a, b);
 }
 
 
@@ -385,6 +401,13 @@ __forceinline vec2 vec2_smoothstep(vec2 a, vec2 b, vec2 t)
 }
 
 
+/// Compute a smooth Hermite interpolation
+__forceinline vec2 vec2_smoothstep1(vec2 a, vec2 b, float t)
+{
+    return vec2_smoothstep(a, b, vec2_new1(t));
+}
+
+
 /// Computes square root of 'x'.
 __forceinline vec2 vec2_sqrt(vec2 v)
 {
@@ -416,7 +439,12 @@ __forceinline float vec2_lensqr(vec2 v)
 /// Compute length of vector
 __forceinline float vec2_len(vec2 v)
 {
+#if VECTORMATH_USE_EXACT_PRECISION
     return float_sqrt(vec2_lensqr(v));
+#else
+    const float lensqr = vec2_lensqr(v);
+    return lensqr * float_fast_rsqrt(lensqr);
+#endif
 }
 
 
@@ -454,16 +482,19 @@ __forceinline float vec2_distsqr(vec2 a, vec2 b)
 __forceinline vec2 vec2_norm(vec2 v)
 {
     const float lsqr = vec2_lensqr(v);
-    return vec2_mul1(v, float_fast_rsqrt(lsqr + 1e-37f));
-    // if (lsqr > 0.0f)
-    // {
-    //     const float f = float_rsqrt(lsqr);
-    //     return vec2_new(v.x * f, v.y * f);
-    // }
-    // else
-    // {
-    //     return v;
-    // }
+#if VECTORMATH_USE_EXACT_PRECISION
+    if (lsqr > 0.0f)
+    {
+        const float f = float_rsqrt(lsqr);
+        return vec2_new(v.x * f, v.y * f);
+    }
+    else
+    {
+        return v;
+    }
+#else
+    return vec2_mul1(v, float_fast_rsqrt(lsqr));
+#endif
 }
 
 
@@ -503,7 +534,7 @@ __forceinline vec2 vec2_faceforward(vec2 n, vec2 i, vec2 nref)
 /// Compute angle vector
 __forceinline float vec2_angle(vec2 v)
 {
-    return atan2f(v.y, v.x);
+    return float_atan2(v.y, v.x);
 }
 
 

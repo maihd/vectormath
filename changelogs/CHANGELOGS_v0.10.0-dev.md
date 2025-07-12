@@ -2,6 +2,7 @@
 - Add glslmath.h
 - Add hlslmath.h
 - Implemented shorthands functions for to use with glslmath.h and hlslmath.h
+- Refining API for more ergonomic
 - Revisit scalarmath.h
 - Revisit vectormath_common.h
 - Fixing compile error: mat4 operators

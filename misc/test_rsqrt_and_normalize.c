@@ -15,9 +15,14 @@ int main()
     printf("f3 = %f\n", f3);
 
     vec2 v = vec2_new(0, 0);
-    float vlen = vec2_len(v);
     vec2 n = vec2_norm(v);
     printf("n = (%f, %f)\n", n.x, n.y);
+    printf("n.len = %f\n", vec2_len(n));
+
+    vec2 v2 = vec2_new(2, 2);
+    vec2 n2 = vec2_norm(v2);
+    printf("n2 = (%f, %f)\n", n2.x, n2.y);
+    printf("n2.len = %f\n", vec2_len(n2));
 
     return 0;
 }

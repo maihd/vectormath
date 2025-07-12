@@ -30,14 +30,14 @@
 /// Get the fractal part of floating point
 __forceinline float fract(float x)
 {
-    return float_frac(x);
+    return float_fract(x);
 }
 
 
 /// Computes the floating-point remainder of the division operation x/y
 __forceinline float mod(float x, float y)
 {
-    return float_fmod(x, y);
+    return float_mod(x, y);
 }
 
 
@@ -51,14 +51,14 @@ __forceinline float inversesqrt(float x)
 /// Get the fractal part of floating point
 __forceinline vec2 fract(vec2 v)
 {
-    return vec2_frac(v);
+    return vec2_fract(v);
 }
 
 
 /// Computes the floating-point remainder of the division operation x/y
 __forceinline vec2 mod(vec2 a, vec2 b)
 {
-    return vec2_fmod(a, b);
+    return vec2_mod(a, b);
 }
 
 

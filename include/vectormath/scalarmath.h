@@ -333,17 +333,33 @@ __forceinline float float_pow(float x, float y)
 
 
 /// Get the fractal part of floating point
-__forceinline float float_frac(float x)
+__forceinline float float_fract(float x)
 {
     float y;
     return modff(x, &y);
 }
 
 
+/// Get the fractal part of floating point
+VECTORMATH_DEPRECATED("float_fract")
+__forceinline float float_frac(float x)
+{
+    return float_fract(x);
+}
+
+
 /// Computes the floating-point remainder of the division operation x/y
-__forceinline float float_fmod(float x, float y)
+__forceinline float float_mod(float x, float y)
 {
     return fmodf(x, y);
+}
+
+
+/// Computes the floating-point remainder of the division operation x/y
+VECTORMATH_DEPRECATED("float_mod")
+__forceinline float float_fmod(float x, float y)
+{
+    return float_mod(x, y);
 }
 
 
@@ -424,13 +440,6 @@ __forceinline float float_sqrt(float x)
 }
 
 
-/// Computes inverse square root of 'x'.
-__forceinline float float_rsqrt(float x)
-{
-    return 1.0f / float_sqrt(x);
-}
-
-
 /// Computes inverse square root of 'x', using FastInvSqrt algorithm.
 __forceinline float float_fast_rsqrt(float x)
 {
@@ -445,6 +454,17 @@ __forceinline float float_fast_rsqrt(float x)
     cvt.f = cvt.f * (1.5f - xhalf * cvt.f * cvt.f); // first approximation
     cvt.f = cvt.f * (1.5f - xhalf * cvt.f * cvt.f); // second approximation
     return cvt.f;
+}
+
+
+/// Computes inverse square root of 'x'.
+__forceinline float float_rsqrt(float x)
+{
+#if VECTORMATH_USE_EXACT_PRECISION
+    return 1.0f / float_sqrt(x);
+#else
+    return float_fast_rsqrt(x);
+#endif
 }
 
 
