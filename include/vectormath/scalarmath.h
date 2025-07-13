@@ -478,9 +478,6 @@ __forceinline float float_smoothstep(float min, float max, float x)
 }
 
 
-
-
-
 /// Test is two values are closely equal
 __forceinline bool float_isclose(float x, float y)
 {

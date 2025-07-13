@@ -535,9 +535,7 @@ __forceinline vec2 vec2_refract(vec2 v, vec2 n, float eta)
     const float sqrt_k = float_sqrt(float_abs(k));
 
     const vec2 refraction = vec2_sub(vec2_mul1(v, eta), vec2_mul1(v, (eta * dvn + sqrt_k)));
-    const vec2 reflection = vec2_new(v.x - 2.0f * n.x * dvn, v.y - 2.0f * n.x * dvn);
-
-    return vec2_lerp1(refraction, reflection, mask);
+    return vec2_lerp1(vec2_new1(0.0f), refraction, mask);
 #endif
 }
 

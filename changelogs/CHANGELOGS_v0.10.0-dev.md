@@ -5,6 +5,7 @@
 - Refining API for more ergonomic
 - Revisit scalarmath.h
 - Revisit vectormath_common.h
+- Revisit vectormath_scalar.h
 - Fixing compile error: mat4 operators
 - Remove __deprecated macro, use VECTORMATH_DEPRECATED instead
 - Fast inverse square root, and avoid branching in vec2
