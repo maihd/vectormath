@@ -614,20 +614,20 @@ DEFINE_UNIT_TEST("float vec2_lensqr(vec2 v)")
 }
 
 
-DEFINE_UNIT_TEST("float vec2_length(vec2 v)")
+DEFINE_UNIT_TEST("float vec2_len(vec2 v)")
 {
     const vec2  v       = vec2_new(1.0f, 2.0f);
-    const float length  = vec2_length(v);
-    TEST(length == sqrtf(5.0f));
+    const float length  = vec2_len(v);
+    TEST(float_isclose(length, float_sqrt(5.0f)));
 }
 
 
-DEFINE_UNIT_TEST("float vec2_distance(vec2 a, vec2 b)")
+DEFINE_UNIT_TEST("float vec2_dist(vec2 a, vec2 b)")
 {
-    const vec2  a           = vec2_new(1.0f, 2.0f);
-    const vec2  b           = vec2_new(3.0f, 4.0f);
-    const float distance    = vec2_distance(a, b);
-    TEST(distance == sqrtf(8.0f));
+    const vec2  a       = vec2_new(1.0f, 2.0f);
+    const vec2  b       = vec2_new(3.0f, 4.0f);
+    const float dist    = vec2_dist(a, b);
+    TEST(float_isclose(dist, float_sqrt(8.0f)));
 }
 
 
@@ -636,16 +636,16 @@ DEFINE_UNIT_TEST("float vec2_distsqr(vec2 a, vec2 b)")
     const vec2  a           = vec2_new(1.0f, 2.0f);
     const vec2  b           = vec2_new(3.0f, 4.0f);
     const float distsqr     = vec2_distsqr(a, b);
-    TEST(distsqr == 8.0f);
+    TEST(float_isclose(distsqr, 8.0f));
 }
 
 
-DEFINE_UNIT_TEST("vec2 vec2_normalize(vec2 v)")
+DEFINE_UNIT_TEST("vec2 vec2_norm(vec2 v)")
 {
     const vec2 a = vec2_new(1.0f, 2.0f);
-    const vec2 b = vec2_normalize(a);
+    const vec2 b = vec2_norm(a);
     const vec2 c = vec2_new(0.0f, 0.0f);
-    const vec2 d = vec2_normalize(c);
+    const vec2 d = vec2_norm(c);
 
     TEST(float_isclose(vec2_lensqr(b), 1.0f));
     TEST(float_isclose(vec2_lensqr(c), 0.0f));
