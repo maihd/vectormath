@@ -994,6 +994,7 @@ __forceinline vec4 vec4_fract(vec4 v)
 
 
 /// Get the fractal part of floating point
+VECTORMATH_DEPRECATED("vec4_fract")
 __forceinline vec4 vec4_frac(vec4 v)
 {
     return vec4_fract(v);
@@ -1583,26 +1584,42 @@ __forceinline mat4 mat4_pow(mat4 a, mat4 b)
 
 
 /// Get the fractal part of floating point
-__forceinline mat4 mat4_frac(mat4 m)
+__forceinline mat4 mat4_fract(mat4 m)
 {
     return mat4_new(
-        vec4_frac(m.col0),
-        vec4_frac(m.col1),
-        vec4_frac(m.col2),
-        vec4_frac(m.col3)
+        vec4_fract(m.col0),
+        vec4_fract(m.col1),
+        vec4_fract(m.col2),
+        vec4_fract(m.col3)
+    );
+}
+
+
+/// Get the fractal part of floating point
+VECTORMATH_DEPRECATED("mat4_fract")
+__forceinline mat4 mat4_frac(mat4 m)
+{
+    return mat4_fract(m);
+}
+
+
+/// Computes the floating-point remainder of the division operation x/y
+__forceinline mat4 mat4_mod(mat4 a, mat4 b)
+{
+    return mat4_new(
+        vec4_mod(a.col0, b.col0),
+        vec4_mod(a.col1, b.col1),
+        vec4_mod(a.col2, b.col2),
+        vec4_mod(a.col3, b.col3)
     );
 }
 
 
 /// Computes the floating-point remainder of the division operation x/y
+VECTORMATH_DEPRECATED("mat4_mod")
 __forceinline mat4 mat4_fmod(mat4 a, mat4 b)
 {
-    return mat4_new(
-        vec4_fmod(a.col0, b.col0),
-        vec4_fmod(a.col1, b.col1),
-        vec4_fmod(a.col2, b.col2),
-        vec4_fmod(a.col3, b.col3)
-    );
+    return mat4_mod(a, b);
 }
 
 

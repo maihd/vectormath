@@ -38,9 +38,10 @@ __forceinline __m128 m128_unit_0001(void) { return _mm_setr_ps(0.0f, 0.0f, 0.0f,
 
 
 // These have to be macros because _MM_SHUFFLE() requires compile-time constants.
-#define m128_ror(vec, i)       (((i) % 4) ? (_mm_shuffle_ps(vec, vec, _MM_SHUFFLE((uint32_t)(i + 3) % 4, (uint32_t)(i + 2) % 4, (uint32_t)(i + 1) % 4, (uint32_t)(i + 0) % 4))) : (vec))
-#define m128_splat(x, e)       _mm_shuffle_ps(x, x, _MM_SHUFFLE(e, e, e, e))
-#define m128_sld(vec, vec2, x) m128_ror(vec, ((x) / 4))
+#define m128_ror(vec, i)        (((i) % 4) ? (_mm_shuffle_ps(vec, vec, _MM_SHUFFLE((uint32_t)(i + 3) % 4, (uint32_t)(i + 2) % 4, (uint32_t)(i + 1) % 4, (uint32_t)(i + 0) % 4))) : (vec))
+#define m128_splat(x, e)        _mm_shuffle_ps(x, x, _MM_SHUFFLE(e, e, e, e))
+#define m128_sld(vec, vec2, x)  m128_ror(vec, ((x) / 4))
+#define m128_get(vec, i)        ((vec)[i])
 
 
 __forceinline __m128 m128_mul_add(__m128 a, __m128 b, __m128 c)

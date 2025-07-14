@@ -6,6 +6,9 @@
 - Revisit scalarmath.h
 - Revisit vectormath_common.h
 - Revisit vectormath_scalar.h
+- Revisit vectormath_simd.h
 - Fixing compile error: mat4 operators
 - Remove __deprecated macro, use VECTORMATH_DEPRECATED instead
 - Fast inverse square root, and avoid branching in vec2
+- Deprecated functions: X_fmod -> X_mod, X_frac -> X_fract, X_length -> X_len, X_distance -> X_dist, X_normalize -> X_norm
+- Add functions: X_smoothstep1

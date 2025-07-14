@@ -1,6 +1,7 @@
 #pragma once
 
 #include "scalarmath.h"
+#include "sse_to_neon.h"
 #include "vectormath_types.h"
 #include "vectormath_common.h"
 #include "vectormath_simd_utils.h"
@@ -558,7 +559,7 @@ __forceinline vec3 vec3_sin(vec3 v)
 /// Computes tangent
 __forceinline vec3 vec3_tan(vec3 v)
 {
-    return vec3_new(tanf(v.x), tanf(v.y), tanf(v.z));
+    return vec3_new(float_tan(v.x), float_tan(v.y), float_tan(v.z));
     //return vec3_from_m128(m128_tanf(m128_from_vec3(v)));
 }
 
@@ -566,14 +567,14 @@ __forceinline vec3 vec3_tan(vec3 v)
 /// Computes hyperbolic cosine
 __forceinline vec3 vec3_cosh(vec3 v)
 {
-    return vec3_new(coshf(v.x), coshf(v.y), coshf(v.z));
+    return vec3_new(float_cosh(v.x), float_cosh(v.y), float_cosh(v.z));
 }
 
 
 /// Computes hyperbolic sine
 __forceinline vec3 vec3_sinh(vec3 v)
 {
-    return vec3_new(sinhf(v.x), sinhf(v.y), sinhf(v.z));
+    return vec3_new(float_sinh(v.x), float_sinh(v.y), float_sinh(v.z));
 }
 
 
@@ -598,105 +599,121 @@ __forceinline vec3 vec3_acos(vec3 v)
 /// Computes inverse sine
 __forceinline vec3 vec3_asin(vec3 v)
 {
-    return vec3_new(asinf(v.x), asinf(v.y), asinf(v.z));
+    return vec3_new(float_asin(v.x), float_asin(v.y), float_asin(v.z));
 }
 
 
 /// Computes inverse tangent
 __forceinline vec3 vec3_atan(vec3 v)
 {
-    return vec3_new(atanf(v.x), atanf(v.y), atanf(v.z));
+    return vec3_new(float_atan(v.x), float_atan(v.y), float_atan(v.z));
 }
 
 
 /// Computes inverse tangent with 2 args
 __forceinline vec3 vec3_atan2(vec3 a, vec3 b)
 {
-    return vec3_new(atan2f(a.x, b.x), atan2f(a.y, b.y), atan2f(a.z, b.z));
+    return vec3_new(float_atan2(a.x, b.x), float_atan2(a.y, b.y), float_atan2(a.z, b.z));
 }
 
 
 /// Computes Euler number raised to the power 'x'
 __forceinline vec3 vec3_exp(vec3 v)
 {
-    return vec3_new(expf(v.x), expf(v.y), expf(v.z));
+    return vec3_new(float_exp(v.x), float_exp(v.y), float_exp(v.z));
 }
 
 
 /// Computes 2 raised to the power 'x'
 __forceinline vec3 vec3_exp2(vec3 v)
 {
-    return vec3_new(exp2f(v.x), exp2f(v.y), exp2f(v.z));
+    return vec3_new(float_exp2(v.x), float_exp2(v.y), float_exp2(v.z));
 }
 
 
 /// Computes the base Euler number logarithm
 __forceinline vec3 vec3_log(vec3 v)
 {
-    return vec3_new(logf(v.x), logf(v.y), logf(v.z));
+    return vec3_new(float_log(v.x), float_log(v.y), float_log(v.z));
 }
 
 
 /// Computes the base 2 logarithm
 __forceinline vec3 vec3_log2(vec3 v)
 {
-    return vec3_new(log2f(v.x), log2f(v.y), log2f(v.z));
+    return vec3_new(float_log2(v.x), float_log2(v.y), float_log2(v.z));
 }
 
 
 /// Computes the base 10 logarithm
 __forceinline vec3 vec3_log10(vec3 v)
 {
-    return vec3_new(log10f(v.x), log10f(v.y), log10f(v.z));
+    return vec3_new(float_log10(v.x), float_log10(v.y), float_log10(v.z));
 }
 
 
 /// Computes the value of base raised to the power exponent
 __forceinline vec3 vec3_pow(vec3 a, vec3 b)
 {
-    return vec3_new(powf(a.x, b.x), powf(a.y, b.y), powf(a.z, b.z));
+    return vec3_new(float_pow(a.x, b.x), float_pow(a.y, b.y), float_pow(a.z, b.z));
 }
 
 
 /// Get the fractal part of floating point
+__forceinline vec3 vec3_fract(vec3 v)
+{
+    return vec3_new(float_fract(v.x), float_fract(v.y), float_fract(v.z));
+}
+
+
+/// Get the fractal part of floating point
+VECTORMATH_DEPRECATED("vec3_fract")
 __forceinline vec3 vec3_frac(vec3 v)
 {
-    return vec3_new(float_frac(v.x), float_frac(v.y), float_frac(v.z));
+    return vec3_fract(v);
 }
 
 
 /// Computes the floating-point remainder of the division operation x/y
+__forceinline vec3 vec3_mod(vec3 a, vec3 b)
+{
+    return vec3_new(float_mod(a.x, b.x), float_mod(a.y, b.y), float_mod(a.z, b.z));
+}
+
+
+/// Computes the floating-point remainder of the division operation x/y
+VECTORMATH_DEPRECATED("vec3_mod")
 __forceinline vec3 vec3_fmod(vec3 a, vec3 b)
 {
-    return vec3_new(fmodf(a.x, b.x), fmodf(a.y, b.y), fmodf(a.z, b.z));
+    return vec3_mod(a, b);
 }
 
 
 /// Computes the smallest integer value not less than 'x'
 __forceinline vec3 vec3_ceil(vec3 v)
 {
-    return vec3_new(ceilf(v.x), ceilf(v.y), ceilf(v.z));
+    return vec3_new(float_ceil(v.x), float_ceil(v.y), float_ceil(v.z));
 }
 
 
 /// Computes the largest integer value not greater than 'x'
 __forceinline vec3 vec3_floor(vec3 v)
 {
-    return vec3_new(floorf(v.x), floorf(v.y), floorf(v.z));
+    return vec3_new(float_floor(v.x), float_floor(v.y), float_floor(v.z));
 }
 
 
 /// Computes the nearest integer value
 __forceinline vec3 vec3_round(vec3 v)
 {
-    return vec3_new(roundf(v.x), roundf(v.y), roundf(v.z));
+    return vec3_new(float_round(v.x), float_round(v.y), float_round(v.z));
 }
 
 
 /// Computes the nearest integer not greater in magnitude than 'x'
 __forceinline vec3 vec3_trunc(vec3 v)
 {
-    return vec3_new(truncf(v.x), truncf(v.y), truncf(v.z));
+    return vec3_new(float_trunc(v.x), float_trunc(v.y), float_trunc(v.z));
 }
 
 
@@ -717,7 +734,10 @@ __forceinline vec3 vec3_max(vec3 a, vec3 b)
 /// Clamps the 'x' value to the [min, max].
 __forceinline vec3 vec3_clamp(vec3 v, vec3 min, vec3 max)
 {
-    return vec3_new(float_clamp(v.x, min.x, max.x), float_clamp(v.y, min.y, max.y), float_clamp(v.z, min.z, max.z));
+    return vec3_new(
+        float_clamp(v.x, min.x, max.x), 
+        float_clamp(v.y, min.y, max.y), 
+        float_clamp(v.z, min.z, max.z));
 }
 
 
@@ -752,14 +772,24 @@ __forceinline vec3 vec3_lerp1(vec3 a, vec3 b, float t)
 // Compute a smooth Hermite interpolation
 __forceinline vec3 vec3_smoothstep(vec3 a, vec3 b, vec3 t)
 {
-    return vec3_new(float_smoothstep(a.x, b.x, t.x), float_smoothstep(a.y, b.y, t.y), float_smoothstep(a.z, b.z, t.z));
+    return vec3_new(
+        float_smoothstep(a.x, b.x, t.x), 
+        float_smoothstep(a.y, b.y, t.y), 
+        float_smoothstep(a.z, b.z, t.z));
+}
+
+
+// Compute a smooth Hermite interpolation
+__forceinline vec3 vec3_smoothstep1(vec3 a, vec3 b, float t)
+{
+    return vec3_smoothstep(a, b, vec3_new1(t));
 }
 
 
 /// Computes square root of 'x'.
 __forceinline vec3 vec3_sqrt(vec3 v)
 {
-    return vec3_new(sqrtf(v.x), sqrtf(v.y), sqrtf(v.z));
+    return vec3_new(float_sqrt(v.x), float_sqrt(v.y), float_sqrt(v.z));
 }
 
 
@@ -767,6 +797,13 @@ __forceinline vec3 vec3_sqrt(vec3 v)
 __forceinline vec3 vec3_rsqrt(vec3 v)
 {
     return vec3_new(float_rsqrt(v.x), float_rsqrt(v.y), float_rsqrt(v.z));
+}
+
+
+/// Computes inverse square root of 'x'.
+__forceinline vec3 vec3_fast_rsqrt(vec3 v)
+{
+    return vec3_new(float_fast_rsqrt(v.x), float_fast_rsqrt(v.y), float_fast_rsqrt(v.z));
 }
 
 
@@ -799,16 +836,32 @@ __forceinline float vec3_lensqr(vec3 v)
 
 
 /// Compute length of vector
+__forceinline float vec3_len(vec3 v)
+{
+    return float_sqrt(vec3_lensqr(v));
+}
+
+
+/// Compute length of vector
+VECTORMATH_DEPRECATED("vec3_len")
 __forceinline float vec3_length(vec3 v)
 {
-    return sqrtf(vec3_lensqr(v));
+    return vec3_len(v);
 }
 
 
 /// Compute distance from 'a' to b
+__forceinline float vec3_dist(vec3 a, vec3 b)
+{
+    return vec3_len(vec3_sub(a, b));
+}
+
+
+/// Compute distance from 'a' to b
+VECTORMATH_DEPRECATED("vec3_dist")
 __forceinline float vec3_distance(vec3 a, vec3 b)
 {
-    return vec3_length(vec3_sub(a, b));
+    return vec3_dist(a, b);
 }
 
 
@@ -820,7 +873,7 @@ __forceinline float vec3_distsqr(vec3 a, vec3 b)
 
 
 /// Compute normalized vector
-__forceinline vec3 vec3_normalize(vec3 v)
+__forceinline vec3 vec3_norm(vec3 v)
 {
 #ifndef VECTORMATH_USE_EXACT_PRECISION
     return vec3_mul1(v, float_fast_rsqrt(vec3_lensqr(v)));
@@ -839,6 +892,14 @@ __forceinline vec3 vec3_normalize(vec3 v)
 }
 
 
+/// Compute normalized vector
+VECTORMATH_DEPRECATED("vec3_norm")
+__forceinline vec3 vec3_normalize(vec3 v)
+{
+    return vec3_norm(v);
+}
+
+
 /// Compute reflection vector
 __forceinline vec3 vec3_reflect(vec3 v, vec3 n)
 {
@@ -849,17 +910,33 @@ __forceinline vec3 vec3_reflect(vec3 v, vec3 n)
 /// Compute refraction vector
 __forceinline vec3 vec3_refract(vec3 v, vec3 n, float eta)
 {
-    const float k = 1.0f - eta * eta * (1.0f - vec3_dot(v, n) * vec3_dot(v, n));
+    const float dvn = vec3_dot(v, n); 
+    const float k = 1.0f - eta * eta * (1.0f - dvn * dvn);
+
+#if VECTORMATH_USE_EXACT_PRECISION
     return k < 0.0f
         ? vec3_new1(0.0f)
-        : vec3_sub(vec3_mul1(v, eta), vec3_mul1(n, (eta * vec3_dot(v, n) + sqrtf(k))));
+        : vec3_sub(vec3_mul1(v, eta), vec3_mul1(v, (eta * dvn + float_sqrt(k))));
+#else
+    const float mask = (float)(k >= 0.0f);
+    const float sqrt_k = float_sqrt(float_abs(k));
+
+    const vec3 refraction = vec3_sub(vec3_mul1(v, eta), vec3_mul1(v, (eta * dvn + sqrt_k)));
+    return vec3_lerp1(vec3_new1(0.0f), refraction, mask);
+#endif
 }
 
 
 /// Compute faceforward vector
 __forceinline vec3 vec3_faceforward(vec3 n, vec3 i, vec3 nref)
 {
+#if VECTORMATH_USE_EXACT_PRECISION
     return vec3_dot(i, nref) < 0.0f ? n : vec3_neg(n);
+#else
+    const float d = vec3_dot(i, nref);
+    const float s = 1.0f - 2.0f * float_sign(d);
+    return vec3_mul1(n, s);
+#endif
 }
 
 
@@ -907,7 +984,7 @@ __forceinline vec4 vec4_sin(vec4 v)
 /// Computes tangent
 __forceinline vec4 vec4_tan(vec4 v)
 {
-    return vec4_new(tanf(v.x), tanf(v.y), tanf(v.z), tanf(v.w));
+    return vec4_new(float_tan(v.x), float_tan(v.y), float_tan(v.z), float_tan(v.w));
     //return vec4_from_m128(m128_tanf(m128_from_vec4(v)));
 }
 
@@ -915,21 +992,21 @@ __forceinline vec4 vec4_tan(vec4 v)
 /// Computes hyperbolic cosine
 __forceinline vec4 vec4_cosh(vec4 v)
 {
-    return vec4_new(coshf(v.x), coshf(v.y), coshf(v.z), coshf(v.w));
+    return vec4_new(float_cosh(v.x), float_cosh(v.y), float_cosh(v.z), float_cosh(v.w));
 }
 
 
 /// Computes hyperbolic sine
 __forceinline vec4 vec4_sinh(vec4 v)
 {
-    return vec4_new(sinhf(v.x), sinhf(v.y), sinhf(v.z), sinhf(v.w));
+    return vec4_new(float_sinh(v.x), float_sinh(v.y), float_sinh(v.z), float_sinh(v.w));
 }
 
 
 /// Computes hyperbolic tangent
 __forceinline vec4 vec4_tanh(vec4 v)
 {
-    return vec4_new(tanhf(v.x), tanhf(v.y), tanhf(v.z), tanhf(v.w));
+    return vec4_new(float_tanh(v.x), float_tanh(v.y), float_tanh(v.z), float_tanh(v.w));
 }
 
 
@@ -943,105 +1020,125 @@ __forceinline vec4 vec4_acos(vec4 v)
 /// Computes inverse sine
 __forceinline vec4 vec4_asin(vec4 v)
 {
-    return vec4_new(asinf(v.x), asinf(v.y), asinf(v.z), asinf(v.w));
+    return vec4_new(float_asin(v.x), float_asin(v.y), float_asin(v.z), float_asin(v.w));
 }
 
 
 /// Computes inverse tangent
 __forceinline vec4 vec4_atan(vec4 v)
 {
-    return vec4_new(atanf(v.x), atanf(v.y), atanf(v.z), atanf(v.w));
+    return vec4_new(float_atan(v.x), float_atan(v.y), float_atan(v.z), float_atan(v.w));
 }
 
 
 /// Computes inverse tangent with 2 args
 __forceinline vec4 vec4_atan2(vec4 a, vec4 b)
 {
-    return vec4_new(atan2f(a.x, b.x), atan2f(a.y, b.y), atan2f(a.z, b.z), atan2f(a.w, b.w));
+    return vec4_new(float_atan2(a.x, b.x), float_atan2(a.y, b.y), float_atan2(a.z, b.z), float_atan2(a.w, b.w));
 }
 
 
 /// Computes Euler number raised to the power 'x'
 __forceinline vec4 vec4_exp(vec4 v)
 {
-    return vec4_new(expf(v.x), expf(v.y), expf(v.z), expf(v.w));
+    return vec4_new(float_exp(v.x), float_exp(v.y), float_exp(v.z), float_exp(v.w));
 }
 
 
 /// Computes 2 raised to the power 'x'
 __forceinline vec4 vec4_exp2(vec4 v)
 {
-    return vec4_new(exp2f(v.x), exp2f(v.y), exp2f(v.z), exp2f(v.w));
+    return vec4_new(float_exp2(v.x), float_exp2(v.y), float_exp2(v.z), float_exp2(v.w));
 }
 
 
 /// Computes the base Euler number logarithm
 __forceinline vec4 vec4_log(vec4 v)
 {
-    return vec4_new(logf(v.x), logf(v.y), logf(v.z), logf(v.w));
+    return vec4_new(float_log(v.x), float_log(v.y), float_log(v.z), float_log(v.w));
 }
 
 
 /// Computes the base 2 logarithm
 __forceinline vec4 vec4_log2(vec4 v)
 {
-    return vec4_new(log2f(v.x), log2f(v.y), log2f(v.z), log2f(v.w));
+    return vec4_new(float_log2(v.x), float_log2(v.y), float_log2(v.z), float_log2(v.w));
 }
 
 
 /// Computes the base 10 logarithm
 __forceinline vec4 vec4_log10(vec4 v)
 {
-    return vec4_new(log10f(v.x), log10f(v.y), log10f(v.z), log10f(v.w));
+    return vec4_new(float_log10(v.x), float_log10(v.y), float_log10(v.z), float_log10(v.w));
 }
 
 
 /// Computes the value of base raised to the power exponent
 __forceinline vec4 vec4_pow(vec4 a, vec4 b)
 {
-    return vec4_new(powf(a.x, b.x), powf(a.y, b.y), powf(a.z, b.z), powf(a.w, b.w));
+    return vec4_new(float_pow(a.x, b.x), float_pow(a.y, b.y), float_pow(a.z, b.z), float_pow(a.w, b.w));
 }
 
 
 /// Get the fractal part of floating point
+__forceinline vec4 vec4_fract(vec4 v)
+{
+    return vec4_new(float_fract(v.x), float_fract(v.y), float_fract(v.z), float_fract(v.w));
+}
+
+
+/// Get the fractal part of floating point
+VECTORMATH_DEPRECATED("vec4_fract")
 __forceinline vec4 vec4_frac(vec4 v)
 {
-    return vec4_new(float_frac(v.x), float_frac(v.y), float_frac(v.z), float_frac(v.w));
+    return vec4_fract(v);
 }
 
 
 /// Computes the floating-point remainder of the division operation x/y
+__forceinline vec4 vec4_mod(vec4 a, vec4 b)
+{
+    return vec4_new(
+        float_mod(a.x, b.x), 
+        float_mod(a.y, b.y), 
+        float_mod(a.z, b.z), 
+        float_mod(a.w, b.w));
+}
+
+
+/// Computes the floating-point remainder of the division operation x/y
+VECTORMATH_DEPRECATED("vec4_mod")
 __forceinline vec4 vec4_fmod(vec4 a, vec4 b)
 {
-    return vec4_new(fmodf(a.x, b.x), fmodf(a.y, b.y), fmodf(a.z, b.z), fmodf(a.w, b.w));
+    return vec4_mod(a, b);
 }
 
 
 /// Computes the smallest integer value not less than 'x'
 __forceinline vec4 vec4_ceil(vec4 v)
 {
-    return vec4_new(ceilf(v.x), ceilf(v.y), ceilf(v.z), ceilf(v.w));
+    return vec4_new(float_ceil(v.x), float_ceil(v.y), float_ceil(v.z), float_ceil(v.w));
 }
 
 
 /// Computes the largest integer value not greater than 'x'
 __forceinline vec4 vec4_floor(vec4 v)
 {
-    return vec4_new(floorf(v.x), floorf(v.y), floorf(v.z), floorf(v.w));
+    return vec4_new(float_floor(v.x), float_floor(v.y), float_floor(v.z), float_floor(v.w));
 }
 
 
 /// Computes the nearest integer value
 __forceinline vec4 vec4_round(vec4 v)
 {
-    return vec4_new(roundf(v.x), roundf(v.y), roundf(v.z), roundf(v.w));
+    return vec4_new(float_round(v.x), float_round(v.y), float_round(v.z), float_round(v.w));
 }
 
 
 /// Computes the nearest integer not greater in magnitude than 'x'
 __forceinline vec4 vec4_trunc(vec4 v)
 {
-    return vec4_new(truncf(v.x), truncf(v.y), truncf(v.z), truncf(v.w));
+    return vec4_new(float_trunc(v.x), float_trunc(v.y), float_trunc(v.z), float_trunc(v.w));
 }
 
 
@@ -1084,7 +1181,11 @@ __forceinline vec4 vec4_clamp(vec4 v, vec4 min, vec4 max)
 /// Clamps the specified value within the range of 0 to 1
 __forceinline vec4 vec4_saturate(vec4 v)
 {
-    return vec4_new(float_saturate(v.x), float_saturate(v.y), float_saturate(v.z), float_saturate(v.w));
+    return vec4_new(
+        float_saturate(v.x), 
+        float_saturate(v.y), 
+        float_saturate(v.z), 
+        float_saturate(v.w));
 }
 
 
@@ -1136,10 +1237,17 @@ __forceinline vec4 vec4_smoothstep(vec4 a, vec4 b, vec4 t)
 }
 
 
+/// Compute a smooth Hermite interpolation
+__forceinline vec4 vec4_smoothstep1(vec4 a, vec4 b, float t)
+{
+    return vec4_smoothstep(a, b, vec4_new1(t));
+}
+
+
 /// Computes square root of 'x'.
 __forceinline vec4 vec4_sqrt(vec4 v)
 {
-    return vec4_new(sqrtf(v.x), sqrtf(v.y), sqrtf(v.z), sqrtf(v.w));
+    return vec4_new(float_sqrt(v.x), float_sqrt(v.y), float_sqrt(v.z), float_sqrt(v.w));
 }
 
 
@@ -1147,6 +1255,17 @@ __forceinline vec4 vec4_sqrt(vec4 v)
 __forceinline vec4 vec4_rsqrt(vec4 v)
 {
     return vec4_new(float_rsqrt(v.x), float_rsqrt(v.y), float_rsqrt(v.z), float_rsqrt(v.w));
+}
+
+
+/// Computes inverse square root of 'x'.
+__forceinline vec4 vec4_fast_rsqrt(vec4 v)
+{
+    return vec4_new(
+        float_fast_rsqrt(v.x), 
+        float_fast_rsqrt(v.y),
+        float_fast_rsqrt(v.z), 
+        float_fast_rsqrt(v.w));
 }
 
 
@@ -1166,6 +1285,14 @@ __forceinline float vec4_lensqr(vec4 v)
 
 
 /// Compute length of vector
+__forceinline float vec4_len(vec4 v)
+{
+    return float_sqrt(vec4_lensqr(v));
+}
+
+
+/// Compute length of vector
+VECTORMATH_DEPRECATED("vec4_len")
 __forceinline float vec4_length(vec4 v)
 {
     return sqrtf(vec4_lensqr(v));
@@ -1173,9 +1300,17 @@ __forceinline float vec4_length(vec4 v)
 
 
 /// Compute distance from 'a' to 'b'
+__forceinline float vec4_dist(vec4 a, vec4 b)
+{
+    return vec4_len(vec4_sub(a, b));
+}
+
+
+/// Compute distance from 'a' to 'b'
+VECTORMATH_DEPRECATED("vec4_dist")
 __forceinline float vec4_distance(vec4 a, vec4 b)
 {
-    return vec4_length(vec4_sub(a, b));
+    return vec4_dist(a, b);
 }
 
 
@@ -1187,7 +1322,7 @@ __forceinline float vec4_distsqr(vec4 a, vec4 b)
 
 
 /// Compute normalized vector
-__forceinline vec4 vec4_normalize(vec4 v)
+__forceinline vec4 vec4_norm(vec4 v)
 {
 #ifndef VECTORMATH_USE_EXACT_PRECISION
     return vec4_mul1(v, float_fast_rsqrt(vec4_lensqr(v)));
@@ -1206,6 +1341,14 @@ __forceinline vec4 vec4_normalize(vec4 v)
 }
 
 
+/// Compute normalized vector
+VECTORMATH_DEPRECATED("vec4_norm")
+__forceinline vec4 vec4_normalize(vec4 v)
+{
+    return vec4_norm(v);
+}
+
+
 /// Compute reflection vector
 __forceinline vec4 vec4_reflect(vec4 v, vec4 n)
 {
@@ -1216,17 +1359,33 @@ __forceinline vec4 vec4_reflect(vec4 v, vec4 n)
 /// Compute refraction vector
 __forceinline vec4 vec4_refract(vec4 v, vec4 n, float eta)
 {
-    const float k = 1.0f - eta * eta * (1.0f - vec4_dot(v, n) * vec4_dot(v, n));
+    const float dvn = vec4_dot(v, n); 
+    const float k = 1.0f - eta * eta * (1.0f - dvn * dvn);
+
+#if VECTORMATH_USE_EXACT_PRECISION
     return k < 0.0f
         ? vec4_new1(0.0f)
-        : vec4_sub(vec4_mul1(v, eta), vec4_mul1(n, eta * vec4_dot(v, n) + sqrtf(k)));
+        : vec4_sub(vec4_mul1(v, eta), vec4_mul1(v, (eta * dvn + float_sqrt(k))));
+#else
+    const float mask = (float)(k >= 0.0f);
+    const float sqrt_k = float_sqrt(float_abs(k));
+
+    const vec4 refraction = vec4_sub(vec4_mul1(v, eta), vec4_mul1(v, (eta * dvn + sqrt_k)));
+    return vec4_lerp1(vec4_new1(0.0f), refraction, mask);
+#endif
 }
 
 
 /// Compute faceforward vector
 __forceinline vec4 vec4_faceforward(vec4 n, vec4 i, vec4 nref)
 {
+#if VECTORMATH_USE_EXACT_PRECISION
     return vec4_dot(i, nref) < 0.0f ? n : vec4_neg(n);
+#else
+    const float d = vec4_dot(i, nref);
+    const float s = 1.0f - 2.0f * float_sign(d);
+    return vec4_mul1(n, s);
+#endif
 }
 
 
@@ -1272,8 +1431,8 @@ __forceinline quat quat_from_axis_angle(vec3 axis, float angle)
         return vec4_new(0, 0, 0, 1);
     }
     
-    const vec3 normalized = vec3_mul1(vec3_normalize(axis), sinf(angle * 0.5f));
-    return vec4_new(normalized.x, normalized.y, normalized.z, cosf(angle * 0.5f));
+    const vec3 normalized = vec3_mul1(vec3_norm(axis), float_sin(angle * 0.5f));
+    return vec4_new(normalized.x, normalized.y, normalized.z, float_cos(angle * 0.5f));
 }
 
 
@@ -1283,15 +1442,15 @@ __forceinline vec4 quat_to_axis_angle(quat quat)
     vec4 c = quat;
     if (c.w != 0.0f)
     {
-        c = vec4_normalize(quat);
+        c = vec4_norm(quat);
     }
 
-    const float den = sqrtf(1.0f - c.w * c.w);
+    const float den = float_sqrt(1.0f - c.w * c.w);
     const vec3 axis = (den > 0.0001f)
         ? vec3_div1(vec3_new(c.x, c.y, c.z), den)
         : vec3_new(1.0f, 0.0f, 0.0f);
 
-    const float angle = 2.0f * cosf(c.w);
+    const float angle = 2.0f * float_cos(c.w);
     return vec4_new(axis.x, axis.y, axis.z, angle);
 }
 
@@ -1308,20 +1467,23 @@ __forceinline void quat_to_axis_angle_ref(quat quat, vec3* axis, float* angle)
 /// Create quaternion from euler
 __forceinline quat quat_from_euler(float x, float y, float z)
 {
-    float r;
-    float p;
+    const float _r = z * 0.5f;
+    const float _p = x * 0.5f;
+    const float _y = y * 0.5f; // _y mean yaw
 
-    r = z * 0.5f;
-    p = x * 0.5f;
-    y = y * 0.5f; // Now y mean yaw
+    __m128 c;
+    __m128 s;
+    const __m128 ypr = _mm_set_ps(0, _r, _p, _y);
+    m128_sinf_cosf(ypr, &s, &c);
 
-    const float c1 = cosf(y);
-    const float c2 = cosf(p);
-    const float c3 = cosf(r);
-    const float s1 = sinf(y);
-    const float s2 = sinf(p);
-    const float s3 = sinf(r);
+    const float c1 = m128_get(c, 0);
+    const float c2 = m128_get(c, 1);
+    const float c3 = m128_get(c, 2);
+    const float s1 = m128_get(s, 0);
+    const float s2 = m128_get(s, 1);
+    const float s3 = m128_get(s, 2);
 
+    // @todos(maihd): this formula look like it can use simd to accelerate
     return vec4_new(
         s1 * s2 * c3 + c1 * c2 * s3,
         s1 * c2 * c3 + c1 * s2 * s3,
@@ -1531,26 +1693,42 @@ __forceinline mat4 mat4_pow(mat4 a, mat4 b)
 
 
 /// Get the fractal part of floating point
-__forceinline mat4 mat4_frac(mat4 m)
+__forceinline mat4 mat4_fract(mat4 m)
 {
     return mat4_new(
-        vec4_frac(m.col0),
-        vec4_frac(m.col1),
-        vec4_frac(m.col2),
-        vec4_frac(m.col3)
+        vec4_fract(m.col0),
+        vec4_fract(m.col1),
+        vec4_fract(m.col2),
+        vec4_fract(m.col3)
+    );
+}
+
+
+/// Get the fractal part of floating point
+VECTORMATH_DEPRECATED("mat4_fract")
+__forceinline mat4 mat4_frac(mat4 m)
+{
+    return mat4_fract(m);
+}
+
+
+/// Computes the floating-point remainder of the division operation x/y
+__forceinline mat4 mat4_mod(mat4 a, mat4 b)
+{
+    return mat4_new(
+        vec4_mod(a.col0, b.col0),
+        vec4_mod(a.col1, b.col1),
+        vec4_mod(a.col2, b.col2),
+        vec4_mod(a.col3, b.col3)
     );
 }
 
 
 /// Computes the floating-point remainder of the division operation x/y
+VECTORMATH_DEPRECATED("mat4_mod")
 __forceinline mat4 mat4_fmod(mat4 a, mat4 b)
 {
-    return mat4_new(
-        vec4_fmod(a.col0, b.col0),
-        vec4_fmod(a.col1, b.col1),
-        vec4_fmod(a.col2, b.col2),
-        vec4_fmod(a.col3, b.col3)
-    );
+    return mat4_mod(a, b);
 }
 
 
@@ -1698,6 +1876,18 @@ __forceinline mat4 mat4_smoothstep(mat4 a, mat4 b, mat4 t)
 }
 
 
+/// Compute a smooth Hermite interpolation
+__forceinline mat4 mat4_smoothstep1(mat4 a, mat4 b, float t)
+{
+    return mat4_new(
+        vec4_smoothstep1(a.col0, b.col0, t),
+        vec4_smoothstep1(a.col1, b.col1, t),
+        vec4_smoothstep1(a.col2, b.col2, t),
+        vec4_smoothstep1(a.col3, b.col3, t)
+    );
+}
+
+
 /// Computes square root of 'x'.
 __forceinline mat4 mat4_sqrt(mat4 m)
 {
@@ -1709,6 +1899,17 @@ __forceinline mat4 mat4_sqrt(mat4 m)
 __forceinline mat4 mat4_rsqrt(mat4 m)
 {
     return mat4_new(vec4_rsqrt(m.col0), vec4_rsqrt(m.col1), vec4_rsqrt(m.col2), vec4_rsqrt(m.col3));
+}
+
+
+/// Computes inverse square root of 'x'.
+__forceinline mat4 mat4_fast_rsqrt(mat4 m)
+{
+    return mat4_new(
+        vec4_fast_rsqrt(m.col0), 
+        vec4_fast_rsqrt(m.col1), 
+        vec4_fast_rsqrt(m.col2), 
+        vec4_fast_rsqrt(m.col3));
 }
 
 
@@ -1825,7 +2026,7 @@ __forceinline mat4 mat4_inverse(mat4 m)
     __m128 _L4 = m128_from_vec4(m.col3);
     // Calculating the minterms for the first line.
 
-    // simdRor is just a macro using _mm_shuffle_ps().
+    // m128_ror is just a macro using _mm_shuffle_ps().
     tt = _L4;
     tt2 = m128_ror(_L3, 1);
     Vc = _mm_mul_ps(tt2, m128_ror(tt, 0)); // V3'�V4
@@ -2088,9 +2289,9 @@ __forceinline mat4 mat4_perspective(float fov_radians, float aspect, float z_nea
 
 __forceinline mat4 mat4_lookat_rh(vec3 eye, vec3 target, vec3 up)
 {
-    const vec3 z = vec3_normalize(vec3_sub(eye, target));
-    const vec3 x = vec3_normalize(vec3_cross(up, z));
-    const vec3 y = vec3_normalize(vec3_cross(z, x));
+    const vec3 z = vec3_norm(vec3_sub(eye, target));
+    const vec3 x = vec3_norm(vec3_cross(up, z));
+    const vec3 y = vec3_norm(vec3_cross(z, x));
 
     mat4 result;
     result.col0 = vec4_new(              x.x,               y.x,               z.x, 0.0f);
@@ -2162,8 +2363,9 @@ __forceinline mat4 mat4_translation_vec3(vec3 v)
 
 __forceinline mat4 mat4_rotation(float x, float y, float z, float angle)
 {
-    const float c = cosf(-angle);
-    const float s = sinf(-angle);
+    // @todos(maihd): use m128_sinf_cosf here
+    const float c = float_cos(-angle);
+    const float s = float_sin(-angle);
     const float t = 1.0f - c;
 
     mat4 result;
@@ -2202,8 +2404,9 @@ __forceinline mat4 mat4_rotation_axis_angle(vec3 axis, float angle)
 
 __forceinline mat4 mat4_rotation_x(float angle)
 {
-    const float s = sinf(angle);
-    const float c = cosf(angle);
+    // @todos(maihd): use m128_sinf_cosf here
+    const float s = float_sin(angle);
+    const float c = float_cos(angle);
 
     return mat4_new(
         vec4_new(1,  0, 0, 0),
@@ -2216,8 +2419,9 @@ __forceinline mat4 mat4_rotation_x(float angle)
 
 __forceinline mat4 mat4_rotation_y(float angle)
 {
-    const float s = sinf(angle);
-    const float c = cosf(angle);
+    // @todos(maihd): use m128_sinf_cosf here
+    const float s = float_sin(angle);
+    const float c = float_cos(angle);
 
     return mat4_new(
         vec4_new( c, 0, s, 0),
@@ -2230,8 +2434,9 @@ __forceinline mat4 mat4_rotation_y(float angle)
 
 __forceinline mat4 mat4_rotation_z(float angle)
 {
-    const float s = sinf(angle);
-    const float c = cosf(angle);
+    // @todos(maihd): use m128_sinf_cosf here
+    const float s = float_sin(angle);
+    const float c = float_cos(angle);
 
     return mat4_new(
         vec4_new( c, s, 0, 0),
@@ -2297,9 +2502,9 @@ __forceinline void mat4_decompose(mat4 m, vec3* scalation, quat* quaternion, vec
 
     const float det = n11 * t11 + n21 * t12 + n31 * t13 + n41 * t14;
 
-    const float scale_x = vec3_length(xaxis);
-    const float scale_y = vec3_length(yaxis);
-    const float scale_z = float_sign(det) * vec3_length(zaxis);
+    const float scale_x = vec3_len(xaxis);
+    const float scale_y = vec3_len(yaxis);
+    const float scale_z = float_sign(det) * vec3_len(zaxis);
 
     if (scalation)
     {
@@ -2320,7 +2525,7 @@ __forceinline void mat4_decompose(mat4 m, vec3* scalation, quat* quaternion, vec
     const float trace = xaxis.x + yaxis.y + zaxis.z + 1.0f;
     if (trace > 0.0001f)
     {
-        const float s = 0.5f / sqrtf(trace);
+        const float s = 0.5f / float_sqrt(trace);
         quaternion->w = 0.25f / s;
         quaternion->x = (yaxis.z - zaxis.y) * s;
         quaternion->y = (zaxis.x - xaxis.z) * s;
@@ -2332,7 +2537,7 @@ __forceinline void mat4_decompose(mat4 m, vec3* scalation, quat* quaternion, vec
         // we will never divide by zero in the code below.
         if (xaxis.x > yaxis.y && xaxis.x > zaxis.z)
         {
-            const float s = 0.5f / sqrtf(1.0f + xaxis.x - yaxis.y - zaxis.z);
+            const float s = 0.5f / float_sqrt(1.0f + xaxis.x - yaxis.y - zaxis.z);
             quaternion->w = (yaxis.z - zaxis.y) * s;
             quaternion->x = 0.25f / s;
             quaternion->y = (yaxis.x + xaxis.y) * s;
@@ -2340,7 +2545,7 @@ __forceinline void mat4_decompose(mat4 m, vec3* scalation, quat* quaternion, vec
         }
         else if (yaxis.y > zaxis.z)
         {
-            const float s = 0.5f / sqrtf(1.0f + yaxis.y - xaxis.x - zaxis.z);
+            const float s = 0.5f / float_sqrt(1.0f + yaxis.y - xaxis.x - zaxis.z);
             quaternion->w = (zaxis.x - xaxis.z) * s;
             quaternion->x = (yaxis.x + xaxis.y) * s;
             quaternion->y = 0.25f / s;
@@ -2348,7 +2553,7 @@ __forceinline void mat4_decompose(mat4 m, vec3* scalation, quat* quaternion, vec
         }
         else
         {
-            const float s = 0.5f / sqrtf(1.0f + zaxis.z - xaxis.x - yaxis.y);
+            const float s = 0.5f / float_sqrt(1.0f + zaxis.z - xaxis.x - yaxis.y);
             quaternion->w = (xaxis.y - yaxis.x) * s;
             quaternion->x = (zaxis.x + xaxis.z) * s;
             quaternion->y = (zaxis.y + yaxis.z) * s;
