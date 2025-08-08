@@ -39,6 +39,12 @@
     - Direct use of NEON instrinsics
     - Independent from -lm (Unix math library)
     - VECTORMATH_USE_EXACT_PRECISION -> VECTORMATH_HIGH_PRECISION
+    - VECTORMATH_USE_GLSL_NAMESPACE: add namespace for glsl (ex: glsl::vec2)
+    - VECTROMATH_USE_HLSL_NAMESPACE: add namespace for hlsl (ex: hlsl::float2)
+
+- Mimic API:
+    - Metal shader language (MSL) mimic API, for learning Metal
+    - WebGPU shader language (WSL) mimic API, for learning WebGPU (more preferred, because im learning WebGPU)
 
 - (Low priority) Remove deprecated functions
 
