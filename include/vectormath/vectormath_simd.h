@@ -1,7 +1,6 @@
 #pragma once
 
 #include "scalarmath.h"
-#include "sse_to_neon.h"
 #include "vectormath_types.h"
 #include "vectormath_common.h"
 #include "vectormath_simd_utils.h"

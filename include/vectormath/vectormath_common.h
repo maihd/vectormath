@@ -446,12 +446,14 @@ __forceinline float vec2_lensqr(vec2 v)
 /// Compute length of vector
 __forceinline float vec2_len(vec2 v)
 {
-#if VECTORMATH_USE_EXACT_PRECISION
-    return float_sqrt(vec2_lensqr(v));
-#else
-    const float lensqr = vec2_lensqr(v);
-    return lensqr * float_fast_rsqrt(lensqr);
-#endif
+return float_sqrt(vec2_lensqr(v));
+
+// #if VECTORMATH_USE_EXACT_PRECISION
+//     return float_sqrt(vec2_lensqr(v));
+// #else
+//     const float lensqr = vec2_lensqr(v);
+//     return lensqr * float_fast_rsqrt(lensqr);
+// #endif
 }
 
 

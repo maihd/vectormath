@@ -4,6 +4,13 @@
 #error Required C++ for shorthand functions
 #endif
 
+#ifdef _WIN32
+#undef min      // When Windows.h was included, `min` is an macro
+#undef max      // When Windows.h was included, `max` is an macro
+#undef far      // When Windows.h was included, `far` is an macro
+#undef near     // When Windows.h was included, `near` is an macro
+#endif
+
 
 // -------------------------------------------------------------
 // Types
