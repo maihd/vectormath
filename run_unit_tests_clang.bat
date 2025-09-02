@@ -2,6 +2,10 @@
 
 pushd unit_tests
 
-make CC="'C:\Program Files\LLVM\bin\clang.exe'"
+if "%1" == "clean" (
+    make clean
+)
+
+make CC=clang
 
 popd

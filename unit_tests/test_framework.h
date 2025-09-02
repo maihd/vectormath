@@ -194,11 +194,11 @@ static_assert(!IS_DEFINED(__UNDEFINED_MACRO), "IS_DEFINED is wrong!");
 #define PRINTF_COLOR_GREEN		
 #define PRINTF_COLOR_YELLOW		
 #else
-#define PRINTF_COLOR_RED		"\033[0;31m"
-#define PRINTF_COLOR_BLUE		"\033[0;34m"
+#define PRINTF_COLOR_RED		"\033[31m"
+#define PRINTF_COLOR_BLUE		"\033[34m"
 #define PRINTF_COLOR_BLACK		"\033[0m"
-#define PRINTF_COLOR_GREEN		"\033[0;32m"
-#define PRINTF_COLOR_YELLOW		"\033[0;33m"
+#define PRINTF_COLOR_GREEN		"\033[32m"
+#define PRINTF_COLOR_YELLOW		"\033[33m"
 #endif
 
 
@@ -315,6 +315,16 @@ int UNIT_TESTS_MAIN(const int argc, const char* argv[])
 int main(const int argc, const char* argv[])
 #endif
 {
+    #if _WIN32
+    HANDLE hOut = GetStdHandle(STD_OUTPUT_HANDLE);
+
+    DWORD dwMode = 0;
+    GetConsoleMode(hOut, &dwMode);
+
+    dwMode |= ENABLE_VIRTUAL_TERMINAL_PROCESSING;
+    SetConsoleMode(hOut, dwMode);
+    #endif
+
     if (argc > 1)
     {
         gUnitTestsLogHeader = argv[1];
