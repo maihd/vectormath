@@ -130,6 +130,8 @@ so other languages you should use the libraries written specifily for thoses lan
 - Carbon was said that can include C++ header without changing the source code. No experiment yet.
 - Beef: Only type definitions must be same with this library (same size, same layout). Naming and functions implement must be done in Beef side. I'm researching a way to transpile C source code to Beef.
 - Luau (with support native Vector4 in languages). And I'm written a simple, light library to bindings Luau and Lua runtime in C.
+- Odin: natively support array programming, vector and swizzles. Including core math library, I only need create some procedures alias that fit the name of this library. 
+The library only need focus on high levels procedures. Here is the library [link](https://github.com/maihd/odin-vmath).
 
 
 ## FAQs
